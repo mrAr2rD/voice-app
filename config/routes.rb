@@ -40,6 +40,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Activities history
+  resources :activities, only: [:index]
+
   # Admin
   namespace :admin do
     root to: "dashboard#index"

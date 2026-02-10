@@ -113,11 +113,59 @@
     <!-- Recent Activity -->
     <% if @recent_transcriptions.any? || @recent_voice_generations.any? || @recent_translations.any? %>
       <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-        <h3 class="text-lg font-semibold mb-4" style="color: var(--color-snow);">Недавняя активность</h3>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold" style="color: var(--color-snow);">Недавняя активность</h3>
+          <%= link_to activities_path,
+              class: "text-sm font-medium transition-colors hover:opacity-80",
+              style: "color: var(--color-neon-blue);" do %>
+            Вся история
+            <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          <% end %>
+        </div>
 
-        <div class="space-y-3">
+        <!-- Filter Pills -->
+        <div class="flex items-center space-x-2 mb-4" data-controller="activity-filter">
+          <button type="button"
+                  data-action="click->activity-filter#showAll"
+                  data-activity-filter-target="allBtn"
+                  class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200"
+                  style="background: var(--color-graphite); color: var(--color-snow);">
+            Все
+          </button>
+          <% if @recent_transcriptions.any? %>
+            <button type="button"
+                    data-action="click->activity-filter#showTranscriptions"
+                    data-activity-filter-target="transcriptionBtn"
+                    class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-white/5"
+                    style="border: 1px solid var(--color-graphite); color: var(--color-cloud);">
+              Транскрибации
+            </button>
+          <% end %>
+          <% if @recent_voice_generations.any? %>
+            <button type="button"
+                    data-action="click->activity-filter#showVoice"
+                    data-activity-filter-target="voiceBtn"
+                    class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-white/5"
+                    style="border: 1px solid var(--color-graphite); color: var(--color-cloud);">
+              Озвучки
+            </button>
+          <% end %>
+          <% if @recent_translations.any? %>
+            <button type="button"
+                    data-action="click->activity-filter#showTranslations"
+                    data-activity-filter-target="translationBtn"
+                    class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-white/5"
+                    style="border: 1px solid var(--color-graphite); color: var(--color-cloud);">
+              Переводы
+            </button>
+          <% end %>
+        </div>
+
+        <div class="space-y-3" data-activity-filter-target="list">
           <% @recent_transcriptions.each do |t| %>
-            <%= link_to t, class: "flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-white/5 group", data: { turbo_frame: "_top" } do %>
+            <%= link_to t, class: "activity-item activity-transcription flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-white/5 group", data: { turbo_frame: "_top" } do %>
               <div class="flex items-center">
                 <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
                      style="background: rgba(0, 212, 255, 0.1);">
@@ -135,7 +183,7 @@
           <% end %>
 
           <% @recent_voice_generations.each do |vg| %>
-            <%= link_to vg, class: "flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-white/5 group", data: { turbo_frame: "_top" } do %>
+            <%= link_to vg, class: "activity-item activity-voice flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-white/5 group", data: { turbo_frame: "_top" } do %>
               <div class="flex items-center">
                 <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
                      style="background: rgba(168, 85, 247, 0.1);">
@@ -153,7 +201,7 @@
           <% end %>
 
           <% @recent_translations.each do |tr| %>
-            <%= link_to tr, class: "flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-white/5 group", data: { turbo_frame: "_top" } do %>
+            <%= link_to tr, class: "activity-item activity-translation flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-white/5 group", data: { turbo_frame: "_top" } do %>
               <div class="flex items-center">
                 <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
                      style="background: rgba(34, 211, 187, 0.1);">
