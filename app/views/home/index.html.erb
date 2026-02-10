@@ -4,117 +4,114 @@
   <!-- Dashboard for logged in users -->
   <div class="animate-fade-in">
     <!-- Welcome Section -->
-    <div class="mb-10">
-      <h2 class="text-3xl font-bold mb-2" style="color: var(--color-snow);">
+    <div class="mb-8">
+      <h2 class="font-display text-2xl md:text-3xl font-bold mb-1" style="color: var(--color-snow);">
         Привет, <span class="text-gradient"><%= current_user.name %></span>
       </h2>
-      <p style="color: var(--color-mist);">Что хотите сделать сегодня?</p>
+      <p class="text-sm" style="color: var(--color-mist);">Что хотите сделать сегодня?</p>
     </div>
 
-    <!-- Action Cards -->
-    <div class="grid md:grid-cols-3 gap-6 mb-12">
+    <!-- Action Cards - 4 services in row -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
       <!-- Transcription Card -->
-      <div class="group relative overflow-hidden rounded-2xl p-6 hover-lift"
-           style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <%= link_to new_transcription_path,
+          class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+          style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-             style="background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 70%);"></div>
-
+             style="background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.12) 0%, transparent 70%);"></div>
         <div class="relative z-10">
-          <div class="flex items-start justify-between mb-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center"
-                 style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
-              <svg class="w-6 h-6" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-              </svg>
-            </div>
-          </div>
-
-          <h3 class="text-xl font-bold mb-2" style="color: var(--color-snow);">Транскрибация</h3>
-          <p class="text-sm mb-4" style="color: var(--color-mist);">
-            Аудио и видео в текст с таймкодами
-          </p>
-
-          <%= link_to new_transcription_path,
-              class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:scale-105",
-              style: "background: var(--color-neon-blue); color: var(--color-void);" do %>
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+               style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
+            <svg class="w-5 h-5" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
             </svg>
-            Создать
-          <% end %>
+          </div>
+          <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Транскрибация</h3>
+          <p class="text-xs" style="color: var(--color-mist);">Аудио в текст</p>
         </div>
-      </div>
+      <% end %>
 
       <!-- Voice Generation Card -->
-      <div class="group relative overflow-hidden rounded-2xl p-6 hover-lift"
-           style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <%= link_to new_voice_generation_path,
+          class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+          style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-             style="background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 70%);"></div>
-
+             style="background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
         <div class="relative z-10">
-          <div class="flex items-start justify-between mb-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center"
-                 style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2);">
-              <svg class="w-6 h-6" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-              </svg>
-            </div>
-          </div>
-
-          <h3 class="text-xl font-bold mb-2" style="color: var(--color-snow);">Озвучка</h3>
-          <p class="text-sm mb-4" style="color: var(--color-mist);">
-            Текст в естественную речь
-          </p>
-
-          <%= link_to new_voice_generation_path,
-              class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:scale-105",
-              style: "background: var(--color-neon-purple); color: white;" do %>
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+               style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2);">
+            <svg class="w-5 h-5" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
             </svg>
-            Создать
-          <% end %>
+          </div>
+          <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Озвучка</h3>
+          <p class="text-xs" style="color: var(--color-mist);">Текст в речь</p>
         </div>
-      </div>
+      <% end %>
 
       <!-- Translation Card -->
-      <div class="group relative overflow-hidden rounded-2xl p-6 hover-lift"
-           style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <%= link_to new_translation_path,
+          class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+          style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-             style="background: radial-gradient(circle at 50% 50%, rgba(34, 211, 187, 0.1) 0%, transparent 70%);"></div>
-
+             style="background: radial-gradient(circle at 50% 50%, rgba(34, 211, 187, 0.12) 0%, transparent 70%);"></div>
         <div class="relative z-10">
-          <div class="flex items-start justify-between mb-4">
-            <div class="w-12 h-12 rounded-xl flex items-center justify-center"
-                 style="background: rgba(34, 211, 187, 0.1); border: 1px solid rgba(34, 211, 187, 0.2);">
-              <svg class="w-6 h-6" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-              </svg>
-            </div>
-          </div>
-
-          <h3 class="text-xl font-bold mb-2" style="color: var(--color-snow);">Переводчик</h3>
-          <p class="text-sm mb-4" style="color: var(--color-mist);">
-            AI перевод текстов
-          </p>
-
-          <%= link_to new_translation_path,
-              class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:scale-105",
-              style: "background: var(--color-neon-green); color: var(--color-void);" do %>
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+               style="background: rgba(34, 211, 187, 0.1); border: 1px solid rgba(34, 211, 187, 0.2);">
+            <svg class="w-5 h-5" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
             </svg>
-            Создать
-          <% end %>
+          </div>
+          <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Переводчик</h3>
+          <p class="text-xs" style="color: var(--color-mist);">AI перевод</p>
         </div>
-      </div>
+      <% end %>
+
+      <!-- Video Builder Card -->
+      <%= link_to new_video_builder_path,
+          class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+          style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+             style="background: radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.12) 0%, transparent 70%);"></div>
+        <div class="relative z-10">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+               style="background: rgba(255, 107, 107, 0.1); border: 1px solid rgba(255, 107, 107, 0.2);">
+            <svg class="w-5 h-5" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Видео</h3>
+          <p class="text-xs" style="color: var(--color-mist);">Из озвучки</p>
+        </div>
+      <% end %>
     </div>
 
+    <!-- Projects Button -->
+    <%= link_to projects_path,
+        class: "flex items-center justify-between w-full p-4 mb-8 rounded-xl transition-all duration-300 hover:scale-[1.01] group",
+        style: "background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(251, 191, 36, 0.02) 100%); border: 1px solid rgba(251, 191, 36, 0.2);" do %>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center"
+             style="background: rgba(251, 191, 36, 0.15);">
+          <svg class="w-5 h-5" style="color: var(--color-gold);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-semibold text-sm" style="color: var(--color-snow);">Мои проекты</h3>
+          <p class="text-xs" style="color: var(--color-mist);">Группировка материалов</p>
+        </div>
+      </div>
+      <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" style="color: var(--color-gold);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
+    <% end %>
+
     <!-- Recent Activity -->
-    <% if @recent_transcriptions.any? || @recent_voice_generations.any? || @recent_translations.any? %>
-      <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold" style="color: var(--color-snow);">Недавняя активность</h3>
+    <% if @recent_transcriptions.any? || @recent_voice_generations.any? || @recent_translations.any? || @recent_video_builders.any? %>
+      <div class="glass-card rounded-2xl p-6" style="border: 1px solid var(--color-graphite);" data-controller="activity-filter">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="font-display text-lg font-semibold" style="color: var(--color-snow);">Недавняя активность</h3>
           <%= link_to activities_path,
               class: "text-sm font-medium transition-colors hover:opacity-80",
               style: "color: var(--color-neon-blue);" do %>
@@ -126,7 +123,7 @@
         </div>
 
         <!-- Filter Pills -->
-        <div class="flex items-center space-x-2 mb-4" data-controller="activity-filter">
+        <div class="flex items-center flex-wrap gap-2 mb-4">
           <button type="button"
                   data-action="click->activity-filter#showAll"
                   data-activity-filter-target="allBtn"
@@ -159,6 +156,15 @@
                     class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-white/5"
                     style="border: 1px solid var(--color-graphite); color: var(--color-cloud);">
               Переводы
+            </button>
+          <% end %>
+          <% if @recent_video_builders.any? %>
+            <button type="button"
+                    data-action="click->activity-filter#showVideoBuilders"
+                    data-activity-filter-target="videoBuilderBtn"
+                    class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-white/5"
+                    style="border: 1px solid var(--color-graphite); color: var(--color-cloud);">
+              Видео
             </button>
           <% end %>
         </div>
@@ -217,6 +223,24 @@
               <%= render "translations/status_badge", translation: tr %>
             <% end %>
           <% end %>
+
+          <% @recent_video_builders.each do |vb| %>
+            <%= link_to vb, class: "activity-item activity-video-builder flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-white/5 group", data: { turbo_frame: "_top" } do %>
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
+                     style="background: rgba(255, 107, 107, 0.1);">
+                  <svg class="w-5 h-5" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium group-hover:text-white transition-colors" style="color: var(--color-snow);"><%= vb.display_title %></p>
+                  <p class="text-sm" style="color: var(--color-mist);"><%= vb.video_mode_display %> &middot; <%= time_ago_in_words(vb.created_at) %> назад</p>
+                </div>
+              </div>
+              <%= render "video_builders/status_badge", video_builder: vb %>
+            <% end %>
+          <% end %>
         </div>
       </div>
     <% end %>
@@ -224,26 +248,152 @@
 
 <% else %>
   <!-- Landing page for guests -->
-  <div class="py-12 md:py-20">
-    <!-- Hero Section -->
-    <div class="text-center mb-20 animate-fade-in">
-      <div class="inline-flex items-center px-4 py-2 rounded-full text-sm mb-8"
-           style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2); color: var(--color-neon-blue);">
-        <span class="w-2 h-2 rounded-full mr-2 animate-pulse" style="background: var(--color-neon-blue);"></span>
-        Powered by AI
+  <div class="flex flex-col" style="padding: 2rem 0; gap: 8rem;">
+
+    <!-- Hero Section with Pipeline -->
+    <section class="relative overflow-hidden rounded-3xl p-8 md:p-12 lg:p-16 animate-fade-in" style="background: linear-gradient(135deg, var(--color-abyss) 0%, rgba(10, 10, 15, 0.95) 100%); border: 1px solid var(--color-graphite);">
+      <!-- Animated background grid -->
+      <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(var(--color-slate) 1px, transparent 1px), linear-gradient(90deg, var(--color-slate) 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+      <!-- Hero title -->
+      <div class="text-center mb-12 relative z-10">
+        <h1 class="font-display text-3xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight">
+          <span style="color: var(--color-snow);">Конвейер создания</span><br>
+          <span class="text-gradient">контента на AI</span>
+        </h1>
+        <p class="text-base md:text-lg max-w-2xl mx-auto" style="color: var(--color-mist);">
+          Каждый этап автоматизирован — просто загрузите файл
+        </p>
       </div>
 
-      <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-        <span style="color: var(--color-snow);">Голос в текст.</span><br>
-        <span class="text-gradient">Текст в голос.</span>
-      </h1>
+      <!-- Conveyor belt line -->
+      <div class="absolute top-1/2 left-0 right-0 h-0.5 -translate-y-1/2 hidden md:block" style="background: linear-gradient(90deg, transparent 0%, var(--color-graphite) 5%, var(--color-graphite) 95%, transparent 100%); margin-top: 40px;">
+        <div class="conveyor-particles"></div>
+      </div>
 
-      <p class="text-xl md:text-2xl max-w-2xl mx-auto mb-10" style="color: var(--color-mist);">
-        Мощный ИИ-сервис для транскрибации, синтеза речи и перевода.
-        Быстро, точно, на русском языке.
-      </p>
+      <!-- Pipeline stages -->
+      <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-2 mb-12">
 
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <!-- Stage 1: Input -->
+        <div class="pipeline-stage flex-1 text-center group w-full md:w-auto">
+          <div class="pipeline-node relative mx-auto w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-2 transition-all duration-500 group-hover:scale-110"
+               style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(99, 102, 241, 0.1) 100%); border: 2px solid rgba(99, 102, 241, 0.4); box-shadow: 0 0 30px rgba(99, 102, 241, 0.2);">
+            <svg class="w-6 h-6 md:w-7 md:h-7" style="color: #818cf8;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+            </svg>
+            <div class="absolute inset-0 rounded-2xl animate-ping-slow opacity-20" style="background: rgba(99, 102, 241, 0.5);"></div>
+          </div>
+          <p class="text-xs md:text-sm font-semibold" style="color: var(--color-snow);">Загрузка</p>
+          <p class="text-[10px] md:text-xs" style="color: var(--color-mist);">Файл / YouTube</p>
+        </div>
+
+        <!-- Arrow 1 -->
+        <div class="pipeline-arrow flex-shrink-0 relative hidden md:flex items-center justify-center w-12 overflow-visible">
+          <svg class="w-4 h-4" style="color: var(--color-slate);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+          <div class="data-packet data-packet-1"></div>
+        </div>
+        <div class="md:hidden text-center py-1">
+          <svg class="w-4 h-4 mx-auto rotate-90" style="color: var(--color-slate);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+
+        <!-- Stage 2: Transcription -->
+        <div class="pipeline-stage flex-1 text-center group w-full md:w-auto">
+          <div class="pipeline-node relative mx-auto w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-2 transition-all duration-500 group-hover:scale-110"
+               style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 212, 255, 0.1) 100%); border: 2px solid rgba(0, 212, 255, 0.4); box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);">
+            <svg class="w-6 h-6 md:w-7 md:h-7" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+            </svg>
+            <div class="absolute inset-0 rounded-2xl animate-ping-slow opacity-20" style="background: rgba(0, 212, 255, 0.5); animation-delay: 0.5s;"></div>
+          </div>
+          <p class="text-xs md:text-sm font-semibold" style="color: var(--color-snow);">Транскрибация</p>
+          <p class="text-[10px] md:text-xs" style="color: var(--color-mist);">Аудио → Текст</p>
+        </div>
+
+        <!-- Arrow 2 -->
+        <div class="pipeline-arrow flex-shrink-0 relative hidden md:flex items-center justify-center w-12 overflow-visible">
+          <svg class="w-4 h-4" style="color: var(--color-slate);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+          <div class="data-packet data-packet-2"></div>
+        </div>
+        <div class="md:hidden text-center py-1">
+          <svg class="w-4 h-4 mx-auto rotate-90" style="color: var(--color-slate);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+
+        <!-- Stage 3: Translation -->
+        <div class="pipeline-stage flex-1 text-center group w-full md:w-auto">
+          <div class="pipeline-node relative mx-auto w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-2 transition-all duration-500 group-hover:scale-110"
+               style="background: linear-gradient(135deg, rgba(34, 211, 187, 0.2) 0%, rgba(34, 211, 187, 0.1) 100%); border: 2px solid rgba(34, 211, 187, 0.4); box-shadow: 0 0 30px rgba(34, 211, 187, 0.2);">
+            <svg class="w-6 h-6 md:w-7 md:h-7" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+            </svg>
+            <div class="absolute inset-0 rounded-2xl animate-ping-slow opacity-20" style="background: rgba(34, 211, 187, 0.5); animation-delay: 1s;"></div>
+          </div>
+          <p class="text-xs md:text-sm font-semibold" style="color: var(--color-snow);">Перевод</p>
+          <p class="text-[10px] md:text-xs" style="color: var(--color-mist);">14+ языков</p>
+        </div>
+
+        <!-- Arrow 3 -->
+        <div class="pipeline-arrow flex-shrink-0 relative hidden md:flex items-center justify-center w-12 overflow-visible">
+          <svg class="w-4 h-4" style="color: var(--color-slate);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+          <div class="data-packet data-packet-3"></div>
+        </div>
+        <div class="md:hidden text-center py-1">
+          <svg class="w-4 h-4 mx-auto rotate-90" style="color: var(--color-slate);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+
+        <!-- Stage 4: Voice Generation -->
+        <div class="pipeline-stage flex-1 text-center group w-full md:w-auto">
+          <div class="pipeline-node relative mx-auto w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-2 transition-all duration-500 group-hover:scale-110"
+               style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0.1) 100%); border: 2px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);">
+            <svg class="w-6 h-6 md:w-7 md:h-7" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+            </svg>
+            <div class="absolute inset-0 rounded-2xl animate-ping-slow opacity-20" style="background: rgba(168, 85, 247, 0.5); animation-delay: 1.5s;"></div>
+          </div>
+          <p class="text-xs md:text-sm font-semibold" style="color: var(--color-snow);">Озвучка</p>
+          <p class="text-[10px] md:text-xs" style="color: var(--color-mist);">Текст → Голос</p>
+        </div>
+
+        <!-- Arrow 4 -->
+        <div class="pipeline-arrow flex-shrink-0 relative hidden md:flex items-center justify-center w-12 overflow-visible">
+          <svg class="w-4 h-4" style="color: var(--color-slate);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+          <div class="data-packet data-packet-4"></div>
+        </div>
+        <div class="md:hidden text-center py-1">
+          <svg class="w-4 h-4 mx-auto rotate-90" style="color: var(--color-slate);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+
+        <!-- Stage 5: Video Builder -->
+        <div class="pipeline-stage flex-1 text-center group w-full md:w-auto">
+          <div class="pipeline-node relative mx-auto w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-2 transition-all duration-500 group-hover:scale-110"
+               style="background: linear-gradient(135deg, rgba(255, 107, 107, 0.2) 0%, rgba(255, 107, 107, 0.1) 100%); border: 2px solid rgba(255, 107, 107, 0.4); box-shadow: 0 0 30px rgba(255, 107, 107, 0.2);">
+            <svg class="w-6 h-6 md:w-7 md:h-7" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            <div class="absolute inset-0 rounded-2xl animate-ping-slow opacity-20" style="background: rgba(255, 107, 107, 0.5); animation-delay: 2s;"></div>
+          </div>
+          <p class="text-xs md:text-sm font-semibold" style="color: var(--color-snow);">Видео</p>
+          <p class="text-[10px] md:text-xs" style="color: var(--color-mist);">Готовый ролик</p>
+        </div>
+      </div>
+
+      <!-- CTA Button -->
+      <div class="flex items-center justify-center relative z-10">
         <%= link_to signup_path,
             class: "px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg",
             style: "background: var(--gradient-aurora); color: var(--color-void); box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);" do %>
@@ -252,48 +402,52 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
           </svg>
         <% end %>
-
-        <%= link_to login_path,
-            class: "px-8 py-4 rounded-xl text-lg font-medium transition-all duration-200",
-            style: "color: var(--color-cloud); border: 1px solid var(--color-slate);" do %>
-          Уже есть аккаунт? Войти
-        <% end %>
       </div>
-    </div>
+    </section>
 
     <!-- Features Grid -->
-    <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+    <section class="max-w-6xl mx-auto">
+      <div class="text-center mb-10">
+        <h2 class="font-display text-2xl md:text-3xl font-bold mb-2" style="color: var(--color-snow);">
+          Возможности платформы
+        </h2>
+        <p class="text-sm" style="color: var(--color-mist);">Всё что нужно для производства контента</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
       <!-- Feature 1: Transcription -->
-      <div class="group relative overflow-hidden rounded-3xl p-8 animate-slide-up stagger-1"
+      <div class="group relative overflow-hidden rounded-2xl p-6 animate-slide-up stagger-1 hover-lift"
            style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-        <div class="absolute top-0 right-0 w-48 h-48 opacity-30"
-             style="background: radial-gradient(circle, rgba(0, 212, 255, 0.2) 0%, transparent 70%);"></div>
+        <div class="absolute top-0 right-0 w-32 h-32 opacity-30"
+             style="background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, transparent 70%);"></div>
 
         <div class="relative z-10">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
                style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3);">
-            <svg class="w-7 h-7" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
             </svg>
           </div>
 
-          <h2 class="text-xl font-bold mb-3" style="color: var(--color-snow);">Транскрибация</h2>
+          <h3 class="text-lg font-bold mb-2" style="color: var(--color-snow);">Транскрибация</h3>
+          <p class="text-sm mb-4" style="color: var(--color-mist);">Превращаем речь в текст с высокой точностью</p>
 
-          <ul class="space-y-2 text-sm">
+          <ul class="space-y-2 text-xs">
             <li class="flex items-center" style="color: var(--color-cloud);">
-              <svg class="w-4 h-4 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
-              Аудио и видео файлы
+              MP3, WAV, MP4, MOV, WebM
             </li>
             <li class="flex items-center" style="color: var(--color-cloud);">
-              <svg class="w-4 h-4 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
-              YouTube ссылки
+              YouTube по ссылке
             </li>
             <li class="flex items-center" style="color: var(--color-cloud);">
-              <svg class="w-4 h-4 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
               Экспорт TXT, SRT, JSON
@@ -302,37 +456,78 @@
         </div>
       </div>
 
-      <!-- Feature 2: Voice Generation -->
-      <div class="group relative overflow-hidden rounded-3xl p-8 animate-slide-up stagger-2"
+      <!-- Feature 2: Translation -->
+      <div class="group relative overflow-hidden rounded-2xl p-6 animate-slide-up stagger-2 hover-lift"
            style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-        <div class="absolute top-0 right-0 w-48 h-48 opacity-30"
-             style="background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);"></div>
+        <div class="absolute top-0 right-0 w-32 h-32 opacity-30"
+             style="background: radial-gradient(circle, rgba(34, 211, 187, 0.3) 0%, transparent 70%);"></div>
 
         <div class="relative z-10">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+               style="background: rgba(34, 211, 187, 0.1); border: 1px solid rgba(34, 211, 187, 0.3);">
+            <svg class="w-6 h-6" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+            </svg>
+          </div>
+
+          <h3 class="text-lg font-bold mb-2" style="color: var(--color-snow);">AI Перевод</h3>
+          <p class="text-sm mb-4" style="color: var(--color-mist);">Качественный перевод на базе GPT-4</p>
+
+          <ul class="space-y-2 text-xs">
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              14 языков
+            </li>
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              GPT-4o / Claude
+            </li>
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              До 50 000 символов
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Feature 3: Voice Generation -->
+      <div class="group relative overflow-hidden rounded-2xl p-6 animate-slide-up stagger-3 hover-lift"
+           style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <div class="absolute top-0 right-0 w-32 h-32 opacity-30"
+             style="background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);"></div>
+
+        <div class="relative z-10">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
                style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3);">
-            <svg class="w-7 h-7" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
             </svg>
           </div>
 
-          <h2 class="text-xl font-bold mb-3" style="color: var(--color-snow);">Озвучка</h2>
+          <h3 class="text-lg font-bold mb-2" style="color: var(--color-snow);">Озвучка</h3>
+          <p class="text-sm mb-4" style="color: var(--color-mist);">Реалистичные голоса на любой вкус</p>
 
-          <ul class="space-y-2 text-sm">
+          <ul class="space-y-2 text-xs">
             <li class="flex items-center" style="color: var(--color-cloud);">
-              <svg class="w-4 h-4 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-              </svg>
-              OpenAI TTS
-            </li>
-            <li class="flex items-center" style="color: var(--color-cloud);">
-              <svg class="w-4 h-4 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
               ElevenLabs голоса
             </li>
             <li class="flex items-center" style="color: var(--color-cloud);">
-              <svg class="w-4 h-4 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              OpenAI TTS
+            </li>
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
               Скачивание MP3
@@ -341,51 +536,95 @@
         </div>
       </div>
 
-      <!-- Feature 3: Translation -->
-      <div class="group relative overflow-hidden rounded-3xl p-8 animate-slide-up stagger-3"
+      <!-- Feature 4: Video Builder -->
+      <div class="group relative overflow-hidden rounded-2xl p-6 animate-slide-up stagger-4 hover-lift"
            style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-        <div class="absolute top-0 right-0 w-48 h-48 opacity-30"
-             style="background: radial-gradient(circle, rgba(34, 211, 187, 0.2) 0%, transparent 70%);"></div>
+        <div class="absolute top-0 right-0 w-32 h-32 opacity-30"
+             style="background: radial-gradient(circle, rgba(255, 107, 107, 0.3) 0%, transparent 70%);"></div>
 
         <div class="relative z-10">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
-               style="background: rgba(34, 211, 187, 0.1); border: 1px solid rgba(34, 211, 187, 0.3);">
-            <svg class="w-7 h-7" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+               style="background: rgba(255, 107, 107, 0.1); border: 1px solid rgba(255, 107, 107, 0.3);">
+            <svg class="w-6 h-6" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
             </svg>
           </div>
 
-          <h2 class="text-xl font-bold mb-3" style="color: var(--color-snow);">Переводчик</h2>
+          <h3 class="text-lg font-bold mb-2" style="color: var(--color-snow);">Видео-билдер</h3>
+          <p class="text-sm mb-4" style="color: var(--color-mist);">Собираем видео из озвучки</p>
 
-          <ul class="space-y-2 text-sm">
+          <ul class="space-y-2 text-xs">
             <li class="flex items-center" style="color: var(--color-cloud);">
-              <svg class="w-4 h-4 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
-              AI модели перевода
+              Обрезка / зацикливание
             </li>
             <li class="flex items-center" style="color: var(--color-cloud);">
-              <svg class="w-4 h-4 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
-              14 языков
+              Наложение аудио
             </li>
             <li class="flex items-center" style="color: var(--color-cloud);">
-              <svg class="w-4 h-4 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-3 h-3 mr-2 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
-              Экспорт TXT, Markdown
+              Экспорт MP4
             </li>
           </ul>
         </div>
       </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- Waveform decoration -->
-    <div class="flex items-center justify-center gap-1 mt-16 opacity-30">
-      <% 20.times do |i| %>
-        <div class="waveform-bar" style="animation-delay: <%= i * 0.05 %>s; height: <%= rand(10..30) %>px;"></div>
-      <% end %>
-    </div>
+    <!-- Projects feature -->
+    <section class="max-w-4xl mx-auto">
+      <div class="rounded-2xl p-8 md:p-10"
+           style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(251, 191, 36, 0.02) 100%); border: 1px solid rgba(251, 191, 36, 0.2);">
+        <div class="flex flex-col md:flex-row items-center gap-8">
+          <div class="w-20 h-20 rounded-2xl flex items-center justify-center flex-shrink-0"
+               style="background: rgba(251, 191, 36, 0.15);">
+            <svg class="w-10 h-10" style="color: var(--color-gold);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+            </svg>
+          </div>
+          <div class="text-center md:text-left flex-1">
+            <h3 class="text-2xl font-bold mb-3" style="color: var(--color-snow);">Система проектов</h3>
+            <p class="text-base" style="color: var(--color-mist);">
+              Группируйте транскрибации, переводы, озвучки и видео в проекты.
+              Организуйте работу над несколькими роликами одновременно.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="text-center">
+      <div class="max-w-2xl mx-auto">
+        <h2 class="font-display text-3xl md:text-4xl font-bold mb-4" style="color: var(--color-snow);">
+          Готовы автоматизировать производство контента?
+        </h2>
+        <p class="text-lg mb-8" style="color: var(--color-mist);">Начните создавать ролики уже сегодня</p>
+
+        <%= link_to signup_path,
+            class: "inline-flex items-center px-10 py-4 rounded-xl text-lg font-semibold transition-all duration-300 hover:scale-105",
+            style: "background: var(--gradient-aurora); color: var(--color-void); box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);" do %>
+          Создать аккаунт бесплатно
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+        <% end %>
+      </div>
+
+      <!-- Waveform decoration -->
+      <div class="flex items-center justify-center gap-1 opacity-30 mt-16">
+        <% 24.times do |i| %>
+          <div class="waveform-bar" style="animation-delay: <%= i * 0.05 %>s; height: <%= rand(8..28) %>px;"></div>
+        <% end %>
+      </div>
+    </section>
+
   </div>
 <% end %>

@@ -14,6 +14,14 @@ class Setting < ApplicationRecord
     elevenlabs_api_key: { default: "", type: :string, description: "API ключ ElevenLabs (TTS)" },
     openrouter_api_key: { default: "", type: :string, description: "API ключ OpenRouter" },
 
+    # Google OAuth для YouTube
+    google_client_id: { default: "", type: :string, description: "Google OAuth Client ID" },
+    google_client_secret: { default: "", type: :string, description: "Google OAuth Client Secret" },
+    app_host: { default: "localhost:3000", type: :string, description: "Хост приложения для OAuth callbacks" },
+
+    # Видео-билдер
+    video_builder_enabled: { default: "true", type: :boolean, description: "Включить видео-билдер" },
+
     # Провайдеры по умолчанию
     default_tts_provider: { default: "openai", type: :string, description: "TTS провайдер по умолчанию" },
     default_transcription_provider: { default: "nexara", type: :string, description: "Провайдер транскрибации" },
@@ -82,6 +90,24 @@ class Setting < ApplicationRecord
     def openrouter_api_key
       key = get(:openrouter_api_key)
       key.present? ? key : Rails.application.credentials.dig(:openrouter, :api_key)
+    end
+
+    def google_client_id
+      key = get(:google_client_id)
+      key.present? ? key : Rails.application.credentials.dig(:google, :client_id)
+    end
+
+    def google_client_secret
+      key = get(:google_client_secret)
+      key.present? ? key : Rails.application.credentials.dig(:google, :client_secret)
+    end
+
+    def app_host
+      get(:app_host)
+    end
+
+    def video_builder_enabled?
+      get(:video_builder_enabled)
     end
 
     # Цены

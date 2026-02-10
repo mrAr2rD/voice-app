@@ -5,8 +5,11 @@ module Admin
       @transcriptions_count = Transcription.count
       @voice_generations_count = VoiceGeneration.count
       @translations_count = Translation.count
+      @video_builders_count = VideoBuilder.count
+      @projects_count = Project.count
       @recent_transcriptions = Transcription.recent.limit(5)
       @recent_voice_generations = VoiceGeneration.recent.limit(5)
+      @recent_video_builders = VideoBuilder.recent.limit(5)
 
       # Статистика использования
       @transcription_stats = {

@@ -1,0 +1,39 @@
+<% content_for :page_title, "Проекты" %>
+
+<% content_for :page_actions do %>
+  <%= link_to new_project_path,
+      class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:scale-105",
+      style: "background: var(--color-gold); color: var(--color-void);" do %>
+    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>
+    Новый проект
+  <% end %>
+<% end %>
+
+<div class="space-y-4">
+  <% if @projects.empty? %>
+    <div class="text-center py-16">
+      <div class="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center"
+           style="background: rgba(251, 191, 36, 0.1);">
+        <svg class="w-10 h-10" style="color: var(--color-gold);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold mb-2" style="color: var(--color-snow);">Нет проектов</h3>
+      <p class="mb-6" style="color: var(--color-mist);">Создайте проект для группировки материалов</p>
+      <%= link_to new_project_path,
+          class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+          style: "background: var(--color-gold); color: var(--color-void);" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Создать проект
+      <% end %>
+    </div>
+  <% else %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <%= render @projects %>
+    </div>
+  <% end %>
+</div>

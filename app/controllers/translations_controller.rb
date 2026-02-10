@@ -18,6 +18,7 @@ class TranslationsController < ApplicationController
   def new
     @translation = Translation.new
     @transcriptions = current_user.transcriptions.completed.recent.limit(20)
+    @projects = current_user.projects.order(:name)
 
     # Если передан transcription_id, заполняем текст
     if params[:transcription_id].present?
@@ -35,6 +36,8 @@ class TranslationsController < ApplicationController
       TranslationJob.perform_later(@translation.id)
       redirect_to @translation, notice: "Перевод запущен"
     else
+      @transcriptions = current_user.transcriptions.completed.recent.limit(20)
+      @projects = current_user.projects.order(:name)
       render :new, status: :unprocessable_entity
     end
   end
@@ -65,7 +68,7 @@ class TranslationsController < ApplicationController
   end
 
   def translation_params
-    params.require(:translation).permit(:source_text, :source_language, :target_language, :model)
+    params.require(:translation).permit(:source_text, :source_language, :target_language, :model, :project_id)
   end
 
   def check_feature_enabled

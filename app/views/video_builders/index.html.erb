@@ -1,0 +1,41 @@
+<% content_for :page_title, "Видео-билдер" %>
+
+<% content_for :page_actions do %>
+  <%= link_to new_video_builder_path,
+      class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:scale-105",
+      style: "background: var(--color-coral); color: var(--color-void);" do %>
+    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>
+    Создать видео
+  <% end %>
+<% end %>
+
+<%= turbo_stream_from "user_#{current_user.id}_video_builders" %>
+
+<div id="video_builders">
+  <% if @video_builders.empty? %>
+    <div class="text-center py-16">
+      <div class="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center"
+           style="background: rgba(255, 107, 107, 0.1);">
+        <svg class="w-10 h-10" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold mb-2" style="color: var(--color-snow);">Нет видео</h3>
+      <p class="mb-6" style="color: var(--color-mist);">Создайте видео из озвучки и фонового ролика</p>
+      <%= link_to new_video_builder_path,
+          class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+          style: "background: var(--color-coral); color: var(--color-void);" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Создать видео
+      <% end %>
+    </div>
+  <% else %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <%= render @video_builders %>
+    </div>
+  <% end %>
+</div>

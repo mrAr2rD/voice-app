@@ -19,6 +19,7 @@ class VoiceGenerationsController < ApplicationController
     @voice_generation = current_user.voice_generations.build
     @elevenlabs_voices = fetch_elevenlabs_voices
     @openai_voices = Tts::OpenaiClient::VOICES
+    @projects = current_user.projects.order(:name)
   end
 
   def create
@@ -31,6 +32,7 @@ class VoiceGenerationsController < ApplicationController
     else
       @elevenlabs_voices = fetch_elevenlabs_voices
       @openai_voices = Tts::OpenaiClient::VOICES
+      @projects = current_user.projects.order(:name)
       render :new, status: :unprocessable_entity
     end
   end
@@ -75,7 +77,7 @@ class VoiceGenerationsController < ApplicationController
   end
 
   def voice_generation_params
-    params.require(:voice_generation).permit(:text, :provider, :voice_id, :voice_name)
+    params.require(:voice_generation).permit(:text, :provider, :voice_id, :voice_name, :project_id)
   end
 
   def fetch_elevenlabs_voices

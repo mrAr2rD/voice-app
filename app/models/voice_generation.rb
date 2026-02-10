@@ -2,6 +2,7 @@ class VoiceGeneration < ApplicationRecord
   include ActionView::RecordIdentifier
 
   belongs_to :user
+  belongs_to :project, optional: true
   has_one_attached :audio_file
 
   enum :provider, { elevenlabs: 0, openai: 1 }

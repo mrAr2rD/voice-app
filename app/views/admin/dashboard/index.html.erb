@@ -1,101 +1,123 @@
 <div class="animate-fade-in">
   <!-- Stats Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
     <!-- Users -->
-    <div class="rounded-2xl p-6 hover-lift"
-         style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium" style="color: var(--color-mist);">Пользователи</p>
-          <p class="text-4xl font-bold mt-2" style="color: var(--color-snow);"><%= @users_count %></p>
-          <p class="text-sm mt-2" style="color: var(--color-mist);">
-            Админов: <span style="color: var(--color-gold);"><%= User.admins.count %></span>
-          </p>
-        </div>
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center"
-             style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
-          <svg class="w-7 h-7" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="glass-card rounded-xl p-4 hover-lift"
+         style="border: 1px solid var(--color-graphite);">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+             style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.15);">
+          <svg class="w-4 h-4" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
           </svg>
+        </div>
+        <div class="min-w-0">
+          <p class="text-[11px] font-semibold uppercase tracking-wide truncate" style="color: var(--color-mist);">Пользователи</p>
+          <p class="font-display text-xl font-bold" style="color: var(--color-snow);"><%= @users_count %></p>
         </div>
       </div>
     </div>
 
     <!-- Transcriptions -->
-    <div class="rounded-2xl p-6 hover-lift"
-         style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium" style="color: var(--color-mist);">Транскрибации</p>
-          <p class="text-4xl font-bold mt-2" style="color: var(--color-snow);"><%= @transcriptions_count %></p>
-          <p class="text-sm mt-2" style="color: var(--color-mist);">
-            Завершено: <span style="color: var(--color-neon-green);"><%= Transcription.where(status: :completed).count %></span>
-          </p>
-        </div>
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center"
-             style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
-          <svg class="w-7 h-7" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="glass-card rounded-xl p-4 hover-lift"
+         style="border: 1px solid var(--color-graphite);">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+             style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.15);">
+          <svg class="w-4 h-4" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
           </svg>
+        </div>
+        <div class="min-w-0">
+          <p class="text-[11px] font-semibold uppercase tracking-wide truncate" style="color: var(--color-mist);">Транскрибации</p>
+          <p class="font-display text-xl font-bold" style="color: var(--color-snow);"><%= @transcriptions_count %></p>
         </div>
       </div>
     </div>
 
     <!-- Voice Generations -->
-    <div class="rounded-2xl p-6 hover-lift"
-         style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium" style="color: var(--color-mist);">Озвучки</p>
-          <p class="text-4xl font-bold mt-2" style="color: var(--color-snow);"><%= @voice_generations_count %></p>
-          <p class="text-sm mt-2" style="color: var(--color-mist);">
-            Завершено: <span style="color: var(--color-neon-green);"><%= VoiceGeneration.where(status: :completed).count %></span>
-          </p>
-        </div>
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center"
-             style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2);">
-          <svg class="w-7 h-7" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="glass-card rounded-xl p-4 hover-lift"
+         style="border: 1px solid var(--color-graphite);">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+             style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.15);">
+          <svg class="w-4 h-4" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
           </svg>
+        </div>
+        <div class="min-w-0">
+          <p class="text-[11px] font-semibold uppercase tracking-wide truncate" style="color: var(--color-mist);">Озвучки</p>
+          <p class="font-display text-xl font-bold" style="color: var(--color-snow);"><%= @voice_generations_count %></p>
         </div>
       </div>
     </div>
 
     <!-- Translations -->
-    <div class="rounded-2xl p-6 hover-lift"
-         style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium" style="color: var(--color-mist);">Переводы</p>
-          <p class="text-4xl font-bold mt-2" style="color: var(--color-snow);"><%= @translations_count %></p>
-          <p class="text-sm mt-2" style="color: var(--color-mist);">
-            Завершено: <span style="color: var(--color-neon-green);"><%= Translation.where(status: :completed).count %></span>
-          </p>
-        </div>
-        <div class="w-14 h-14 rounded-2xl flex items-center justify-center"
-             style="background: rgba(34, 211, 187, 0.1); border: 1px solid rgba(34, 211, 187, 0.2);">
-          <svg class="w-7 h-7" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="glass-card rounded-xl p-4 hover-lift"
+         style="border: 1px solid var(--color-graphite);">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+             style="background: rgba(34, 211, 187, 0.1); border: 1px solid rgba(34, 211, 187, 0.15);">
+          <svg class="w-4 h-4" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
           </svg>
+        </div>
+        <div class="min-w-0">
+          <p class="text-[11px] font-semibold uppercase tracking-wide truncate" style="color: var(--color-mist);">Переводы</p>
+          <p class="font-display text-xl font-bold" style="color: var(--color-snow);"><%= @translations_count %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Builders -->
+    <div class="glass-card rounded-xl p-4 hover-lift"
+         style="border: 1px solid var(--color-graphite);">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+             style="background: rgba(255, 107, 107, 0.1); border: 1px solid rgba(255, 107, 107, 0.15);">
+          <svg class="w-4 h-4" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <p class="text-[11px] font-semibold uppercase tracking-wide truncate" style="color: var(--color-mist);">Видео</p>
+          <p class="font-display text-xl font-bold" style="color: var(--color-snow);"><%= @video_builders_count %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="glass-card rounded-xl p-4 hover-lift"
+         style="border: 1px solid var(--color-graphite);">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+             style="background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.15);">
+          <svg class="w-4 h-4" style="color: var(--color-gold);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <p class="text-[11px] font-semibold uppercase tracking-wide truncate" style="color: var(--color-mist);">Проекты</p>
+          <p class="font-display text-xl font-bold" style="color: var(--color-snow);"><%= @projects_count %></p>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Usage Statistics -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
     <!-- Total Cost -->
-    <div class="rounded-2xl p-6 hover-lift"
-         style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.02) 100%);
-                border: 1px solid rgba(251, 191, 36, 0.3);">
+    <div class="glass-card rounded-2xl p-5 hover-lift"
+         style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(251, 191, 36, 0.02) 100%);
+                border: 1px solid rgba(251, 191, 36, 0.2);">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--color-mist);">Общие затраты</p>
-          <p class="text-3xl font-bold mt-2" style="color: var(--color-gold);">$<%= sprintf('%.2f', @total_cost / 100.0) %></p>
+          <p class="text-xs font-semibold uppercase tracking-wide" style="color: var(--color-mist);">Общие затраты</p>
+          <p class="font-display text-2xl font-bold mt-1" style="color: var(--color-gold);">$<%= sprintf('%.2f', @total_cost / 100.0) %></p>
         </div>
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
-             style="background: rgba(251, 191, 36, 0.2);">
-          <svg class="w-6 h-6" style="color: var(--color-gold);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center"
+             style="background: rgba(251, 191, 36, 0.15);">
+          <svg class="w-5 h-5" style="color: var(--color-gold);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
@@ -103,19 +125,19 @@
     </div>
 
     <!-- Transcription Duration -->
-    <div class="rounded-2xl p-6 hover-lift"
-         style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <div class="glass-card rounded-2xl p-5 hover-lift"
+         style="border: 1px solid var(--color-graphite);">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--color-mist);">Аудио обработано</p>
+          <p class="text-xs font-semibold uppercase tracking-wide" style="color: var(--color-mist);">Аудио обработано</p>
           <% hours = (@transcription_stats[:total_duration] / 3600).floor %>
           <% minutes = ((@transcription_stats[:total_duration] % 3600) / 60).floor %>
-          <p class="text-3xl font-bold mt-2" style="color: var(--color-snow);"><%= hours %>ч <%= minutes %>м</p>
-          <p class="text-sm mt-1" style="color: var(--color-neon-blue);">$<%= sprintf('%.2f', @transcription_stats[:total_cost] / 100.0) %></p>
+          <p class="font-display text-2xl font-bold mt-1" style="color: var(--color-snow);"><%= hours %>ч <%= minutes %>м</p>
+          <p class="text-xs mt-0.5 font-medium" style="color: var(--color-neon-blue);">$<%= sprintf('%.2f', @transcription_stats[:total_cost] / 100.0) %></p>
         </div>
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center"
              style="background: rgba(0, 212, 255, 0.1);">
-          <svg class="w-6 h-6" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
@@ -123,18 +145,18 @@
     </div>
 
     <!-- TTS Characters -->
-    <div class="rounded-2xl p-6 hover-lift"
-         style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <div class="glass-card rounded-2xl p-5 hover-lift"
+         style="border: 1px solid var(--color-graphite);">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium" style="color: var(--color-mist);">Символов озвучено</p>
+          <p class="text-xs font-semibold uppercase tracking-wide" style="color: var(--color-mist);">Символов озвучено</p>
           <% chars_k = @voice_generation_stats[:total_characters] / 1000.0 %>
-          <p class="text-3xl font-bold mt-2" style="color: var(--color-snow);"><%= sprintf('%.1f', chars_k) %>K</p>
-          <p class="text-sm mt-1" style="color: var(--color-neon-purple);">$<%= sprintf('%.2f', @voice_generation_stats[:total_cost] / 100.0) %></p>
+          <p class="font-display text-2xl font-bold mt-1" style="color: var(--color-snow);"><%= sprintf('%.1f', chars_k) %>K</p>
+          <p class="text-xs mt-0.5 font-medium" style="color: var(--color-neon-purple);">$<%= sprintf('%.2f', @voice_generation_stats[:total_cost] / 100.0) %></p>
         </div>
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center"
              style="background: rgba(168, 85, 247, 0.1);">
-          <svg class="w-6 h-6" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
           </svg>
         </div>
@@ -142,10 +164,10 @@
     </div>
 
     <!-- Provider Split -->
-    <div class="rounded-2xl p-6 hover-lift"
-         style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <div class="glass-card rounded-2xl p-5 hover-lift"
+         style="border: 1px solid var(--color-graphite);">
       <div>
-        <p class="text-sm font-medium mb-3" style="color: var(--color-mist);">Затраты по провайдерам</p>
+        <p class="text-xs font-semibold uppercase tracking-wide mb-3" style="color: var(--color-mist);">Затраты по провайдерам</p>
         <div class="space-y-2">
           <div class="flex justify-between items-center">
             <span class="text-sm" style="color: var(--color-cloud);">OpenAI TTS</span>
@@ -169,9 +191,9 @@
   </div>
 
   <!-- Service Status -->
-  <div class="rounded-2xl p-6 mb-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-    <h2 class="text-lg font-semibold mb-4" style="color: var(--color-snow);">Статус сервисов</h2>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+  <div class="glass-card rounded-2xl p-5 mb-6" style="border: 1px solid var(--color-graphite);">
+    <h2 class="font-display text-base font-semibold mb-4" style="color: var(--color-snow);">Статус сервисов</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3">
       <div class="flex items-center p-4 rounded-xl" style="background: var(--color-obsidian);">
         <div class="w-3 h-3 rounded-full mr-3"
              style="background: <%= Setting.transcription_enabled? ? 'var(--color-neon-green)' : 'var(--color-coral)' %>;
@@ -224,6 +246,16 @@
 
       <div class="flex items-center p-4 rounded-xl" style="background: var(--color-obsidian);">
         <div class="w-3 h-3 rounded-full mr-3"
+             style="background: <%= Setting.video_builder_enabled? ? 'var(--color-neon-green)' : 'var(--color-coral)' %>;
+                    box-shadow: 0 0 10px <%= Setting.video_builder_enabled? ? 'rgba(34, 211, 187, 0.5)' : 'rgba(255, 107, 107, 0.5)' %>;"></div>
+        <div>
+          <p class="font-medium text-sm" style="color: var(--color-snow);">Видео-билдер</p>
+          <p class="text-xs" style="color: var(--color-mist);"><%= Setting.video_builder_enabled? ? 'Включён' : 'Отключён' %></p>
+        </div>
+      </div>
+
+      <div class="flex items-center p-4 rounded-xl" style="background: var(--color-obsidian);">
+        <div class="w-3 h-3 rounded-full mr-3"
              style="background: <%= Setting.openrouter_api_key.present? ? 'var(--color-neon-green)' : 'var(--color-gold)' %>;
                     box-shadow: 0 0 10px <%= Setting.openrouter_api_key.present? ? 'rgba(34, 211, 187, 0.5)' : 'rgba(251, 191, 36, 0.5)' %>;"></div>
         <div>
@@ -231,15 +263,16 @@
           <p class="text-xs" style="color: var(--color-mist);"><%= Setting.openrouter_api_key.present? ? 'Настроен' : 'Не настроен' %></p>
         </div>
       </div>
+
     </div>
   </div>
 
   <!-- Recent Activity -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
     <!-- Recent Transcriptions -->
-    <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <div class="glass-card rounded-2xl p-5" style="border: 1px solid var(--color-graphite);">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-semibold" style="color: var(--color-snow);">Последние транскрибации</h2>
+        <h2 class="font-display text-base font-semibold" style="color: var(--color-snow);">Последние транскрибации</h2>
       </div>
 
       <% if @recent_transcriptions.any? %>
@@ -266,9 +299,9 @@
     </div>
 
     <!-- Recent Voice Generations -->
-    <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <div class="glass-card rounded-2xl p-5" style="border: 1px solid var(--color-graphite);">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-semibold" style="color: var(--color-snow);">Последние озвучки</h2>
+        <h2 class="font-display text-base font-semibold" style="color: var(--color-snow);">Последние озвучки</h2>
       </div>
 
       <% if @recent_voice_generations.any? %>
@@ -290,6 +323,35 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
           </svg>
           <p>Нет озвучек</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Recent Video Builders -->
+    <div class="glass-card rounded-2xl p-5" style="border: 1px solid var(--color-graphite);">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-display text-base font-semibold" style="color: var(--color-snow);">Последние видео</h2>
+      </div>
+
+      <% if @recent_video_builders.any? %>
+        <div class="space-y-3">
+          <% @recent_video_builders.each do |vb| %>
+            <div class="flex items-center justify-between p-4 rounded-xl transition-all duration-200"
+                 style="background: var(--color-obsidian);">
+              <div class="min-w-0 flex-1">
+                <p class="font-medium truncate" style="color: var(--color-snow);"><%= vb.display_title %></p>
+                <p class="text-sm" style="color: var(--color-mist);"><%= vb.user.email %> &middot; <%= vb.video_mode_display %></p>
+              </div>
+              <%= render "video_builders/status_badge", video_builder: vb %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-8" style="color: var(--color-mist);">
+          <svg class="mx-auto h-12 w-12 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+          <p>Нет видео</p>
         </div>
       <% end %>
     </div>

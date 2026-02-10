@@ -1,8 +1,8 @@
 <div class="animate-fade-in max-w-4xl">
-  <%= form_with url: admin_settings_path, method: :patch, local: true, class: "space-y-8" do %>
+  <%= form_with url: admin_settings_path, method: :patch, local: true, class: "space-y-6" do %>
     <!-- Feature Toggles -->
-    <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-      <h2 class="text-lg font-semibold mb-6 pb-4" style="color: var(--color-snow); border-bottom: 1px solid var(--color-graphite);">
+    <div class="glass-card rounded-2xl p-6" style="border: 1px solid var(--color-graphite);">
+      <h2 class="font-display text-base font-semibold mb-5 pb-4" style="color: var(--color-snow); border-bottom: 1px solid var(--color-graphite);">
         Функционал
       </h2>
 
@@ -55,15 +55,31 @@
                  style="background: var(--color-slate);"></div>
           </label>
         </div>
+
+        <div class="flex items-center justify-between p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div>
+            <label for="video_builder_enabled" class="font-medium" style="color: var(--color-snow);">Видео-билдер</label>
+            <p class="text-sm mt-1" style="color: var(--color-mist);">Включить/выключить создание видео</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag "settings[video_builder_enabled]", "false" %>
+            <%= check_box_tag "settings[video_builder_enabled]", "true", Setting.get(:video_builder_enabled),
+                id: "video_builder_enabled", class: "sr-only peer" %>
+            <div class="w-14 h-7 rounded-full peer transition-all duration-300
+                        peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                        after:rounded-full after:h-6 after:w-6 after:transition-all"
+                 style="background: var(--color-slate);"></div>
+          </label>
+        </div>
       </div>
     </div>
 
     <!-- API Keys -->
-    <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-      <h2 class="text-lg font-semibold mb-2 pb-4" style="color: var(--color-snow); border-bottom: 1px solid var(--color-graphite);">
+    <div class="glass-card rounded-2xl p-6" style="border: 1px solid var(--color-graphite);">
+      <h2 class="font-display text-base font-semibold mb-1 pb-4" style="color: var(--color-snow); border-bottom: 1px solid var(--color-graphite);">
         API ключи
       </h2>
-      <p class="text-sm mb-6" style="color: var(--color-mist);">Оставьте пустым для использования ключей из credentials</p>
+      <p class="text-sm mb-5" style="color: var(--color-mist);">Оставьте пустым для использования ключей из credentials</p>
 
       <div class="space-y-6">
         <!-- Nexara -->
@@ -173,8 +189,8 @@
     </div>
 
     <!-- Default Providers -->
-    <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-      <h2 class="text-lg font-semibold mb-6 pb-4" style="color: var(--color-snow); border-bottom: 1px solid var(--color-graphite);">
+    <div class="glass-card rounded-2xl p-6" style="border: 1px solid var(--color-graphite);">
+      <h2 class="font-display text-base font-semibold mb-5 pb-4" style="color: var(--color-snow); border-bottom: 1px solid var(--color-graphite);">
         Провайдеры по умолчанию
       </h2>
 
@@ -200,11 +216,11 @@
     </div>
 
     <!-- Pricing -->
-    <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-      <h2 class="text-lg font-semibold mb-2 pb-4" style="color: var(--color-snow); border-bottom: 1px solid var(--color-graphite);">
+    <div class="glass-card rounded-2xl p-6" style="border: 1px solid var(--color-graphite);">
+      <h2 class="font-display text-base font-semibold mb-1 pb-4" style="color: var(--color-snow); border-bottom: 1px solid var(--color-graphite);">
         Тарификация
       </h2>
-      <p class="text-sm mb-6" style="color: var(--color-mist);">Цены в центах для расчёта затрат</p>
+      <p class="text-sm mb-5" style="color: var(--color-mist);">Цены в центах для расчёта затрат</p>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>

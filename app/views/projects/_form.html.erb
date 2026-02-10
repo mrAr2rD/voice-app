@@ -1,0 +1,60 @@
+<%= form_with model: project, class: "space-y-6" do |f| %>
+  <% if project.errors.any? %>
+    <div class="rounded-xl p-4 border-l-4" style="background: rgba(255, 107, 107, 0.1); border-left-color: var(--color-coral);">
+      <div class="flex items-start">
+        <svg class="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <div>
+          <p class="font-medium" style="color: var(--color-coral);">Ошибки:</p>
+          <ul class="mt-1 text-sm list-disc list-inside" style="color: var(--color-mist);">
+            <% project.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name, "Название проекта", class: "block text-sm font-medium mb-2", style: "color: var(--color-snow);" %>
+    <%= f.text_field :name, required: true,
+        class: "w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)]",
+        style: "background: var(--color-obsidian); border-color: var(--color-graphite); color: var(--color-snow);",
+        placeholder: "Введите название..." %>
+  </div>
+
+  <div>
+    <%= f.label :description, "Описание", class: "block text-sm font-medium mb-2", style: "color: var(--color-snow);" %>
+    <%= f.text_area :description, rows: 3,
+        class: "w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)]",
+        style: "background: var(--color-obsidian); border-color: var(--color-graphite); color: var(--color-snow);",
+        placeholder: "Краткое описание проекта..." %>
+  </div>
+
+  <div>
+    <%= f.label :color, "Цвет", class: "block text-sm font-medium mb-2", style: "color: var(--color-snow);" %>
+    <div class="flex flex-wrap gap-3">
+      <% Project::COLORS.each do |name, hex| %>
+        <label class="cursor-pointer">
+          <%= f.radio_button :color, hex, class: "sr-only peer" %>
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-all peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-offset-[var(--color-abyss)]"
+               style="background: <%= hex_to_rgba(hex, 0.12) %>; --tw-ring-color: <%= hex %>;"
+               title="<%= name %>">
+            <div class="w-5 h-5 rounded-full" style="background: <%= hex %>;"></div>
+          </div>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-end gap-4 pt-4">
+    <%= link_to "Отмена", project.persisted? ? project_path(project) : projects_path,
+        class: "px-6 py-3 rounded-xl font-medium transition-all duration-200 hover:bg-white/10",
+        style: "color: var(--color-mist);" %>
+    <%= f.submit project.persisted? ? "Сохранить" : "Создать проект",
+        class: "px-6 py-3 rounded-xl font-semibold cursor-pointer transition-all duration-200 hover:scale-105",
+        style: "background: var(--color-gold); color: var(--color-void);" %>
+  </div>
+<% end %>

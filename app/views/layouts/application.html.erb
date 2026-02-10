@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru" class="noise">
   <head>
-    <title><%= content_for(:title) || "VoiceApp — Транскрибация и Озвучка" %></title>
+    <title><%= content_for(:title) || "AppCaster — Транскрибация и Озвучка" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="VoiceApp">
+    <meta name="application-name" content="AppCaster">
     <meta name="theme-color" content="#0a0a0f">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -77,11 +77,11 @@
       <div class="container mx-auto px-4 py-8 max-w-6xl">
         <div class="flex flex-col md:flex-row items-center justify-between">
           <div class="flex items-center mb-4 md:mb-0">
-            <span class="text-2xl font-bold text-gradient">VoiceApp</span>
+            <span class="text-2xl font-bold text-gradient">AppCaster</span>
             <span class="ml-3 text-sm" style="color: var(--color-mist);">Транскрибация & Озвучка</span>
           </div>
           <div class="text-sm" style="color: var(--color-mist);">
-            &copy; <%= Time.current.year %> VoiceApp. Создано с любовью.
+            &copy; <%= Time.current.year %> AppCaster. Создано с любовью.
           </div>
         </div>
       </div>

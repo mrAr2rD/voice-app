@@ -108,6 +108,20 @@
             style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
       </div>
 
+      <!-- Project -->
+      <% if @projects.any? %>
+        <div>
+          <%= f.label :project_id, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+            Проект <span style="color: var(--color-mist);">(опционально)</span>
+          <% end %>
+          <%= f.select :project_id,
+              options_from_collection_for_select(@projects, :id, :name, @translation.project_id),
+              { include_blank: "Без проекта" },
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none appearance-none cursor-pointer",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        </div>
+      <% end %>
+
       <!-- Submit -->
       <div class="flex items-center justify-between pt-4">
         <%= link_to translations_path, class: "text-sm transition-colors", style: "color: var(--color-mist);" do %>

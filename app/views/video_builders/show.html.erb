@@ -1,0 +1,261 @@
+<% content_for :page_title, @video_builder.display_title %>
+
+<% content_for :page_actions do %>
+  <% if @video_builder.completed? && @video_builder.output_video.attached? %>
+    <%= link_to download_video_builder_path(@video_builder),
+        class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:scale-105",
+        style: "background: var(--color-neon-green); color: var(--color-void);" do %>
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+      </svg>
+      Скачать
+    <% end %>
+
+    <% if @video_builder.can_publish? %>
+      <%= button_to publish_video_builder_path(@video_builder),
+          method: :post,
+          class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:scale-105",
+          style: "background: #FF0000; color: white;" do %>
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
+          <polygon fill="white" points="9.75,15.02 15.5,12.02 9.75,9.02"/>
+        </svg>
+        Опубликовать на YouTube
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<div class="space-y-6" <%= 'data-controller="polling" data-polling-url-value="' + video_builder_path(@video_builder, format: :json) + '" data-polling-interval-value="2000"'.html_safe if @video_builder.processing? %>>
+
+  <!-- Статус -->
+  <div class="glass-card rounded-2xl p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold" style="color: var(--color-snow);">Статус</h2>
+      <% case @video_builder.status %>
+      <% when "draft" %>
+        <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium"
+              style="background: var(--color-graphite); color: var(--color-mist);">
+          Черновик
+        </span>
+      <% when "processing" %>
+        <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium"
+              style="background: rgba(0, 212, 255, 0.1); color: var(--color-neon-blue);">
+          <svg class="w-4 h-4 mr-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          Обработка...
+        </span>
+      <% when "completed" %>
+        <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium"
+              style="background: rgba(34, 211, 187, 0.1); color: var(--color-neon-green);">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          Готово
+        </span>
+      <% when "failed" %>
+        <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium"
+              style="background: rgba(255, 107, 107, 0.1); color: var(--color-coral);">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          Ошибка
+        </span>
+      <% end %>
+    </div>
+
+    <% if @video_builder.processing? %>
+      <div class="w-full rounded-full h-2 mb-2" style="background: var(--color-graphite);">
+        <div class="h-2 rounded-full transition-all duration-300" style="background: var(--color-neon-blue); width: <%= @video_builder.progress %>%;"></div>
+      </div>
+      <p class="text-sm text-center" style="color: var(--color-mist);"><%= @video_builder.progress %>% завершено</p>
+    <% end %>
+
+    <% if @video_builder.failed? && @video_builder.error_message.present? %>
+      <div class="mt-4 p-4 rounded-xl" style="background: rgba(255, 107, 107, 0.1);">
+        <p class="text-sm" style="color: var(--color-coral);"><%= @video_builder.error_message %></p>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Видео плеер -->
+  <% if @video_builder.completed? && @video_builder.output_video.attached? %>
+    <div class="glass-card rounded-2xl p-6">
+      <h2 class="text-lg font-semibold mb-4" style="color: var(--color-snow);">Результат</h2>
+      <div class="aspect-video rounded-xl overflow-hidden" style="background: var(--color-void);">
+        <video controls class="w-full h-full">
+          <source src="<%= rails_blob_path(@video_builder.output_video) %>" type="video/mp4">
+          Ваш браузер не поддерживает видео.
+        </video>
+      </div>
+      <div class="flex items-center justify-between mt-4 text-sm" style="color: var(--color-mist);">
+        <span>Длительность: <%= @video_builder.duration_formatted %></span>
+        <span>Режим: <%= @video_builder.video_mode_display %></span>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- YouTube статус -->
+  <% if @video_builder.youtube_status != "not_published" %>
+    <div class="glass-card rounded-2xl p-6">
+      <h2 class="text-lg font-semibold mb-4" style="color: var(--color-snow);">YouTube</h2>
+
+      <% case @video_builder.youtube_status %>
+      <% when "publishing" %>
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5 animate-spin" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          <span style="color: var(--color-mist);">Публикация на YouTube...</span>
+        </div>
+      <% when "published" %>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <svg class="w-5 h-5" style="color: #FF0000;" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
+              <polygon fill="white" points="9.75,15.02 15.5,12.02 9.75,9.02"/>
+            </svg>
+            <span style="color: var(--color-neon-green);">Опубликовано на YouTube</span>
+          </div>
+          <%= link_to @video_builder.youtube_url, target: "_blank",
+              class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all",
+              style: "background: #FF0000; color: white;" do %>
+            Открыть видео
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+            </svg>
+          <% end %>
+        </div>
+      <% when "failed" %>
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span style="color: var(--color-coral);">Ошибка публикации на YouTube</span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- AI Генерация (только для готовых видео) -->
+  <% if @video_builder.completed? %>
+    <div class="glass-card rounded-2xl p-6">
+      <h2 class="text-lg font-semibold mb-4" style="color: var(--color-snow);">AI Генерация</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Генерация обложки -->
+        <div class="p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(168, 85, 247, 0.1);">
+              <svg class="w-5 h-5" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium" style="color: var(--color-snow);">Обложка</h3>
+              <p class="text-xs" style="color: var(--color-mist);">DALL-E 3</p>
+            </div>
+          </div>
+
+          <% if @video_builder.thumbnail.attached? %>
+            <div class="mb-3 rounded-lg overflow-hidden">
+              <%= image_tag @video_builder.thumbnail, class: "w-full h-auto" %>
+            </div>
+          <% end %>
+
+          <%= form_with url: generate_thumbnail_video_builder_path(@video_builder), method: :post, class: "space-y-3" do |f| %>
+            <%= f.text_field :prompt,
+                class: "w-full px-3 py-2 rounded-lg border text-sm focus:outline-none",
+                style: "background: var(--color-abyss); border-color: var(--color-graphite); color: var(--color-snow);",
+                placeholder: "Опишите желаемую обложку..." %>
+            <%= f.submit "Сгенерировать обложку",
+                class: "w-full px-4 py-2 rounded-lg font-medium cursor-pointer transition-all hover:scale-105",
+                style: "background: var(--color-neon-purple); color: var(--color-void);" %>
+          <% end %>
+        </div>
+
+        <!-- Генерация метаданных -->
+        <div class="p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(0, 212, 255, 0.1);">
+              <svg class="w-5 h-5" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-medium" style="color: var(--color-snow);">Метаданные YouTube</h3>
+              <p class="text-xs" style="color: var(--color-mist);">GPT-4o</p>
+            </div>
+          </div>
+
+          <% if @video_builder.youtube_title.present? %>
+            <div class="mb-3 p-3 rounded-lg text-sm" style="background: var(--color-abyss);">
+              <p class="font-medium mb-1" style="color: var(--color-snow);"><%= @video_builder.youtube_title %></p>
+              <% if @video_builder.youtube_description.present? %>
+                <p class="text-xs line-clamp-3" style="color: var(--color-mist);"><%= @video_builder.youtube_description.truncate(200) %></p>
+              <% end %>
+            </div>
+          <% end %>
+
+          <%= form_with url: generate_metadata_video_builder_path(@video_builder), method: :post, class: "space-y-3" do |f| %>
+            <%= f.text_field :context,
+                class: "w-full px-3 py-2 rounded-lg border text-sm focus:outline-none",
+                style: "background: var(--color-abyss); border-color: var(--color-graphite); color: var(--color-snow);",
+                placeholder: "Дополнительный контекст (опционально)..." %>
+            <%= f.submit "Сгенерировать метаданные",
+                class: "w-full px-4 py-2 rounded-lg font-medium cursor-pointer transition-all hover:scale-105",
+                style: "background: var(--color-neon-blue); color: var(--color-void);" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Информация -->
+  <div class="glass-card rounded-2xl p-6">
+    <h2 class="text-lg font-semibold mb-4" style="color: var(--color-snow);">Информация</h2>
+
+    <dl class="space-y-4">
+      <% if @video_builder.project.present? %>
+        <div class="flex justify-between">
+          <dt style="color: var(--color-mist);">Проект</dt>
+          <dd>
+            <%= link_to @video_builder.project.name, project_path(@video_builder.project),
+                style: "color: var(--color-snow);" %>
+          </dd>
+        </div>
+      <% end %>
+
+      <div class="flex justify-between">
+        <dt style="color: var(--color-mist);">Режим видео</dt>
+        <dd style="color: var(--color-snow);"><%= @video_builder.video_mode_display %></dd>
+      </div>
+
+      <% if @video_builder.subtitles_enabled %>
+        <div class="flex justify-between">
+          <dt style="color: var(--color-mist);">Субтитры</dt>
+          <dd style="color: var(--color-snow);">Включены</dd>
+        </div>
+      <% end %>
+
+      <div class="flex justify-between">
+        <dt style="color: var(--color-mist);">Создано</dt>
+        <dd style="color: var(--color-snow);"><%= l @video_builder.created_at, format: :long %></dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- Удаление -->
+  <div class="text-center">
+    <%= button_to video_builder_path(@video_builder), method: :delete,
+        data: { turbo_confirm: "Удалить видео \"#{@video_builder.display_title}\"?" },
+        class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:bg-red-500/20",
+        style: "color: var(--color-coral); border: 1px solid var(--color-coral);" do %>
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+      </svg>
+      Удалить
+    <% end %>
+  </div>
+</div>

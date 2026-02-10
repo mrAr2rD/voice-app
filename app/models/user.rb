@@ -1,9 +1,12 @@
 class User < ApplicationRecord
   has_secure_password
 
+  has_many :projects, dependent: :destroy
   has_many :transcriptions, dependent: :destroy
   has_many :voice_generations, dependent: :destroy
   has_many :translations, dependent: :destroy
+  has_many :video_builders, dependent: :destroy
+  has_one :youtube_credential, dependent: :destroy
 
   validates :email, presence: true,
                     uniqueness: { case_sensitive: false },

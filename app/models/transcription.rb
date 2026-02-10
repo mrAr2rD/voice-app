@@ -2,6 +2,7 @@ class Transcription < ApplicationRecord
   include ActionView::RecordIdentifier
 
   belongs_to :user
+  belongs_to :project, optional: true
   has_many :transcription_segments, dependent: :destroy
   has_one_attached :source_file
   has_one_attached :extracted_audio

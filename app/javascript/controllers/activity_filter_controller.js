@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["list", "allBtn", "transcriptionBtn", "voiceBtn", "translationBtn"]
+  static targets = ["list", "allBtn", "transcriptionBtn", "voiceBtn", "translationBtn", "videoBuilderBtn"]
 
   connect() {
     this.activeFilter = "all"
@@ -31,6 +31,12 @@ export default class extends Controller {
     this.filterItems()
   }
 
+  showVideoBuilders() {
+    this.activeFilter = "video-builders"
+    this.updateButtons()
+    this.filterItems()
+  }
+
   updateButtons() {
     const activeStyle = "background: var(--color-graphite); color: var(--color-snow); border: none;"
     const inactiveStyle = "border: 1px solid var(--color-graphite); color: var(--color-cloud); background: transparent;"
@@ -47,6 +53,9 @@ export default class extends Controller {
     if (this.hasTranslationBtnTarget) {
       this.translationBtnTarget.style.cssText = this.activeFilter === "translations" ? activeStyle : inactiveStyle
     }
+    if (this.hasVideoBuilderBtnTarget) {
+      this.videoBuilderBtnTarget.style.cssText = this.activeFilter === "video-builders" ? activeStyle : inactiveStyle
+    }
   }
 
   filterItems() {
@@ -61,6 +70,8 @@ export default class extends Controller {
         item.style.display = item.classList.contains("activity-voice") ? "" : "none"
       } else if (this.activeFilter === "translations") {
         item.style.display = item.classList.contains("activity-translation") ? "" : "none"
+      } else if (this.activeFilter === "video-builders") {
+        item.style.display = item.classList.contains("activity-video-builder") ? "" : "none"
       }
     })
   }

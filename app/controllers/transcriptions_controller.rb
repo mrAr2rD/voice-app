@@ -19,6 +19,7 @@ class TranscriptionsController < ApplicationController
 
   def new
     @transcription = current_user.transcriptions.build
+    @projects = current_user.projects.order(:name)
   end
 
   def create
@@ -31,6 +32,7 @@ class TranscriptionsController < ApplicationController
       flash[:notice] = "Транскрибация запущена"
       redirect_to @transcription
     else
+      @projects = current_user.projects.order(:name)
       render :new, status: :unprocessable_entity
     end
   end
@@ -72,7 +74,7 @@ class TranscriptionsController < ApplicationController
   end
 
   def transcription_params
-    params.require(:transcription).permit(:title, :youtube_url, :source_file, :language)
+    params.require(:transcription).permit(:title, :youtube_url, :source_file, :language, :project_id)
   end
 
   def determine_source_type

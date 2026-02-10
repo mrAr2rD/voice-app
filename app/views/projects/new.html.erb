@@ -1,0 +1,19 @@
+<% content_for :page_title, "Новый проект" %>
+
+<div class="max-w-2xl mx-auto">
+  <div class="glass-card rounded-2xl p-8" style="border: 1px solid var(--color-graphite);">
+    <div class="flex items-center gap-4 mb-6 pb-6" style="border-bottom: 1px solid var(--color-graphite);">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center"
+           style="background: rgba(251, 191, 36, 0.15);">
+        <svg class="w-6 h-6" style="color: var(--color-gold);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="font-display text-xl font-bold" style="color: var(--color-snow);">Новый проект</h1>
+        <p class="text-sm" style="color: var(--color-mist);">Группируйте материалы вместе</p>
+      </div>
+    </div>
+    <%= render "form", project: @project %>
+  </div>
+</div>

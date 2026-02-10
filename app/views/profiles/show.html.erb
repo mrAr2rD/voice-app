@@ -2,9 +2,9 @@
 
 <% content_for :page_actions do %>
   <%= link_to edit_profile_path,
-      class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:scale-105",
+      class: "inline-flex items-center px-5 py-2.5 rounded-xl font-medium transition-all duration-300 hover:scale-105",
       style: "background: var(--color-neon-blue); color: var(--color-void);" do %>
-    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
     </svg>
     Редактировать
@@ -13,78 +13,181 @@
 
 <div class="max-w-2xl animate-fade-in">
   <!-- User Card -->
-  <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-    <div class="flex items-center mb-8">
-      <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-bold"
+  <div class="glass-card rounded-2xl p-6 md:p-8" style="border: 1px solid var(--color-graphite);">
+    <div class="flex items-center mb-6">
+      <div class="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center text-xl md:text-2xl font-bold"
            style="background: var(--gradient-aurora); color: var(--color-void);">
         <%= current_user.name[0].upcase %>
       </div>
       <div class="ml-4">
-        <h2 class="text-2xl font-bold" style="color: var(--color-snow);"><%= current_user.name %></h2>
-        <p style="color: var(--color-mist);"><%= current_user.email %></p>
+        <h2 class="font-display text-xl md:text-2xl font-bold" style="color: var(--color-snow);"><%= current_user.name %></h2>
+        <p class="text-sm" style="color: var(--color-mist);"><%= current_user.email %></p>
       </div>
     </div>
 
-    <div class="grid grid-cols-3 gap-6 p-4 rounded-xl mb-8" style="background: var(--color-obsidian);">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 rounded-xl mb-6" style="background: var(--color-obsidian);">
       <div>
-        <span class="block text-xs font-medium uppercase tracking-wider mb-1" style="color: var(--color-mist);">Имя</span>
-        <p class="font-semibold" style="color: var(--color-snow);"><%= current_user.name %></p>
+        <span class="block text-xs font-semibold uppercase tracking-wider mb-1" style="color: var(--color-mist);">Имя</span>
+        <p class="font-medium text-sm" style="color: var(--color-snow);"><%= current_user.name %></p>
       </div>
       <div>
-        <span class="block text-xs font-medium uppercase tracking-wider mb-1" style="color: var(--color-mist);">Email</span>
-        <p class="font-semibold" style="color: var(--color-snow);"><%= current_user.email %></p>
+        <span class="block text-xs font-semibold uppercase tracking-wider mb-1" style="color: var(--color-mist);">Email</span>
+        <p class="font-medium text-sm truncate" style="color: var(--color-snow);"><%= current_user.email %></p>
       </div>
       <div>
-        <span class="block text-xs font-medium uppercase tracking-wider mb-1" style="color: var(--color-mist);">Зарегистрирован</span>
-        <p class="font-semibold" style="color: var(--color-snow);"><%= l(current_user.created_at, format: :short) %></p>
+        <span class="block text-xs font-semibold uppercase tracking-wider mb-1" style="color: var(--color-mist);">Зарегистрирован</span>
+        <p class="font-medium text-sm" style="color: var(--color-snow);"><%= l(current_user.created_at, format: :short) %></p>
       </div>
     </div>
 
     <!-- Stats -->
-    <div class="grid grid-cols-3 gap-4 mb-8">
-      <div class="text-center p-6 rounded-xl"
-           style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
-        <p class="text-4xl font-bold" style="color: var(--color-neon-blue);"><%= @transcriptions_count %></p>
-        <p class="text-sm mt-1" style="color: var(--color-mist);">Транскрибаций</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+      <div class="text-center p-4 rounded-xl transition-all duration-200 hover:scale-[1.02]"
+           style="background: rgba(0, 212, 255, 0.08); border: 1px solid rgba(0, 212, 255, 0.15);">
+        <p class="font-display text-2xl font-bold" style="color: var(--color-neon-blue);"><%= @transcriptions_count %></p>
+        <p class="text-xs mt-0.5 font-medium" style="color: var(--color-mist);">Транскрибаций</p>
       </div>
-      <div class="text-center p-6 rounded-xl"
-           style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2);">
-        <p class="text-4xl font-bold" style="color: var(--color-neon-purple);"><%= @voice_generations_count %></p>
-        <p class="text-sm mt-1" style="color: var(--color-mist);">Озвучек</p>
+      <div class="text-center p-4 rounded-xl transition-all duration-200 hover:scale-[1.02]"
+           style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.15);">
+        <p class="font-display text-2xl font-bold" style="color: var(--color-neon-purple);"><%= @voice_generations_count %></p>
+        <p class="text-xs mt-0.5 font-medium" style="color: var(--color-mist);">Озвучек</p>
       </div>
-      <div class="text-center p-6 rounded-xl"
-           style="background: rgba(34, 211, 187, 0.1); border: 1px solid rgba(34, 211, 187, 0.2);">
-        <p class="text-4xl font-bold" style="color: var(--color-neon-green);"><%= @translations_count %></p>
-        <p class="text-sm mt-1" style="color: var(--color-mist);">Переводов</p>
+      <div class="text-center p-4 rounded-xl transition-all duration-200 hover:scale-[1.02]"
+           style="background: rgba(34, 211, 187, 0.08); border: 1px solid rgba(34, 211, 187, 0.15);">
+        <p class="font-display text-2xl font-bold" style="color: var(--color-neon-green);"><%= @translations_count %></p>
+        <p class="text-xs mt-0.5 font-medium" style="color: var(--color-mist);">Переводов</p>
+      </div>
+      <div class="text-center p-4 rounded-xl transition-all duration-200 hover:scale-[1.02]"
+           style="background: rgba(255, 107, 107, 0.08); border: 1px solid rgba(255, 107, 107, 0.15);">
+        <p class="font-display text-2xl font-bold" style="color: var(--color-coral);"><%= @video_builders_count %></p>
+        <p class="text-xs mt-0.5 font-medium" style="color: var(--color-mist);">Видео</p>
       </div>
     </div>
 
     <!-- Quick Links -->
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5">
       <%= link_to transcriptions_path,
-          class: "flex items-center justify-center p-4 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.02]",
+          class: "flex items-center justify-center p-3 rounded-xl text-xs font-medium transition-all duration-300 hover:scale-[1.02]",
           style: "background: var(--color-obsidian); color: var(--color-neon-blue); border: 1px solid var(--color-graphite);" do %>
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
         </svg>
         Транскрибации
       <% end %>
       <%= link_to voice_generations_path,
-          class: "flex items-center justify-center p-4 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.02]",
+          class: "flex items-center justify-center p-3 rounded-xl text-xs font-medium transition-all duration-300 hover:scale-[1.02]",
           style: "background: var(--color-obsidian); color: var(--color-neon-purple); border: 1px solid var(--color-graphite);" do %>
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
         </svg>
         Озвучки
       <% end %>
       <%= link_to translations_path,
-          class: "flex items-center justify-center p-4 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.02]",
+          class: "flex items-center justify-center p-3 rounded-xl text-xs font-medium transition-all duration-300 hover:scale-[1.02]",
           style: "background: var(--color-obsidian); color: var(--color-neon-green); border: 1px solid var(--color-graphite);" do %>
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
         </svg>
         Переводы
       <% end %>
+      <%= link_to video_builders_path,
+          class: "flex items-center justify-center p-3 rounded-xl text-xs font-medium transition-all duration-300 hover:scale-[1.02]",
+          style: "background: var(--color-obsidian); color: var(--color-coral); border: 1px solid var(--color-graphite);" do %>
+        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+        </svg>
+        Видео
+      <% end %>
     </div>
+  </div>
+
+  <!-- YouTube Integration -->
+  <div class="glass-card rounded-2xl p-6 md:p-8 mt-5" style="border: 1px solid var(--color-graphite);">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+             style="background: rgba(255, 0, 0, 0.1); border: 1px solid rgba(255, 0, 0, 0.2);">
+          <svg class="w-5 h-5" style="color: #FF0000;" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
+            <path fill="white" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-display text-base font-semibold" style="color: var(--color-snow);">YouTube интеграция</h3>
+          <p class="text-sm" style="color: var(--color-mist);">Публикуйте видео напрямую</p>
+        </div>
+      </div>
+
+      <% if @youtube_credential&.connected? %>
+        <span class="flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium"
+              style="background: rgba(34, 211, 187, 0.1); color: var(--color-neon-green); border: 1px solid rgba(34, 211, 187, 0.3);">
+          <span class="w-2 h-2 rounded-full" style="background: var(--color-neon-green);"></span>
+          Подключено
+        </span>
+      <% else %>
+        <span class="flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium"
+              style="background: rgba(107, 107, 122, 0.1); color: var(--color-mist); border: 1px solid var(--color-graphite);">
+          <span class="w-2 h-2 rounded-full" style="background: var(--color-mist);"></span>
+          Не подключено
+        </span>
+      <% end %>
+    </div>
+
+    <% if @youtube_credential&.connected? %>
+      <!-- Connected state -->
+      <div class="p-4 rounded-xl mb-4" style="background: var(--color-obsidian);">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold"
+                 style="background: #FF0000; color: white;">
+              <%= @youtube_credential.channel_name&.first&.upcase || 'Y' %>
+            </div>
+            <div>
+              <p class="font-medium" style="color: var(--color-snow);"><%= @youtube_credential.channel_name || 'YouTube канал' %></p>
+              <p class="text-sm" style="color: var(--color-mist);">Подключен <%= time_ago_in_words(@youtube_credential.created_at) %> назад</p>
+            </div>
+          </div>
+          <%= button_to youtube_disconnect_path,
+              method: :delete,
+              class: "px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:bg-[rgba(255,107,107,0.2)]",
+              style: "color: var(--color-coral); border: 1px solid rgba(255, 107, 107, 0.3);",
+              data: { turbo_confirm: "Отключить YouTube аккаунт?" } do %>
+            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+            Отключить
+          <% end %>
+        </div>
+      </div>
+
+      <p class="text-sm" style="color: var(--color-mist);">
+        Вы можете публиковать видео на YouTube прямо из видео-билдера. Перейдите в готовое видео и нажмите "Опубликовать".
+      </p>
+    <% else %>
+      <!-- Not connected state -->
+      <div class="text-center py-6">
+        <p class="mb-4" style="color: var(--color-mist);">
+          Подключите свой YouTube аккаунт, чтобы публиковать видео напрямую из приложения
+        </p>
+        <%= link_to youtube_auth_path,
+            class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:scale-105",
+            style: "background: #FF0000; color: white; box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);" do %>
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
+            <path fill="white" d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+          Подключить YouTube
+        <% end %>
+      </div>
+
+      <div class="mt-4 p-4 rounded-xl" style="background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3);">
+        <p class="text-sm flex items-start gap-2" style="color: var(--color-gold);">
+          <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Мы запросим только разрешение на загрузку видео на ваш канал. Никаких других действий с вашим аккаунтом не производится.
+        </p>
+      </div>
+    <% end %>
   </div>
 </div>

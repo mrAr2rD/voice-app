@@ -1,9 +1,10 @@
 /*
- * VoiceApp — Apple Futurism Design System
- * Aesthetic: Clean minimalism + Holographic accents + Glass morphism
+ * AppCaster — Cosmic Dark Design System
+ * Aesthetic: Deep space noir + Holographic accents + Liquid glass
+ * Typography: Golos Text (body) + Unbounded (display) - premium cyrillic fonts
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700;800&display=swap');
 
 :root {
   /* Core Colors - Apple-inspired */
@@ -70,8 +71,9 @@
                    radial-gradient(at 80% 50%, #30d158 0px, transparent 50%),
                    radial-gradient(at 0% 100%, #ff9f0a 0px, transparent 50%);
 
-  /* Typography */
-  --font-system: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  /* Typography - Premium Cyrillic */
+  --font-display: 'Unbounded', 'SF Pro Display', sans-serif;
+  --font-system: 'Golos Text', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -152,45 +154,48 @@ body {
 }
 
 /* ========================================
-   Typography
+   Typography - Cosmic Scale
    ======================================== */
 
 .text-display {
+  font-family: var(--font-display);
   font-size: 3.5rem;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   line-height: 1.1;
 }
 
 .text-title {
+  font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 1.2;
 }
 
 .text-headline {
+  font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .text-body {
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .text-caption {
   font-size: 0.875rem;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--color-text-secondary);
 }
 
 .text-micro {
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-text-tertiary);
 }
@@ -210,6 +215,26 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Display font helper */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Section titles */
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* Stat numbers */
+.stat-number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ========================================
@@ -242,6 +267,21 @@ body {
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Liquid glass card */
+.glass-card {
+  background: linear-gradient(
+    165deg,
+    rgba(22, 22, 22, 0.95) 0%,
+    rgba(28, 28, 30, 0.9) 100%
+  );
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 /* ========================================
@@ -824,4 +864,174 @@ select:focus {
   opacity: 0.02;
   pointer-events: none;
   z-index: 9999;
+}
+
+/* ========================================
+   Pipeline / Conveyor Animations
+   ======================================== */
+
+/* Slow ping animation for pipeline nodes */
+@keyframes ping-slow {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.animate-ping-slow {
+  animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Data packet animation - file moving along the conveyor */
+@keyframes packet-move {
+  0% {
+    left: -10px;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% + 10px);
+    opacity: 0;
+  }
+}
+
+.data-packet {
+  position: absolute;
+  width: 12px;
+  height: 15px;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  background: var(--color-neon-blue);
+  box-shadow: 0 0 10px var(--color-neon-blue), 0 0 20px var(--color-neon-blue);
+  border-radius: 2px;
+  animation: packet-move 2.5s ease-in-out infinite;
+}
+
+/* File shape - folded corner */
+.data-packet::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 4px;
+  background: var(--color-void);
+  border-bottom-left-radius: 1px;
+}
+
+.data-packet-1 {
+  animation-delay: 0s;
+  background: #818cf8;
+  box-shadow: 0 0 8px #818cf8, 0 0 16px #818cf8;
+}
+
+.data-packet-2 {
+  animation-delay: 0.6s;
+  background: var(--color-neon-blue);
+  box-shadow: 0 0 8px var(--color-neon-blue), 0 0 16px var(--color-neon-blue);
+}
+
+.data-packet-3 {
+  animation-delay: 1.2s;
+  background: var(--color-neon-green);
+  box-shadow: 0 0 8px var(--color-neon-green), 0 0 16px var(--color-neon-green);
+}
+
+.data-packet-4 {
+  animation-delay: 1.8s;
+  background: var(--color-neon-purple);
+  box-shadow: 0 0 8px var(--color-neon-purple), 0 0 16px var(--color-neon-purple);
+}
+
+/* Conveyor particles - moving dots along the belt */
+@keyframes conveyor-flow {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 0;
+  }
+}
+
+.conveyor-particles {
+  position: absolute;
+  inset: -2px 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0px,
+    transparent 15px,
+    rgba(255, 255, 255, 0.1) 15px,
+    rgba(255, 255, 255, 0.1) 20px,
+    transparent 20px,
+    transparent 40px
+  );
+  animation: conveyor-flow 2s linear infinite;
+}
+
+/* Pipeline stage hover glow */
+.pipeline-stage:hover .pipeline-node {
+  filter: brightness(1.2);
+}
+
+/* Pipeline arrow pulse */
+@keyframes arrow-pulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.pipeline-arrow svg {
+  animation: arrow-pulse 2s ease-in-out infinite;
+}
+
+.pipeline-arrow:nth-child(2) svg { animation-delay: 0s; }
+.pipeline-arrow:nth-child(4) svg { animation-delay: 0.3s; }
+.pipeline-arrow:nth-child(6) svg { animation-delay: 0.6s; }
+.pipeline-arrow:nth-child(8) svg { animation-delay: 0.9s; }
+
+/* Stage sequential highlight animation */
+@keyframes stage-highlight {
+  0%, 20% {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+  }
+  10% {
+    border-color: currentColor;
+    box-shadow: 0 0 30px currentColor;
+  }
+}
+
+/* Responsive pipeline adjustments */
+@media (max-width: 640px) {
+  .pipeline-stage .pipeline-node {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .pipeline-arrow svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .data-packet {
+    width: 9px;
+    height: 11px;
+  }
 }

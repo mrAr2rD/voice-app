@@ -1,0 +1,37 @@
+<%
+  status_styles = {
+    "draft" => { bg: "rgba(107, 107, 122, 0.15)", color: "var(--color-mist)", border: "rgba(107, 107, 122, 0.3)" },
+    "processing" => { bg: "rgba(0, 212, 255, 0.15)", color: "var(--color-neon-blue)", border: "rgba(0, 212, 255, 0.3)" },
+    "completed" => { bg: "rgba(34, 211, 187, 0.15)", color: "var(--color-neon-green)", border: "rgba(34, 211, 187, 0.3)" },
+    "failed" => { bg: "rgba(255, 107, 107, 0.15)", color: "var(--color-coral)", border: "rgba(255, 107, 107, 0.3)" }
+  }
+  status_labels = {
+    "draft" => "Черновик",
+    "processing" => "Обработка",
+    "completed" => "Готово",
+    "failed" => "Ошибка"
+  }
+  style = status_styles[video_builder.status] || status_styles["draft"]
+%>
+<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider"
+      style="background: <%= style[:bg] %>; color: <%= style[:color] %>; border: 1px solid <%= style[:border] %>;">
+  <% if video_builder.processing? %>
+    <svg class="animate-spin -ml-0.5 mr-1.5 h-3 w-3" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+    </svg>
+    <%= video_builder.progress %>%
+  <% elsif video_builder.completed? %>
+    <svg class="-ml-0.5 mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+    </svg>
+    <%= status_labels[video_builder.status] %>
+  <% elsif video_builder.failed? %>
+    <svg class="-ml-0.5 mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+    <%= status_labels[video_builder.status] %>
+  <% else %>
+    <%= status_labels[video_builder.status] %>
+  <% end %>
+</span>

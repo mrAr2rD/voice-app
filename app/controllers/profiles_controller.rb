@@ -6,6 +6,8 @@ class ProfilesController < ApplicationController
     @transcriptions_count = current_user.transcriptions.count
     @voice_generations_count = current_user.voice_generations.count
     @translations_count = current_user.translations.count
+    @video_builders_count = current_user.video_builders.count
+    @youtube_credential = current_user.youtube_credential
   end
 
   def edit
