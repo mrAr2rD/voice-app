@@ -27,21 +27,21 @@ class VideoBuilder < ApplicationRecord
   after_update_commit :broadcast_updated
 
   VIDEO_MODES = [
-    ["Обрезать под аудио", "trim"],
-    ["Зациклить под аудио", "loop"]
+    [ "Обрезать под аудио", "trim" ],
+    [ "Зациклить под аудио", "loop" ]
   ].freeze
 
   SUBTITLE_STYLES = [
-    ["Стандартный", "default"],
-    ["С обводкой", "outlined"],
-    ["С тенью", "shadow"],
-    ["В рамке", "boxed"]
+    [ "Стандартный", "default" ],
+    [ "С обводкой", "outlined" ],
+    [ "С тенью", "shadow" ],
+    [ "В рамке", "boxed" ]
   ].freeze
 
   SUBTITLE_POSITIONS = [
-    ["Сверху", "top"],
-    ["По центру", "center"],
-    ["Снизу", "bottom"]
+    [ "Сверху", "top" ],
+    [ "По центру", "center" ],
+    [ "Снизу", "bottom" ]
   ].freeze
 
   def display_title

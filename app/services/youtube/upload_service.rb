@@ -79,7 +79,8 @@ module Youtube
       end
 
       unless response.success?
-        raise "Ошибка инициализации загрузки: #{response.body}"
+        error_info = extract_error_message(response)
+        raise "Ошибка инициализации загрузки: #{error_info}"
       end
 
       response.headers["location"]
@@ -111,9 +112,12 @@ module Youtube
             data = JSON.parse(response.body)
             return data["id"]
           elsif response.status == 308
-            uploaded = parse_range(response.headers["range"])
+            new_uploaded = parse_range(response.headers["range"])
+            raise "Загрузка не прогрессирует" if new_uploaded <= uploaded
+            uploaded = new_uploaded
           else
-            raise "Ошибка загрузки: #{response.status} - #{response.body}"
+            error_info = extract_error_message(response)
+            raise "Ошибка загрузки: #{response.status} - #{error_info}"
           end
         end
       end
@@ -129,6 +133,13 @@ module Youtube
     def parse_tags(tags_string)
       return [] if tags_string.blank?
       tags_string.split(",").map(&:strip).reject(&:blank?)
+    end
+
+    def extract_error_message(response)
+      data = JSON.parse(response.body)
+      data.dig("error", "message") || "Unknown error"
+    rescue JSON::ParserError
+      "HTTP #{response.status}"
     end
   end
 end

@@ -20,15 +20,15 @@ class ActivitiesController < ApplicationController
   private
 
   def load_all_activities
-    transcriptions = current_user.transcriptions.recent.limit(100)
-    voice_generations = current_user.voice_generations.recent.limit(100)
-    translations = current_user.translations.recent.limit(100)
+    transcriptions = current_user.transcriptions.includes(:project).recent.limit(50)
+    voice_generations = current_user.voice_generations.includes(:project).recent.limit(50)
+    translations = current_user.translations.includes(:project).recent.limit(50)
 
     all_activities = []
-    all_activities += transcriptions.map { |t| ActivityPresenter.new(t) }
-    all_activities += voice_generations.map { |vg| ActivityPresenter.new(vg) }
-    all_activities += translations.map { |tr| ActivityPresenter.new(tr) }
+    all_activities.concat(transcriptions.map { |t| ActivityPresenter.new(t) })
+    all_activities.concat(voice_generations.map { |vg| ActivityPresenter.new(vg) })
+    all_activities.concat(translations.map { |tr| ActivityPresenter.new(tr) })
 
-    all_activities.sort_by { |a| -a.created_at.to_i }
+    all_activities.sort_by(&:created_at).reverse.first(100)
   end
 end

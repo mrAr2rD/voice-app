@@ -5,7 +5,9 @@ class TranscriptionsController < ApplicationController
   before_action :set_transcription, only: %i[show destroy retry download]
 
   def index
-    @transcriptions = current_user.transcriptions.recent.limit(50)
+    @transcriptions = current_user.transcriptions
+                                  .includes(:project)
+                                  .recent.limit(50)
   end
 
   def show

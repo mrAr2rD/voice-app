@@ -1,3 +1,5 @@
+require "open3"
+
 module Transcriptions
   class YoutubeDownloader < ApplicationService
     MAX_DURATION = 7200
@@ -40,10 +42,11 @@ module Transcriptions
     end
 
     def fetch_video_info
-      output = `yt-dlp --dump-json --no-download "#{@url}" 2>&1`
-      return { error: "Не удалось получить информацию о видео" } unless $?.success?
+      command = [ "yt-dlp", "--dump-json", "--no-download", @url ]
+      stdout, _stderr, status = Open3.capture3(*command)
+      return { error: "Не удалось получить информацию о видео" } unless status.success?
 
-      data = JSON.parse(output)
+      data = JSON.parse(stdout)
       { title: data["title"], duration: data["duration"] }
     rescue JSON::ParserError
       { error: "Ошибка парсинга информации о видео" }
@@ -63,7 +66,7 @@ module Transcriptions
         @url
       ]
 
-      result = system(*command, [:out, :err] => "/dev/null")
+      result = system(*command, [ :out, :err ] => "/dev/null")
       return { error: "Не удалось скачать аудио" } unless result
 
       video_id = extract_video_id

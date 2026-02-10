@@ -15,32 +15,32 @@ class Translation < ApplicationRecord
   after_update_commit :broadcast_updated
 
   LANGUAGES = [
-    ["Русский", "ru"],
-    ["Английский", "en"],
-    ["Немецкий", "de"],
-    ["Французский", "fr"],
-    ["Испанский", "es"],
-    ["Итальянский", "it"],
-    ["Португальский", "pt"],
-    ["Китайский", "zh"],
-    ["Японский", "ja"],
-    ["Корейский", "ko"],
-    ["Арабский", "ar"],
-    ["Турецкий", "tr"],
-    ["Польский", "pl"],
-    ["Украинский", "uk"]
+    [ "Русский", "ru" ],
+    [ "Английский", "en" ],
+    [ "Немецкий", "de" ],
+    [ "Французский", "fr" ],
+    [ "Испанский", "es" ],
+    [ "Итальянский", "it" ],
+    [ "Португальский", "pt" ],
+    [ "Китайский", "zh" ],
+    [ "Японский", "ja" ],
+    [ "Корейский", "ko" ],
+    [ "Арабский", "ar" ],
+    [ "Турецкий", "tr" ],
+    [ "Польский", "pl" ],
+    [ "Украинский", "uk" ]
   ].freeze
 
   # Бесплатные модели OpenRouter
   MODELS = [
-    ["DeepSeek V3.2 (рекомендуется)", "deepseek/deepseek-v3.2-20251201"],
-    ["DeepSeek Chat V3.1", "deepseek/deepseek-chat-v3.1"],
-    ["Gemini 2.5 Flash", "google/gemini-2.5-flash"],
-    ["Gemini 2.5 Flash Lite (быстрый)", "google/gemini-2.5-flash-lite"],
-    ["Grok 4.1 Fast", "x-ai/grok-4.1-fast"],
-    ["Grok Code Fast", "x-ai/grok-code-fast-1"],
-    ["Kimi K2.5", "moonshotai/kimi-k2.5-0127"],
-    ["GPT OSS 120B", "openai/gpt-oss-120b"]
+    [ "DeepSeek V3.2 (рекомендуется)", "deepseek/deepseek-v3.2-20251201" ],
+    [ "DeepSeek Chat V3.1", "deepseek/deepseek-chat-v3.1" ],
+    [ "Gemini 2.5 Flash", "google/gemini-2.5-flash" ],
+    [ "Gemini 2.5 Flash Lite (быстрый)", "google/gemini-2.5-flash-lite" ],
+    [ "Grok 4.1 Fast", "x-ai/grok-4.1-fast" ],
+    [ "Grok Code Fast", "x-ai/grok-code-fast-1" ],
+    [ "Kimi K2.5", "moonshotai/kimi-k2.5-0127" ],
+    [ "GPT OSS 120B", "openai/gpt-oss-120b" ]
   ].freeze
 
   def text_preview(length = 50)

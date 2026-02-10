@@ -2,10 +2,12 @@ class TranslationsController < ApplicationController
   layout "dashboard"
   before_action :require_login
   before_action :check_feature_enabled
-  before_action :set_translation, only: [:show, :destroy, :download]
+  before_action :set_translation, only: [ :show, :destroy, :download ]
 
   def index
-    @translations = current_user.translations.recent.limit(50)
+    @translations = current_user.translations
+                                .includes(:project)
+                                .recent.limit(50)
   end
 
   def show

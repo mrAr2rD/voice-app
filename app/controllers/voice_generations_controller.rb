@@ -5,7 +5,9 @@ class VoiceGenerationsController < ApplicationController
   before_action :set_voice_generation, only: %i[show destroy download]
 
   def index
-    @voice_generations = current_user.voice_generations.recent.limit(50)
+    @voice_generations = current_user.voice_generations
+                                     .includes(:project, audio_file_attachment: :blob)
+                                     .recent.limit(50)
   end
 
   def show
@@ -59,13 +61,13 @@ class VoiceGenerationsController < ApplicationController
     provider = params[:provider] || "elevenlabs"
 
     voices = case provider
-             when "elevenlabs"
+    when "elevenlabs"
                fetch_elevenlabs_voices
-             when "openai"
+    when "openai"
                Tts::OpenaiClient::VOICES
-             else
+    else
                []
-             end
+    end
 
     render json: voices
   end

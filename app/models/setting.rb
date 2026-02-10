@@ -1,6 +1,9 @@
 class Setting < ApplicationRecord
   validates :key, presence: true, uniqueness: true
 
+  after_save :clear_cache
+  after_destroy :clear_cache
+
   # Ключи настроек
   KEYS = {
     # Функционал
@@ -36,19 +39,27 @@ class Setting < ApplicationRecord
   class << self
     def get(key)
       key = key.to_s
-      setting = find_by(key: key)
-      value = setting&.value || KEYS.dig(key.to_sym, :default) || ""
+      cache_key = "setting/#{key}"
 
-      case KEYS.dig(key.to_sym, :type)
-      when :boolean
-        value.to_s == "true"
-      when :integer
-        value.to_i
-      when :float
-        value.to_f
-      else
-        value
+      Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+        setting = find_by(key: key)
+        value = setting&.value || KEYS.dig(key.to_sym, :default) || ""
+
+        case KEYS.dig(key.to_sym, :type)
+        when :boolean
+          value.to_s == "true"
+        when :integer
+          value.to_i
+        when :float
+          value.to_f
+        else
+          value
+        end
       end
+    end
+
+    def clear_cache_for(key)
+      Rails.cache.delete("setting/#{key}")
     end
 
     def set(key, value)
@@ -56,7 +67,7 @@ class Setting < ApplicationRecord
       setting = find_or_initialize_by(key: key)
       setting.value = value.to_s
       setting.description ||= KEYS.dig(key.to_sym, :description)
-      setting.save!
+      setting.save!  # triggers clear_cache callback
       value
     end
 
@@ -133,5 +144,11 @@ class Setting < ApplicationRecord
       cost_per_1k = provider == "openai" ? openai_tts_cost_per_1k_chars : elevenlabs_cost_per_1k_chars
       (chars_in_thousands * cost_per_1k).round
     end
+  end
+
+  private
+
+  def clear_cache
+    self.class.clear_cache_for(key)
   end
 end

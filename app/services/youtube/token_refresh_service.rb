@@ -28,7 +28,8 @@ module Youtube
       end
 
       unless response.success?
-        return failure("Ошибка обновления токена: #{response.body}")
+        error_info = extract_error_message(response)
+        return failure("Ошибка обновления токена: #{error_info}")
       end
 
       tokens = JSON.parse(response.body)
@@ -39,6 +40,13 @@ module Youtube
       )
 
       success(@credential)
+    end
+
+    def extract_error_message(response)
+      data = JSON.parse(response.body)
+      data["error_description"] || data["error"] || "Unknown error"
+    rescue JSON::ParserError
+      "HTTP #{response.status}"
     end
   end
 end

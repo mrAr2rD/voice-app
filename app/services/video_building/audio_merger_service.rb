@@ -21,7 +21,7 @@ module VideoBuilding
     private
 
     def merge_audio_files
-      list_file = Tempfile.new(["audio_list", ".txt"])
+      list_file = Tempfile.new([ "audio_list", ".txt" ])
 
       begin
         @audio_files.each do |file|

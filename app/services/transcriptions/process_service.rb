@@ -54,7 +54,7 @@ module Transcriptions
           original_filename: result.data[:title],
           duration: result.data[:duration]
         )
-        @temp_files = [result.data[:file_path]]
+        @temp_files = [ result.data[:file_path] ]
         result.data[:file_path]
       else
         @error = result.error

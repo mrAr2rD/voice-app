@@ -64,8 +64,15 @@ module Transcriptions
     end
 
     def get_duration(file_path)
-      output = `ffprobe -v quiet -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "#{file_path}" 2>&1`
-      output.strip.to_f if $?.success?
+      command = [
+        "ffprobe",
+        "-v", "quiet",
+        "-show_entries", "format=duration",
+        "-of", "default=noprint_wrappers=1:nokey=1",
+        file_path
+      ]
+      stdout, _stderr, status = Open3.capture3(*command)
+      stdout.strip.to_f if status.success?
     end
   end
 end

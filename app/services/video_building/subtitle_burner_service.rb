@@ -77,10 +77,22 @@ module VideoBuilding
     end
 
     def build_subtitle_filter
-      escaped_path = @subtitles_path.gsub(":", "\\:").gsub("'", "\\'")
+      escaped_path = escape_ffmpeg_path(@subtitles_path)
       style_options = build_style_options
 
       "subtitles='#{escaped_path}':force_style='#{style_options}'"
+    end
+
+    def escape_ffmpeg_path(path)
+      # FFmpeg filter escaping requires: \ : ' ; [ ] ,
+      path
+        .gsub("\\", "\\\\\\\\")  # backslash first
+        .gsub(":", "\\:")
+        .gsub("'", "\\'")
+        .gsub(";", "\\;")
+        .gsub("[", "\\[")
+        .gsub("]", "\\]")
+        .gsub(",", "\\,")
     end
 
     def build_style_options

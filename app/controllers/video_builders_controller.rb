@@ -4,7 +4,9 @@ class VideoBuildersController < ApplicationController
   before_action :set_video_builder, only: %i[show edit update destroy download publish generate_thumbnail generate_metadata]
 
   def index
-    @video_builders = current_user.video_builders.recent.limit(50)
+    @video_builders = current_user.video_builders
+                                  .includes(:project, output_video_attachment: :blob)
+                                  .recent.limit(50)
   end
 
   def show
@@ -24,7 +26,7 @@ class VideoBuildersController < ApplicationController
 
     if @video_builder.save
       attach_audio_sources
-      create_voice_from_text_source if params[:video_builder][:text_source].present?
+      create_voice_from_text_source
       VideoBuilderProcessJob.perform_later(@video_builder.id)
       flash[:notice] = "Обработка видео запущена"
       redirect_to @video_builder
@@ -142,31 +144,9 @@ class VideoBuildersController < ApplicationController
   end
 
   def create_voice_from_text_source
-    text_source = params[:video_builder][:text_source]
+    text_source = params.dig(:video_builder, :text_source)
     return if text_source.blank?
 
-    type, id = text_source.split("_", 2)
-    text = case type
-           when "transcription"
-             current_user.transcriptions.find_by(id: id)&.full_text
-           when "translation"
-             current_user.translations.find_by(id: id)&.translated_text
-           end
-
-    return if text.blank?
-
-    voice_generation = current_user.voice_generations.create!(
-      text: text.truncate(5000),
-      voice_id: "alloy",
-      provider: :openai,
-      status: :pending
-    )
-
-    VoiceGenerationJob.perform_later(voice_generation.id)
-
-    @video_builder.audio_sources.create!(
-      voice_generation: voice_generation,
-      position: @video_builder.audio_sources.count
-    )
+    VideoBuilding::VoiceFromTextService.call(@video_builder, text_source: text_source)
   end
 end

@@ -13,7 +13,7 @@ class Transcription < ApplicationRecord
   validates :source_type, presence: true
   validates :youtube_url, presence: true, if: :youtube_url?
   validates :youtube_url, format: {
-    with: %r{\A(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)[\w-]+},
+    with: %r{\A(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)[\w-]+(&[\w=-]*)?\z},
     message: "должен быть валидным YouTube URL"
   }, allow_blank: true
   validates :source_file, attached: true, unless: :youtube_url?

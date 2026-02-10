@@ -8,8 +8,12 @@ module VideoBuilding
     def call
       return failure("Видео-билдер не найден") unless @video_builder
 
-      @video_builder.update!(status: :processing, progress: 0)
+      # Race condition protection: only process if currently draft
+      updated = VideoBuilder.where(id: @video_builder.id, status: :draft)
+                            .update_all(status: :processing, progress: 0)
+      return failure("Видео-билдер уже обрабатывается") if updated.zero?
 
+      @video_builder.reload
       process_video
     rescue StandardError => e
       Rails.logger.error "VideoBuilder::ProcessService error: #{e.message}\n#{e.backtrace.join("\n")}"

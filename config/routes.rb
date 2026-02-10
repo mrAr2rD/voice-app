@@ -59,7 +59,7 @@ Rails.application.routes.draw do
   delete "youtube/disconnect", to: "youtube_auth#disconnect", as: :youtube_disconnect
 
   # Activities history
-  resources :activities, only: [:index]
+  resources :activities, only: [ :index ]
 
   # Admin
   namespace :admin do
