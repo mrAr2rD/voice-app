@@ -15,13 +15,43 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <style>
+      .dashboard-layout {
+        display: flex;
+        min-height: 100vh;
+      }
+      .dashboard-sidebar {
+        width: 256px;
+        min-width: 256px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 30;
+        display: flex;
+        flex-direction: column;
+        background: var(--color-abyss);
+        border-right: 1px solid var(--color-graphite);
+      }
+      .dashboard-main {
+        flex: 1;
+        margin-left: 256px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .dashboard-content {
+        flex: 1;
+        padding: 2rem;
+      }
+    </style>
   </head>
 
-  <body class="min-h-screen" style="background: var(--color-void);">
-    <div class="flex min-h-screen">
+  <body style="background: var(--color-void);">
+    <div class="dashboard-layout">
       <!-- Sidebar -->
-      <aside class="w-64 fixed left-0 top-0 h-full z-20 flex flex-col"
-             style="background: var(--color-abyss); border-right: 1px solid var(--color-graphite);">
+      <aside class="dashboard-sidebar">
         <!-- Logo -->
         <div class="p-6 border-b" style="border-color: var(--color-graphite);">
           <%= link_to root_path, class: "flex items-center" do %>
@@ -35,8 +65,23 @@
             Сервисы
           </p>
 
+          <%= link_to root_path,
+              class: "flex items-center px-4 py-3 rounded-xl transition-all duration-200 group #{controller_name == 'home' ? '' : 'hover:bg-white/5'}",
+              style: controller_name == 'home' ? "background: rgba(255, 255, 255, 0.05); border: 1px solid var(--color-graphite);" : "" do %>
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+                 style="background: var(--color-graphite);">
+              <svg class="w-5 h-5" style="color: var(--color-cloud);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-medium" style="color: var(--color-snow);">Главная</p>
+              <p class="text-xs" style="color: var(--color-mist);">Обзор</p>
+            </div>
+          <% end %>
+
           <%= link_to transcriptions_path,
-              class: "flex items-center px-4 py-3 rounded-xl transition-all duration-200 group #{controller_name == 'transcriptions' ? 'bg-white/10' : 'hover:bg-white/5'}",
+              class: "flex items-center px-4 py-3 rounded-xl transition-all duration-200 group #{controller_name == 'transcriptions' ? '' : 'hover:bg-white/5'}",
               style: controller_name == 'transcriptions' ? "background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);" : "" do %>
             <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
                  style="background: rgba(0, 212, 255, 0.1);">
@@ -51,7 +96,7 @@
           <% end %>
 
           <%= link_to voice_generations_path,
-              class: "flex items-center px-4 py-3 rounded-xl transition-all duration-200 group #{controller_name == 'voice_generations' ? 'bg-white/10' : 'hover:bg-white/5'}",
+              class: "flex items-center px-4 py-3 rounded-xl transition-all duration-200 group #{controller_name == 'voice_generations' ? '' : 'hover:bg-white/5'}",
               style: controller_name == 'voice_generations' ? "background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2);" : "" do %>
             <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
                  style="background: rgba(168, 85, 247, 0.1);">
@@ -66,7 +111,7 @@
           <% end %>
 
           <%= link_to translations_path,
-              class: "flex items-center px-4 py-3 rounded-xl transition-all duration-200 group #{controller_name == 'translations' ? 'bg-white/10' : 'hover:bg-white/5'}",
+              class: "flex items-center px-4 py-3 rounded-xl transition-all duration-200 group #{controller_name == 'translations' ? '' : 'hover:bg-white/5'}",
               style: controller_name == 'translations' ? "background: rgba(34, 211, 187, 0.1); border: 1px solid rgba(34, 211, 187, 0.2);" : "" do %>
             <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
                  style="background: rgba(34, 211, 187, 0.1);">
@@ -86,7 +131,8 @@
             </p>
 
             <%= link_to profile_path,
-                class: "flex items-center px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5" do %>
+                class: "flex items-center px-4 py-3 rounded-xl transition-all duration-200 #{controller_name == 'profiles' ? '' : 'hover:bg-white/5'}",
+                style: controller_name == 'profiles' ? "background: rgba(255, 255, 255, 0.05); border: 1px solid var(--color-graphite);" : "" do %>
               <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
                    style="background: var(--color-graphite);">
                 <svg class="w-5 h-5" style="color: var(--color-cloud);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,12 +175,12 @@
                 </span>
               </div>
               <div class="ml-3 min-w-0">
-                <p class="font-medium truncate" style="color: var(--color-snow);"><%= current_user&.name %></p>
+                <p class="font-medium truncate text-sm" style="color: var(--color-snow);"><%= current_user&.name %></p>
                 <p class="text-xs truncate" style="color: var(--color-mist);"><%= current_user&.email %></p>
               </div>
             </div>
             <%= button_to logout_path, method: :delete,
-                class: "p-2 rounded-lg transition-colors hover:bg-white/10",
+                class: "p-2 rounded-lg transition-colors hover:bg-white/10 flex-shrink-0",
                 title: "Выйти" do %>
               <svg class="w-5 h-5" style="color: var(--color-mist);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -145,7 +191,7 @@
       </aside>
 
       <!-- Main content -->
-      <main class="flex-1 ml-64">
+      <main class="dashboard-main">
         <!-- Top bar -->
         <header class="sticky top-0 z-10 px-8 py-4 border-b"
                 style="background: var(--color-void); border-color: var(--color-graphite);">
@@ -154,18 +200,20 @@
               <%= content_for(:page_title) || "Личный кабинет" %>
             </h1>
             <% if content_for?(:page_actions) %>
-              <%= yield :page_actions %>
+              <div class="flex items-center space-x-3">
+                <%= yield :page_actions %>
+              </div>
             <% end %>
           </div>
         </header>
 
         <!-- Content -->
-        <div class="p-8">
+        <div class="dashboard-content">
           <% if flash[:notice] %>
             <div class="mb-6 animate-slide-down">
-              <div class="glass rounded-xl p-4 border-l-4" style="border-left-color: var(--color-neon-green);">
+              <div class="rounded-xl p-4 border-l-4" style="background: rgba(34, 211, 187, 0.1); border-left-color: var(--color-neon-green);">
                 <div class="flex items-center">
-                  <svg class="w-5 h-5 mr-3" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 mr-3 flex-shrink-0" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                   </svg>
                   <span style="color: var(--color-snow);"><%= flash[:notice] %></span>
@@ -176,9 +224,9 @@
 
           <% if flash[:alert] %>
             <div class="mb-6 animate-slide-down">
-              <div class="glass rounded-xl p-4 border-l-4" style="border-left-color: var(--color-coral);">
+              <div class="rounded-xl p-4 border-l-4" style="background: rgba(255, 107, 107, 0.1); border-left-color: var(--color-coral);">
                 <div class="flex items-center">
-                  <svg class="w-5 h-5 mr-3" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 mr-3 flex-shrink-0" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
                   <span style="color: var(--color-snow);"><%= flash[:alert] %></span>
