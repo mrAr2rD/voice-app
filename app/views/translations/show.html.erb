@@ -12,8 +12,8 @@
         Копировать
       </button>
 
-      <div class="relative" x-data="{ open: false }">
-        <button @click="open = !open"
+      <div class="relative" data-controller="dropdown">
+        <button data-action="click->dropdown#toggle"
                 class="inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200"
                 style="background: var(--color-neon-green); color: var(--color-void);">
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -25,8 +25,8 @@
           </svg>
         </button>
 
-        <div x-show="open" @click.away="open = false"
-             class="absolute right-0 mt-2 w-40 rounded-xl shadow-lg py-2 z-10"
+        <div data-dropdown-target="menu"
+             class="hidden absolute right-0 mt-2 w-40 rounded-xl shadow-lg py-2 z-10"
              style="background: var(--color-obsidian); border: 1px solid var(--color-graphite);">
           <%= link_to download_translation_path(@translation, format: "txt"),
               class: "block px-4 py-2 text-sm transition-colors hover:bg-white/5",

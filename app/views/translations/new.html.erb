@@ -2,7 +2,7 @@
 
 <div class="max-w-3xl">
   <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-    <%= form_with model: @translation, class: "space-y-6" do |f| %>
+    <%= form_with model: @translation, class: "space-y-6", data: { controller: "translation-form" } do |f| %>
       <% if @translation.errors.any? %>
         <div class="rounded-xl p-4" style="background: rgba(255, 107, 107, 0.1); border: 1px solid rgba(255, 107, 107, 0.2);">
           <ul class="text-sm space-y-1" style="color: var(--color-coral);">
@@ -18,16 +18,56 @@
         </div>
       <% end %>
 
+      <!-- Import from Transcription -->
+      <% if @transcriptions.any? %>
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">
+            Импорт из транскрибации
+          </label>
+          <div class="relative" data-controller="dropdown">
+            <button type="button" data-action="click->dropdown#toggle"
+                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200"
+                    style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-mist);">
+              <span class="flex items-center">
+                <svg class="w-5 h-5 mr-2" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                </svg>
+                Выбрать транскрибацию...
+              </span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            <div data-dropdown-target="menu"
+                 class="hidden absolute left-0 right-0 mt-2 rounded-xl shadow-lg py-2 z-20 max-h-64 overflow-y-auto"
+                 style="background: var(--color-obsidian); border: 1px solid var(--color-graphite);">
+              <% @transcriptions.each do |t| %>
+                <%= link_to new_translation_path(transcription_id: t.id),
+                    class: "block px-4 py-3 transition-colors hover:bg-white/5",
+                    data: { turbo: false } do %>
+                  <p class="font-medium truncate" style="color: var(--color-snow);"><%= t.display_title %></p>
+                  <p class="text-xs truncate" style="color: var(--color-mist);">
+                    <%= t.full_text&.truncate(80) %>
+                  </p>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
       <!-- Source Text -->
       <div>
         <%= f.label :source_text, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
           Текст для перевода
         <% end %>
         <%= f.text_area :source_text,
-            rows: 8,
+            rows: 10,
             placeholder: "Введите или вставьте текст для перевода...",
-            class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none resize-none",
-            style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+            class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none resize-y",
+            style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);",
+            data: { translation_form_target: "text" } %>
         <p class="text-xs mt-1" style="color: var(--color-mist);">Максимум 50 000 символов</p>
       </div>
 

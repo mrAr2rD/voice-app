@@ -17,6 +17,15 @@ class TranslationsController < ApplicationController
 
   def new
     @translation = Translation.new
+    @transcriptions = current_user.transcriptions.completed.recent.limit(20)
+
+    # Если передан transcription_id, заполняем текст
+    if params[:transcription_id].present?
+      transcription = current_user.transcriptions.completed.find_by(id: params[:transcription_id])
+      if transcription
+        @translation.source_text = transcription.full_text
+      end
+    end
   end
 
   def create
