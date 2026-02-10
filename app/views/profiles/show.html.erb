@@ -1,25 +1,28 @@
-<div class="max-w-2xl mx-auto animate-fade-in">
-  <!-- Header -->
+<% content_for :page_title, "Профиль" %>
+
+<% content_for :page_actions do %>
+  <%= link_to edit_profile_path,
+      class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:scale-105",
+      style: "background: var(--color-neon-blue); color: var(--color-void);" do %>
+    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+    </svg>
+    Редактировать
+  <% end %>
+<% end %>
+
+<div class="max-w-2xl animate-fade-in">
+  <!-- User Card -->
   <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
-    <div class="flex items-center justify-between mb-8">
-      <div class="flex items-center">
-        <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-bold"
-             style="background: var(--gradient-aurora); color: var(--color-void);">
-          <%= current_user.name[0].upcase %>
-        </div>
-        <div class="ml-4">
-          <h1 class="text-2xl font-bold" style="color: var(--color-snow);"><%= current_user.name %></h1>
-          <p style="color: var(--color-mist);"><%= current_user.email %></p>
-        </div>
+    <div class="flex items-center mb-8">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-bold"
+           style="background: var(--gradient-aurora); color: var(--color-void);">
+        <%= current_user.name[0].upcase %>
       </div>
-      <%= link_to edit_profile_path,
-          class: "flex items-center px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 hover:scale-105",
-          style: "background: var(--color-obsidian); color: var(--color-neon-blue); border: 1px solid rgba(10, 132, 255, 0.3);" do %>
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-        </svg>
-        Редактировать
-      <% end %>
+      <div class="ml-4">
+        <h2 class="text-2xl font-bold" style="color: var(--color-snow);"><%= current_user.name %></h2>
+        <p style="color: var(--color-mist);"><%= current_user.email %></p>
+      </div>
     </div>
 
     <div class="grid grid-cols-3 gap-6 p-4 rounded-xl mb-8" style="background: var(--color-obsidian);">
@@ -38,28 +41,33 @@
     </div>
 
     <!-- Stats -->
-    <div class="grid grid-cols-2 gap-4 mb-8">
+    <div class="grid grid-cols-3 gap-4 mb-8">
       <div class="text-center p-6 rounded-xl"
-           style="background: rgba(10, 132, 255, 0.1); border: 1px solid rgba(10, 132, 255, 0.2);">
+           style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
         <p class="text-4xl font-bold" style="color: var(--color-neon-blue);"><%= @transcriptions_count %></p>
         <p class="text-sm mt-1" style="color: var(--color-mist);">Транскрибаций</p>
       </div>
       <div class="text-center p-6 rounded-xl"
-           style="background: rgba(94, 92, 230, 0.1); border: 1px solid rgba(94, 92, 230, 0.2);">
+           style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2);">
         <p class="text-4xl font-bold" style="color: var(--color-neon-purple);"><%= @voice_generations_count %></p>
         <p class="text-sm mt-1" style="color: var(--color-mist);">Озвучек</p>
+      </div>
+      <div class="text-center p-6 rounded-xl"
+           style="background: rgba(34, 211, 187, 0.1); border: 1px solid rgba(34, 211, 187, 0.2);">
+        <p class="text-4xl font-bold" style="color: var(--color-neon-green);"><%= @translations_count %></p>
+        <p class="text-sm mt-1" style="color: var(--color-mist);">Переводов</p>
       </div>
     </div>
 
     <!-- Quick Links -->
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-3 gap-4">
       <%= link_to transcriptions_path,
           class: "flex items-center justify-center p-4 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.02]",
           style: "background: var(--color-obsidian); color: var(--color-neon-blue); border: 1px solid var(--color-graphite);" do %>
         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
         </svg>
-        Все транскрибации
+        Транскрибации
       <% end %>
       <%= link_to voice_generations_path,
           class: "flex items-center justify-center p-4 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.02]",
@@ -67,7 +75,15 @@
         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
         </svg>
-        Все озвучки
+        Озвучки
+      <% end %>
+      <%= link_to translations_path,
+          class: "flex items-center justify-center p-4 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-[1.02]",
+          style: "background: var(--color-obsidian); color: var(--color-neon-green); border: 1px solid var(--color-graphite);" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+        </svg>
+        Переводы
       <% end %>
     </div>
   </div>

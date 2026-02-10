@@ -5,7 +5,7 @@ class TranslationsController < ApplicationController
   before_action :set_translation, only: [:show, :destroy, :download]
 
   def index
-    @translations = current_user.translations.recent.page(params[:page])
+    @translations = current_user.translations.recent.limit(50)
   end
 
   def show

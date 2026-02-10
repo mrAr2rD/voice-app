@@ -1,9 +1,11 @@
 class ProfilesController < ApplicationController
+  layout "dashboard"
   before_action :require_login
 
   def show
     @transcriptions_count = current_user.transcriptions.count
     @voice_generations_count = current_user.voice_generations.count
+    @translations_count = current_user.translations.count
   end
 
   def edit

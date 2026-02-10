@@ -1,15 +1,6 @@
-<div class="max-w-md mx-auto animate-fade-in">
-  <!-- Header -->
-  <div class="text-center mb-8">
-    <div class="inline-flex w-16 h-16 rounded-2xl items-center justify-center text-2xl font-bold mb-4"
-         style="background: var(--gradient-aurora); color: var(--color-void);">
-      <%= current_user.name[0].upcase %>
-    </div>
-    <h1 class="text-2xl font-bold" style="color: var(--color-snow);">Редактирование профиля</h1>
-    <p class="mt-2" style="color: var(--color-mist);">Обновите ваши данные</p>
-  </div>
+<% content_for :page_title, "Редактирование профиля" %>
 
-  <!-- Form Card -->
+<div class="max-w-md animate-fade-in">
   <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
     <%= form_with model: current_user, url: profile_path, method: :patch, class: "space-y-5" do |f| %>
       <% if current_user.errors.any? %>
