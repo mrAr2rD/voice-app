@@ -88,11 +88,28 @@
         <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">Голос</label>
 
         <div data-provider-selector-target="elevenlabsVoices">
-          <%= f.select :voice_id, @elevenlabs_voices.map { |v| [v[:name] || v["name"], v[:id] || v["voice_id"]] },
+          <% voice_options = [] %>
+          <% if @cloned_voices&.any? %>
+            <% voice_options << ["--- Мои голоса ---", nil, { disabled: true }] %>
+            <% @cloned_voices.each do |cv| %>
+              <% voice_options << ["#{cv.name} (клон)", cv.elevenlabs_voice_id] %>
+            <% end %>
+            <% voice_options << ["--- Стандартные голоса ---", nil, { disabled: true }] %>
+          <% end %>
+          <% @elevenlabs_voices.each do |v| %>
+            <% voice_options << [v[:name] || v["name"], v[:id] || v["voice_id"]] %>
+          <% end %>
+          <%= f.select :voice_id, options_for_select(voice_options),
               { include_blank: "Выберите голос" },
               class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 appearance-none cursor-pointer",
               style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-purple);",
               data: { provider_selector_target: "elevenlabsSelect" } %>
+
+          <% if @cloned_voices.blank? || @cloned_voices.empty? %>
+            <p class="mt-2 text-xs" style="color: var(--color-mist);">
+              <%= link_to "Клонировать свой голос", new_cloned_voice_path, style: "color: var(--color-neon-purple);" %> для персонализированной озвучки
+            </p>
+          <% end %>
         </div>
 
         <div data-provider-selector-target="openaiVoices" class="hidden">

@@ -145,6 +145,66 @@
             </div>
           <% end %>
 
+          <%= link_to scripts_path,
+              class: "flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 group #{controller_name == 'scripts' ? '' : 'hover:bg-white/5'}",
+              style: controller_name == 'scripts' ? "background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2);" : "" do %>
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center mr-3"
+                 style="background: rgba(59, 130, 246, 0.1);">
+              <svg class="w-4 h-4" style="color: #3b82f6;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-medium text-sm" style="color: var(--color-snow);">Сценарии</p>
+              <p class="text-[11px]" style="color: var(--color-mist);">AI генерация</p>
+            </div>
+          <% end %>
+
+          <%= link_to video_clips_path,
+              class: "flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 group #{controller_name == 'video_clips' ? '' : 'hover:bg-white/5'}",
+              style: controller_name == 'video_clips' ? "background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.2);" : "" do %>
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center mr-3"
+                 style="background: rgba(236, 72, 153, 0.1);">
+              <svg class="w-4 h-4" style="color: #ec4899;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-4 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V6m4 10a2 2 0 100-4m0 4a2 2 0 110-4m6 4v2m-6-6V6a2 2 0 112 0v4a2 2 0 11-2 0"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-medium text-sm" style="color: var(--color-snow);">Клипы</p>
+              <p class="text-[11px]" style="color: var(--color-mist);">Shorts/Reels</p>
+            </div>
+          <% end %>
+
+          <%= link_to cloned_voices_path,
+              class: "flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 group #{controller_name == 'cloned_voices' ? '' : 'hover:bg-white/5'}",
+              style: controller_name == 'cloned_voices' ? "background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2);" : "" do %>
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center mr-3"
+                 style="background: rgba(168, 85, 247, 0.1);">
+              <svg class="w-4 h-4" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-medium text-sm" style="color: var(--color-snow);">Мои голоса</p>
+              <p class="text-[11px]" style="color: var(--color-mist);">Клонирование</p>
+            </div>
+          <% end %>
+
+          <%= link_to batch_jobs_path,
+              class: "flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 group #{controller_name == 'batch_jobs' ? '' : 'hover:bg-white/5'}",
+              style: controller_name == 'batch_jobs' ? "background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2);" : "" do %>
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center mr-3"
+                 style="background: rgba(245, 158, 11, 0.1);">
+              <svg class="w-4 h-4" style="color: #f59e0b;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-medium text-sm" style="color: var(--color-snow);">Пакетная</p>
+              <p class="text-[11px]" style="color: var(--color-mist);">Массовая обработка</p>
+            </div>
+          <% end %>
+
           <%= link_to projects_path,
               class: "flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 group #{controller_name == 'projects' ? '' : 'hover:bg-white/5'}",
               style: controller_name == 'projects' ? "background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.2);" : "" do %>
@@ -174,6 +234,57 @@
               <p class="text-[11px]" style="color: var(--color-mist);">Все активности</p>
             </div>
           <% end %>
+
+          <div class="pt-3 mt-3" style="border-top: 1px solid var(--color-graphite);">
+            <p class="px-3 py-2 text-[11px] font-semibold uppercase tracking-widest" style="color: var(--color-mist);">
+              Публикация
+            </p>
+
+            <%= link_to scheduled_posts_path,
+                class: "flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 group #{controller_name == 'scheduled_posts' ? '' : 'hover:bg-white/5'}",
+                style: controller_name == 'scheduled_posts' ? "background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2);" : "" do %>
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center mr-3"
+                   style="background: rgba(16, 185, 129, 0.1);">
+                <svg class="w-4 h-4" style="color: #10b981;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-medium text-sm" style="color: var(--color-snow);">Планировщик</p>
+                <p class="text-[11px]" style="color: var(--color-mist);">Расписание постов</p>
+              </div>
+            <% end %>
+
+            <%= link_to social_accounts_path,
+                class: "flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 group #{controller_name == 'social_accounts' ? '' : 'hover:bg-white/5'}",
+                style: controller_name == 'social_accounts' ? "background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2);" : "" do %>
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center mr-3"
+                   style="background: rgba(99, 102, 241, 0.1);">
+                <svg class="w-4 h-4" style="color: #6366f1;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-medium text-sm" style="color: var(--color-snow);">Соц. сети</p>
+                <p class="text-[11px]" style="color: var(--color-mist);">Аккаунты</p>
+              </div>
+            <% end %>
+
+            <%= link_to youtube_analytics_path,
+                class: "flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 group #{controller_name == 'youtube_analytics' ? '' : 'hover:bg-white/5'}",
+                style: controller_name == 'youtube_analytics' ? "background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2);" : "" do %>
+              <div class="w-9 h-9 rounded-lg flex items-center justify-center mr-3"
+                   style="background: rgba(239, 68, 68, 0.1);">
+                <svg class="w-4 h-4" style="color: #ef4444;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-medium text-sm" style="color: var(--color-snow);">Аналитика</p>
+                <p class="text-[11px]" style="color: var(--color-mist);">YouTube статистика</p>
+              </div>
+            <% end %>
+          </div>
 
           <div class="pt-3 mt-3" style="border-top: 1px solid var(--color-graphite);">
             <p class="px-3 py-2 text-[11px] font-semibold uppercase tracking-widest" style="color: var(--color-mist);">

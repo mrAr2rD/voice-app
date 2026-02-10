@@ -8,6 +8,6 @@ class CreateVideoBuilderAudioSources < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :video_builder_audio_sources, [:video_builder_id, :position]
+    add_index :video_builder_audio_sources, [ :video_builder_id, :position ]
   end
 end

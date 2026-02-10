@@ -20,6 +20,7 @@ class VoiceGenerationsController < ApplicationController
   def new
     @voice_generation = current_user.voice_generations.build
     @elevenlabs_voices = fetch_elevenlabs_voices
+    @cloned_voices = current_user.cloned_voices.ready
     @openai_voices = Tts::OpenaiClient::VOICES
     @projects = current_user.projects.order(:name)
   end
@@ -33,6 +34,7 @@ class VoiceGenerationsController < ApplicationController
       redirect_to @voice_generation
     else
       @elevenlabs_voices = fetch_elevenlabs_voices
+      @cloned_voices = current_user.cloned_voices.ready
       @openai_voices = Tts::OpenaiClient::VOICES
       @projects = current_user.projects.order(:name)
       render :new, status: :unprocessable_entity

@@ -1,0 +1,111 @@
+<% content_for :page_title, @video_clip.display_title %>
+
+<div class="max-w-4xl mx-auto">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Video Preview -->
+    <div class="rounded-2xl overflow-hidden" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <% if @video_clip.output_video.attached? && @video_clip.completed? %>
+        <video controls class="w-full" style="max-height: 70vh;">
+          <source src="<%= url_for(@video_clip.output_video) %>" type="video/mp4">
+        </video>
+      <% else %>
+        <div class="aspect-[9/16] flex items-center justify-center" style="background: var(--color-obsidian);">
+          <% if @video_clip.in_progress? %>
+            <div class="text-center">
+              <svg class="animate-spin w-16 h-16 mx-auto mb-4" style="color: var(--color-coral);" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <p style="color: var(--color-cloud);">Создание клипа...</p>
+            </div>
+          <% elsif @video_clip.failed? %>
+            <div class="text-center p-6">
+              <svg class="w-16 h-16 mx-auto mb-4" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <p style="color: var(--color-coral);"><%= @video_clip.error_message %></p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Info Panel -->
+    <div id="<%= dom_id(@video_clip) %>"
+         class="rounded-2xl p-6"
+         style="background: var(--color-abyss); border: 1px solid var(--color-graphite);"
+         <%= "data-controller=poll data-poll-url-value=#{video_clip_path(@video_clip, format: :json)} data-poll-interval-value=2000" if @video_clip.in_progress? %>>
+
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <h1 class="text-xl font-semibold mb-1" style="color: var(--color-snow);">
+            <%= @video_clip.display_title %>
+          </h1>
+          <p class="text-sm" style="color: var(--color-mist);">
+            <%= time_ago_in_words(@video_clip.created_at) %> назад
+          </p>
+        </div>
+        <%= render "video_clips/status_badge", video_clip: @video_clip %>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="rounded-xl p-4" style="background: var(--color-obsidian);">
+          <p class="text-sm" style="color: var(--color-mist);">Длительность</p>
+          <p class="text-lg font-bold" style="color: var(--color-snow);"><%= @video_clip.duration_formatted || "—" %></p>
+        </div>
+        <div class="rounded-xl p-4" style="background: var(--color-obsidian);">
+          <p class="text-sm" style="color: var(--color-mist);">Формат</p>
+          <p class="text-lg font-bold" style="color: var(--color-snow);"><%= @video_clip.aspect_ratio %></p>
+        </div>
+        <div class="rounded-xl p-4" style="background: var(--color-obsidian);">
+          <p class="text-sm" style="color: var(--color-mist);">Временной диапазон</p>
+          <p class="text-lg font-bold" style="color: var(--color-snow);"><%= @video_clip.formatted_time_range %></p>
+        </div>
+        <% if @video_clip.virality_score %>
+          <div class="rounded-xl p-4" style="background: var(--color-obsidian);">
+            <p class="text-sm" style="color: var(--color-mist);">Вирусность</p>
+            <p class="text-lg font-bold" style="color: var(--color-coral);"><%= @video_clip.virality_score.round(1) %>/10</p>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @video_clip.highlight_reason.present? %>
+        <div class="rounded-xl p-4 mb-6" style="background: rgba(255, 55, 95, 0.1); border: 1px solid rgba(255, 55, 95, 0.2);">
+          <p class="text-sm" style="color: var(--color-mist);">Почему выбран этот момент:</p>
+          <p class="mt-1" style="color: var(--color-cloud);"><%= @video_clip.highlight_reason %></p>
+        </div>
+      <% end %>
+
+      <% if @video_clip.completed? && @video_clip.output_video.attached? %>
+        <div class="space-y-3">
+          <%= link_to download_video_clip_path(@video_clip),
+              class: "w-full inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+              style: "background: var(--color-coral); color: white;" do %>
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            Скачать клип
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- Actions -->
+      <div class="flex items-center justify-between pt-6 mt-6" style="border-top: 1px solid var(--color-graphite);">
+        <%= link_to video_clips_path, class: "text-sm transition-colors", style: "color: var(--color-mist);" do %>
+          &larr; К списку клипов
+        <% end %>
+
+        <%= button_to video_clip_path(@video_clip), method: :delete,
+            data: { turbo_confirm: "Удалить этот клип?" },
+            class: "inline-flex items-center px-4 py-2 rounded-lg text-sm transition-colors",
+            style: "color: var(--color-coral); background: rgba(255, 55, 95, 0.1);" do %>
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+          Удалить
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

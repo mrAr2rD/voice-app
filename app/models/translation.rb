@@ -3,6 +3,7 @@ class Translation < ApplicationRecord
 
   belongs_to :user
   belongs_to :project, optional: true
+  belongs_to :batch_job, optional: true
 
   enum :status, { pending: 0, processing: 1, completed: 2, failed: 3 }
 
@@ -13,6 +14,7 @@ class Translation < ApplicationRecord
 
   after_create_commit :broadcast_created
   after_update_commit :broadcast_updated
+  after_update_commit :update_batch_job_progress, if: :batch_job_id?
 
   LANGUAGES = [
     [ "Русский", "ru" ],
@@ -85,5 +87,9 @@ class Translation < ApplicationRecord
       partial: "translations/translation",
       locals: { translation: self }
     )
+  end
+
+  def update_batch_job_progress
+    batch_job&.update_progress! if completed? || failed?
   end
 end

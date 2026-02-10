@@ -3,6 +3,7 @@ class VoiceGeneration < ApplicationRecord
 
   belongs_to :user
   belongs_to :project, optional: true
+  belongs_to :batch_job, optional: true
   has_one_attached :audio_file
 
   enum :provider, { elevenlabs: 0, openai: 1 }
@@ -16,6 +17,7 @@ class VoiceGeneration < ApplicationRecord
 
   after_create_commit :broadcast_created
   after_update_commit :broadcast_updated
+  after_update_commit :update_batch_job_progress, if: :batch_job_id?
 
   def text_preview(length = 50)
     text.truncate(length)
@@ -51,5 +53,9 @@ class VoiceGeneration < ApplicationRecord
       partial: "voice_generations/voice_generation",
       locals: { voice_generation: self }
     )
+  end
+
+  def update_batch_job_progress
+    batch_job&.update_progress! if completed? || failed?
   end
 end

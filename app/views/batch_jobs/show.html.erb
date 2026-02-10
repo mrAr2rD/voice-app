@@ -1,0 +1,134 @@
+<% content_for :page_title, @batch_job.name.presence || @batch_job.job_type_display %>
+
+<div class="max-w-4xl mx-auto">
+  <div id="<%= dom_id(@batch_job) %>"
+       class="rounded-2xl p-8"
+       style="background: var(--color-abyss); border: 1px solid var(--color-graphite);"
+       <%= "data-controller=poll data-poll-url-value=#{batch_job_path(@batch_job, format: :json)} data-poll-interval-value=2000" if @batch_job.in_progress? %>>
+
+    <!-- Header -->
+    <div class="flex items-start justify-between mb-6">
+      <div class="flex items-center">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mr-4"
+             style="background: rgba(94, 92, 230, 0.15);">
+          <svg class="w-7 h-7" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-semibold" style="color: var(--color-snow);">
+            <%= @batch_job.name.presence || @batch_job.job_type_display %>
+          </h1>
+          <p class="text-sm" style="color: var(--color-mist);">
+            <%= @batch_job.job_type_display %>
+            <span class="mx-1">&bull;</span>
+            <%= time_ago_in_words(@batch_job.created_at) %> назад
+          </p>
+        </div>
+      </div>
+
+      <%= render "batch_jobs/status_badge", batch_job: @batch_job %>
+    </div>
+
+    <!-- Progress -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-2">
+        <span style="color: var(--color-cloud);">Прогресс</span>
+        <span style="color: var(--color-neon-purple);"><%= @batch_job.progress_percentage %>%</span>
+      </div>
+      <div class="h-3 rounded-full overflow-hidden" style="background: var(--color-obsidian);">
+        <div class="h-full rounded-full transition-all duration-500"
+             style="background: linear-gradient(90deg, var(--color-neon-purple), var(--color-neon-pink)); width: <%= @batch_job.progress_percentage %>%;">
+        </div>
+      </div>
+      <div class="flex items-center justify-between mt-2 text-sm" style="color: var(--color-mist);">
+        <span><%= @batch_job.completed_items %> завершено</span>
+        <span><%= @batch_job.failed_items %> с ошибкой</span>
+        <span><%= @batch_job.total_items %> всего</span>
+      </div>
+    </div>
+
+    <!-- Items List -->
+    <div class="space-y-4">
+      <h3 class="font-medium" style="color: var(--color-cloud);">Элементы</h3>
+
+      <% items = case @batch_job.job_type
+                 when "transcription" then @batch_job.transcriptions.recent
+                 when "voice_generation" then @batch_job.voice_generations.recent
+                 when "translation" then @batch_job.translations.recent
+                 else []
+                 end %>
+
+      <% items.each do |item| %>
+        <div class="rounded-xl p-4 flex items-center justify-between"
+             style="background: var(--color-obsidian);">
+          <div class="flex items-center flex-1">
+            <% if item.completed? %>
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3"
+                   style="background: rgba(48, 209, 88, 0.15);">
+                <svg class="w-4 h-4" style="color: var(--color-neon-green);" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            <% elsif item.failed? %>
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3"
+                   style="background: rgba(255, 55, 95, 0.15);">
+                <svg class="w-4 h-4" style="color: var(--color-coral);" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            <% else %>
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center mr-3"
+                   style="background: rgba(94, 92, 230, 0.15);">
+                <svg class="animate-spin w-4 h-4" style="color: var(--color-neon-purple);" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </div>
+            <% end %>
+
+            <span class="truncate" style="color: var(--color-snow);">
+              <% case @batch_job.job_type %>
+              <% when "transcription" %>
+                <%= item.display_title %>
+              <% when "voice_generation" %>
+                <%= item.text_preview(60) %>
+              <% when "translation" %>
+                <%= item.text_preview(60) %>
+              <% end %>
+            </span>
+          </div>
+
+          <% if item.respond_to?(:path) || item.persisted? %>
+            <% path = case @batch_job.job_type
+                       when "transcription" then transcription_path(item)
+                       when "voice_generation" then voice_generation_path(item)
+                       when "translation" then translation_path(item)
+                       end %>
+            <%= link_to path, class: "text-sm", style: "color: var(--color-neon-purple);" do %>
+              Открыть &rarr;
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-between pt-6 mt-6" style="border-top: 1px solid var(--color-graphite);">
+      <%= link_to batch_jobs_path, class: "text-sm transition-colors", style: "color: var(--color-mist);" do %>
+        &larr; К списку задач
+      <% end %>
+
+      <%= button_to batch_job_path(@batch_job), method: :delete,
+          data: { turbo_confirm: "Удалить эту пакетную задачу?" },
+          class: "inline-flex items-center px-4 py-2 rounded-lg text-sm transition-colors",
+          style: "color: var(--color-coral); background: rgba(255, 55, 95, 0.1);" do %>
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+        </svg>
+        Удалить
+      <% end %>
+    </div>
+  </div>
+</div>

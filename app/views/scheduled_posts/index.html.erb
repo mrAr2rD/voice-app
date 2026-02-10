@@ -1,0 +1,78 @@
+<% content_for :page_title, "Мультиплатформенная публикация" %>
+
+<% content_for :page_actions do %>
+  <%= link_to new_scheduled_post_path,
+      class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:scale-105",
+      style: "background: var(--color-neon-purple); color: white;" do %>
+    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>
+    Новая публикация
+  <% end %>
+<% end %>
+
+<%= turbo_stream_from "user_#{current_user.id}_scheduled_posts" %>
+
+<!-- Connected Accounts -->
+<div class="mb-6">
+  <h3 class="text-sm font-medium mb-3" style="color: var(--color-cloud);">Подключённые аккаунты</h3>
+  <div class="flex flex-wrap gap-3">
+    <% if @social_accounts.any? %>
+      <% @social_accounts.each do |account| %>
+        <div class="flex items-center px-4 py-2 rounded-xl"
+             style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+          <span class="w-3 h-3 rounded-full mr-2" style="background: <%= account.platform_color %>;"></span>
+          <span style="color: var(--color-snow);"><%= account.account_name || account.platform_name %></span>
+        </div>
+      <% end %>
+    <% end %>
+
+    <%= link_to social_accounts_path,
+        class: "flex items-center px-4 py-2 rounded-xl transition-colors",
+        style: "background: var(--color-obsidian); border: 1px dashed var(--color-graphite); color: var(--color-mist);" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      Подключить
+    <% end %>
+  </div>
+</div>
+
+<!-- Upcoming Posts -->
+<% if @upcoming_posts.any? %>
+  <div class="rounded-2xl p-6 mb-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <h3 class="font-medium mb-4" style="color: var(--color-cloud);">Запланированные публикации</h3>
+    <div class="space-y-3">
+      <% @upcoming_posts.each do |post| %>
+        <%= render "scheduled_posts/scheduled_post", scheduled_post: post %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<!-- All Posts -->
+<div id="scheduled_posts" class="space-y-4">
+  <% if @scheduled_posts.empty? %>
+    <div class="text-center py-16 rounded-2xl" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-6"
+           style="background: rgba(94, 92, 230, 0.1); border: 1px solid rgba(94, 92, 230, 0.2);">
+        <svg class="w-10 h-10" style="color: var(--color-neon-purple); opacity: 0.5;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold mb-2" style="color: var(--color-snow);">Нет публикаций</h3>
+      <p class="mb-6" style="color: var(--color-mist);">Запланируйте публикацию видео на соц. сети</p>
+      <%= link_to new_scheduled_post_path,
+          class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+          style: "background: var(--color-neon-purple); color: white;" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Создать публикацию
+      <% end %>
+    </div>
+  <% else %>
+    <%= render @scheduled_posts %>
+  <% end %>
+</div>

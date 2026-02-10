@@ -1,0 +1,56 @@
+<% content_for :page_title, "Клипы (Shorts/Reels)" %>
+
+<% content_for :page_actions do %>
+  <%= link_to new_video_clip_path,
+      class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:scale-105",
+      style: "background: var(--color-neon-purple); color: white;" do %>
+    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>
+    Создать клип
+  <% end %>
+<% end %>
+
+<%= turbo_stream_from "user_#{current_user.id}_video_clips" %>
+
+<div class="mb-6">
+  <div class="rounded-xl p-4" style="background: rgba(255, 55, 95, 0.1); border: 1px solid rgba(255, 55, 95, 0.2);">
+    <div class="flex items-start">
+      <svg class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+      </svg>
+      <div>
+        <p class="text-sm" style="color: var(--color-cloud);">
+          Auto-Clipping автоматически находит самые интересные моменты в видео и создаёт
+          вертикальные клипы для TikTok, Reels и Shorts.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="video_clips" class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+  <% if @video_clips.empty? %>
+    <div class="col-span-full text-center py-16 rounded-2xl" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-6"
+           style="background: rgba(255, 55, 95, 0.1); border: 1px solid rgba(255, 55, 95, 0.2);">
+        <svg class="w-10 h-10" style="color: var(--color-coral); opacity: 0.5;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold mb-2" style="color: var(--color-snow);">Нет клипов</h3>
+      <p class="mb-6" style="color: var(--color-mist);">Создайте первый короткий клип из видео</p>
+      <%= link_to new_video_clip_path,
+          class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+          style: "background: var(--color-coral); color: white;" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Создать клип
+      <% end %>
+    </div>
+  <% else %>
+    <%= render @video_clips %>
+  <% end %>
+</div>

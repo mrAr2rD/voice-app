@@ -1,0 +1,83 @@
+<% content_for :page_title, "Пакетная обработка" %>
+
+<% content_for :page_actions do %>
+  <div class="flex items-center space-x-3">
+    <%= link_to new_batch_job_path(type: "transcription"),
+        class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:scale-105",
+        style: "background: var(--color-neon-purple); color: white;" do %>
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      Пакетная транскрибация
+    <% end %>
+  </div>
+<% end %>
+
+<%= turbo_stream_from "user_#{current_user.id}_batch_jobs" %>
+
+<div class="mb-6">
+  <div class="grid grid-cols-3 gap-4">
+    <%= link_to new_batch_job_path(type: "transcription"),
+        class: "block rounded-xl p-5 transition-all duration-200 hover:scale-[1.02]",
+        style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+      <div class="flex items-center mb-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+             style="background: rgba(94, 92, 230, 0.15);">
+          <svg class="w-5 h-5" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+          </svg>
+        </div>
+        <span class="font-medium" style="color: var(--color-snow);">Транскрибация</span>
+      </div>
+      <p class="text-sm" style="color: var(--color-mist);">Загрузите несколько аудио/видео файлов</p>
+    <% end %>
+
+    <%= link_to new_batch_job_path(type: "voice_generation"),
+        class: "block rounded-xl p-5 transition-all duration-200 hover:scale-[1.02]",
+        style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+      <div class="flex items-center mb-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+             style="background: rgba(48, 209, 88, 0.15);">
+          <svg class="w-5 h-5" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+          </svg>
+        </div>
+        <span class="font-medium" style="color: var(--color-snow);">Озвучка</span>
+      </div>
+      <p class="text-sm" style="color: var(--color-mist);">Озвучьте несколько текстов сразу</p>
+    <% end %>
+
+    <%= link_to new_batch_job_path(type: "translation"),
+        class: "block rounded-xl p-5 transition-all duration-200 hover:scale-[1.02]",
+        style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+      <div class="flex items-center mb-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+             style="background: rgba(255, 159, 10, 0.15);">
+          <svg class="w-5 h-5" style="color: var(--color-warning);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+          </svg>
+        </div>
+        <span class="font-medium" style="color: var(--color-snow);">Перевод</span>
+      </div>
+      <p class="text-sm" style="color: var(--color-mist);">Переведите несколько текстов</p>
+    <% end %>
+  </div>
+</div>
+
+<div id="batch_jobs" class="space-y-4">
+  <% if @batch_jobs.empty? %>
+    <div class="text-center py-16 rounded-2xl" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-6"
+           style="background: rgba(94, 92, 230, 0.1); border: 1px solid rgba(94, 92, 230, 0.2);">
+        <svg class="w-10 h-10" style="color: var(--color-neon-purple); opacity: 0.5;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold mb-2" style="color: var(--color-snow);">Нет пакетных задач</h3>
+      <p class="mb-6" style="color: var(--color-mist);">Выберите тип обработки выше для начала</p>
+    </div>
+  <% else %>
+    <%= render @batch_jobs %>
+  <% end %>
+</div>

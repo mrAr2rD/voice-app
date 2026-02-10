@@ -1,0 +1,128 @@
+<% content_for :page_title, @analytics&.dig(:video, :title) || "Аналитика видео" %>
+
+<% if @analytics %>
+  <div class="max-w-4xl mx-auto">
+    <!-- Video Header -->
+    <div class="rounded-2xl p-6 mb-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div class="flex items-start">
+        <% if @analytics.dig(:video, :thumbnail) %>
+          <img src="<%= @analytics.dig(:video, :thumbnail) %>" class="w-40 h-24 object-cover rounded-xl mr-6">
+        <% end %>
+        <div class="flex-1">
+          <h1 class="text-xl font-semibold mb-2" style="color: var(--color-snow);">
+            <%= @analytics.dig(:video, :title) %>
+          </h1>
+          <p class="text-sm" style="color: var(--color-mist);">
+            Опубликовано: <%= Time.parse(@analytics.dig(:video, :published_at)).strftime("%d.%m.%Y") rescue "—" %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div class="rounded-xl p-5 text-center" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <p class="text-3xl font-bold" style="color: var(--color-neon-purple);">
+          <%= number_with_delimiter(@analytics.dig(:video, :views) || 0) %>
+        </p>
+        <p class="text-sm mt-1" style="color: var(--color-mist);">Всего просмотров</p>
+      </div>
+
+      <div class="rounded-xl p-5 text-center" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <p class="text-3xl font-bold" style="color: var(--color-coral);">
+          <%= number_with_delimiter(@analytics.dig(:video, :likes) || 0) %>
+        </p>
+        <p class="text-sm mt-1" style="color: var(--color-mist);">Лайков</p>
+      </div>
+
+      <div class="rounded-xl p-5 text-center" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <p class="text-3xl font-bold" style="color: var(--color-neon-green);">
+          <%= number_with_delimiter(@analytics.dig(:video, :comments) || 0) %>
+        </p>
+        <p class="text-sm mt-1" style="color: var(--color-mist);">Комментариев</p>
+      </div>
+
+      <div class="rounded-xl p-5 text-center" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <p class="text-3xl font-bold" style="color: var(--color-warning);">
+          <%= ((@analytics[:totals][:estimated_minutes_watched]&.to_f || 0) / 60).round(1) %> ч
+        </p>
+        <p class="text-sm mt-1" style="color: var(--color-mist);">Время просмотра</p>
+      </div>
+    </div>
+
+    <!-- Period Stats -->
+    <div class="rounded-2xl p-6 mb-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <h3 class="font-medium mb-4" style="color: var(--color-cloud);">За последние <%= @period %> дней</h3>
+
+      <div class="grid grid-cols-3 gap-4">
+        <div class="rounded-xl p-4" style="background: var(--color-obsidian);">
+          <p class="text-2xl font-bold" style="color: var(--color-snow);">
+            <%= number_with_delimiter(@analytics[:totals][:views]&.to_i || 0) %>
+          </p>
+          <p class="text-sm" style="color: var(--color-mist);">Просмотров</p>
+        </div>
+        <div class="rounded-xl p-4" style="background: var(--color-obsidian);">
+          <p class="text-2xl font-bold" style="color: var(--color-snow);">
+            <%= (@analytics[:totals][:average_view_percentage]&.to_f || 0).round(1) %>%
+          </p>
+          <p class="text-sm" style="color: var(--color-mist);">Ср. % просмотра</p>
+        </div>
+        <div class="rounded-xl p-4" style="background: var(--color-obsidian);">
+          <p class="text-2xl font-bold" style="color: var(--color-snow);">
+            <%= number_with_delimiter(@analytics[:totals][:shares]&.to_i || 0) %>
+          </p>
+          <p class="text-sm" style="color: var(--color-mist);">Репостов</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <% if @analytics[:daily_data]&.any? %>
+      <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <h3 class="font-medium mb-4" style="color: var(--color-cloud);">Просмотры по дням</h3>
+        <div class="h-64">
+          <canvas id="videoViewsChart"></canvas>
+        </div>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('videoViewsChart').getContext('2d');
+        const data = <%= raw @analytics[:daily_data].to_json %>;
+
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: data.map(d => d.day),
+            datasets: [{
+              label: 'Просмотры',
+              data: data.map(d => d.views || 0),
+              borderColor: '#5e5ce6',
+              backgroundColor: 'rgba(94, 92, 230, 0.1)',
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } },
+              y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } }
+            }
+          }
+        });
+      });
+      </script>
+    <% end %>
+
+    <!-- Back Link -->
+    <div class="mt-6">
+      <%= link_to youtube_analytics_path, class: "text-sm", style: "color: var(--color-mist);" do %>
+        &larr; Назад к общей аналитике
+      <% end %>
+    </div>
+  </div>
+<% end %>

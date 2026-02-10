@@ -1,0 +1,56 @@
+<% content_for :page_title, "Клонированные голоса" %>
+
+<% content_for :page_actions do %>
+  <%= link_to new_cloned_voice_path,
+      class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:scale-105",
+      style: "background: var(--color-neon-purple); color: white;" do %>
+    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>
+    Клонировать голос
+  <% end %>
+<% end %>
+
+<%= turbo_stream_from "user_#{current_user.id}_cloned_voices" %>
+
+<div class="mb-6">
+  <div class="rounded-xl p-4" style="background: rgba(94, 92, 230, 0.1); border: 1px solid rgba(94, 92, 230, 0.2);">
+    <div class="flex items-start">
+      <svg class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <div>
+        <p class="text-sm" style="color: var(--color-cloud);">
+          Клонирование голоса позволяет создать AI-копию вашего голоса или голоса другого человека.
+          Загрузите 1-5 аудио образцов (10-60 сек каждый) для лучшего результата.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="cloned_voices" class="space-y-4">
+  <% if @cloned_voices.empty? %>
+    <div class="text-center py-16 rounded-2xl" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-6"
+           style="background: rgba(94, 92, 230, 0.1); border: 1px solid rgba(94, 92, 230, 0.2);">
+        <svg class="w-10 h-10" style="color: var(--color-neon-purple); opacity: 0.5;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold mb-2" style="color: var(--color-snow);">Нет клонированных голосов</h3>
+      <p class="mb-6" style="color: var(--color-mist);">Создайте копию своего голоса для озвучки</p>
+      <%= link_to new_cloned_voice_path,
+          class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+          style: "background: var(--color-neon-purple); color: white;" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Клонировать голос
+      <% end %>
+    </div>
+  <% else %>
+    <%= render @cloned_voices %>
+  <% end %>
+</div>

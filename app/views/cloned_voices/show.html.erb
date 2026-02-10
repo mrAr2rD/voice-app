@@ -1,0 +1,115 @@
+<% content_for :page_title, @cloned_voice.name %>
+
+<div class="max-w-2xl mx-auto">
+  <div id="<%= dom_id(@cloned_voice) %>"
+       class="rounded-2xl p-8"
+       style="background: var(--color-abyss); border: 1px solid var(--color-graphite);"
+       <%= "data-controller=poll data-poll-url-value=#{cloned_voice_path(@cloned_voice, format: :json)} data-poll-interval-value=3000" if @cloned_voice.in_progress? %>>
+
+    <!-- Header -->
+    <div class="flex items-start justify-between mb-6">
+      <div class="flex items-center">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mr-4"
+             style="background: rgba(94, 92, 230, 0.15);">
+          <svg class="w-7 h-7" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-semibold" style="color: var(--color-snow);"><%= @cloned_voice.name %></h1>
+          <p class="text-sm" style="color: var(--color-mist);">
+            Создан <%= time_ago_in_words(@cloned_voice.created_at) %> назад
+          </p>
+        </div>
+      </div>
+
+      <%= render "cloned_voices/status_badge", cloned_voice: @cloned_voice %>
+    </div>
+
+    <% if @cloned_voice.description.present? %>
+      <div class="mb-6">
+        <p style="color: var(--color-cloud);"><%= @cloned_voice.description %></p>
+      </div>
+    <% end %>
+
+    <% if @cloned_voice.labels_array.any? %>
+      <div class="flex flex-wrap gap-2 mb-6">
+        <% @cloned_voice.labels_array.each do |label| %>
+          <span class="px-3 py-1 rounded-full text-xs font-medium"
+                style="background: rgba(94, 92, 230, 0.15); color: var(--color-neon-purple);">
+            <%= label %>
+          </span>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if @cloned_voice.in_progress? %>
+      <div class="rounded-xl p-4 mb-6" style="background: rgba(94, 92, 230, 0.1); border: 1px solid rgba(94, 92, 230, 0.2);">
+        <div class="flex items-center">
+          <svg class="animate-spin w-5 h-5 mr-3" style="color: var(--color-neon-purple);" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span style="color: var(--color-cloud);">Клонирование голоса в процессе...</span>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @cloned_voice.failed? && @cloned_voice.error_message.present? %>
+      <div class="rounded-xl p-4 mb-6" style="background: rgba(255, 55, 95, 0.1); border: 1px solid rgba(255, 55, 95, 0.2);">
+        <div class="flex items-start">
+          <svg class="w-5 h-5 mr-3 mt-0.5" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span style="color: var(--color-coral);"><%= @cloned_voice.error_message %></span>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @cloned_voice.completed? && @cloned_voice.elevenlabs_voice_id.present? %>
+      <div class="rounded-xl p-4 mb-6" style="background: rgba(48, 209, 88, 0.1); border: 1px solid rgba(48, 209, 88, 0.2);">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 mr-3" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          <span style="color: var(--color-neon-green);">Голос готов к использованию в озвучках</span>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <p class="text-sm mb-2" style="color: var(--color-mist);">Voice ID:</p>
+        <code class="text-sm px-3 py-2 rounded-lg block"
+              style="background: var(--color-obsidian); color: var(--color-cloud);">
+          <%= @cloned_voice.elevenlabs_voice_id %>
+        </code>
+      </div>
+
+      <%= link_to new_voice_generation_path,
+          class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+          style: "background: var(--color-neon-purple); color: white;" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+        </svg>
+        Создать озвучку с этим голосом
+      <% end %>
+    <% end %>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-between pt-6 mt-6" style="border-top: 1px solid var(--color-graphite);">
+      <%= link_to cloned_voices_path, class: "text-sm transition-colors", style: "color: var(--color-mist);" do %>
+        &larr; К списку голосов
+      <% end %>
+
+      <%= button_to cloned_voice_path(@cloned_voice), method: :delete,
+          data: { turbo_confirm: "Удалить этот клонированный голос?" },
+          class: "inline-flex items-center px-4 py-2 rounded-lg text-sm transition-colors",
+          style: "color: var(--color-coral); background: rgba(255, 55, 95, 0.1);" do %>
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+        </svg>
+        Удалить
+      <% end %>
+    </div>
+  </div>
+</div>

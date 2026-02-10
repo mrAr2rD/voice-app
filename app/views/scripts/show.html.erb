@@ -1,0 +1,125 @@
+<% content_for :page_title, @script.display_title %>
+
+<div class="max-w-4xl mx-auto">
+  <div id="<%= dom_id(@script) %>"
+       class="rounded-2xl p-8"
+       style="background: var(--color-abyss); border: 1px solid var(--color-graphite);"
+       <%= "data-controller=poll data-poll-url-value=#{script_path(@script, format: :json)} data-poll-interval-value=2000" if @script.in_progress? %>>
+
+    <!-- Header -->
+    <div class="flex items-start justify-between mb-6">
+      <div class="flex items-center">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mr-4"
+             style="background: rgba(94, 92, 230, 0.15);">
+          <svg class="w-7 h-7" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-xl font-semibold" style="color: var(--color-snow);">
+            <%= @script.display_title %>
+          </h1>
+          <p class="text-sm" style="color: var(--color-mist);">
+            <%= @script.script_type_name %>
+            <span class="mx-1">&bull;</span>
+            <%= time_ago_in_words(@script.created_at) %> назад
+          </p>
+        </div>
+      </div>
+
+      <%= render "scripts/status_badge", script: @script %>
+    </div>
+
+    <!-- Topic -->
+    <div class="mb-6 rounded-xl p-4" style="background: var(--color-obsidian);">
+      <p class="text-sm mb-1" style="color: var(--color-mist);">Тема:</p>
+      <p style="color: var(--color-cloud);"><%= @script.topic %></p>
+    </div>
+
+    <% if @script.in_progress? %>
+      <div class="rounded-xl p-4 mb-6" style="background: rgba(94, 92, 230, 0.1); border: 1px solid rgba(94, 92, 230, 0.2);">
+        <div class="flex items-center">
+          <svg class="animate-spin w-5 h-5 mr-3" style="color: var(--color-neon-purple);" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span style="color: var(--color-cloud);">AI генерирует сценарий...</span>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @script.failed? && @script.error_message.present? %>
+      <div class="rounded-xl p-4 mb-6" style="background: rgba(255, 55, 95, 0.1); border: 1px solid rgba(255, 55, 95, 0.2);">
+        <div class="flex items-start">
+          <svg class="w-5 h-5 mr-3 mt-0.5" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span style="color: var(--color-coral);"><%= @script.error_message %></span>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @script.completed? && @script.content.present? %>
+      <!-- Stats -->
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <div class="rounded-xl p-4 text-center" style="background: var(--color-obsidian);">
+          <p class="text-2xl font-bold" style="color: var(--color-neon-purple);"><%= @script.word_count %></p>
+          <p class="text-sm" style="color: var(--color-mist);">слов</p>
+        </div>
+        <div class="rounded-xl p-4 text-center" style="background: var(--color-obsidian);">
+          <p class="text-2xl font-bold" style="color: var(--color-neon-green);"><%= @script.estimated_duration_minutes %></p>
+          <p class="text-sm" style="color: var(--color-mist);">мин. чтения</p>
+        </div>
+        <div class="rounded-xl p-4 text-center" style="background: var(--color-obsidian);">
+          <p class="text-2xl font-bold" style="color: var(--color-warning);"><%= @script.tokens_used %></p>
+          <p class="text-sm" style="color: var(--color-mist);">токенов</p>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-medium" style="color: var(--color-cloud);">Сценарий</h3>
+          <button onclick="navigator.clipboard.writeText(document.getElementById('script-content').innerText)"
+                  class="text-sm px-3 py-1 rounded-lg transition-colors"
+                  style="color: var(--color-neon-purple); background: rgba(94, 92, 230, 0.1);">
+            Копировать
+          </button>
+        </div>
+        <div id="script-content" class="rounded-xl p-6 whitespace-pre-wrap" style="background: var(--color-obsidian); color: var(--color-snow); line-height: 1.8;">
+<%= simple_format(@script.content.gsub(/\[(INTRO|MAIN|CTA|OUTRO)\]/) { |m| "<span style='color: var(--color-neon-purple); font-weight: 600;'>#{m}</span>" }.html_safe) %>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center space-x-3">
+        <%= button_to copy_to_tts_script_path(@script), method: :post,
+            class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+            style: "background: var(--color-neon-purple); color: white;" do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+          </svg>
+          Озвучить сценарий
+        <% end %>
+      </div>
+    <% end %>
+
+    <!-- Footer Actions -->
+    <div class="flex items-center justify-between pt-6 mt-6" style="border-top: 1px solid var(--color-graphite);">
+      <%= link_to scripts_path, class: "text-sm transition-colors", style: "color: var(--color-mist);" do %>
+        &larr; К списку сценариев
+      <% end %>
+
+      <%= button_to script_path(@script), method: :delete,
+          data: { turbo_confirm: "Удалить этот сценарий?" },
+          class: "inline-flex items-center px-4 py-2 rounded-lg text-sm transition-colors",
+          style: "color: var(--color-coral); background: rgba(255, 55, 95, 0.1);" do %>
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+        </svg>
+        Удалить
+      <% end %>
+    </div>
+  </div>
+</div>

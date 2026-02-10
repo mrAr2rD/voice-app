@@ -1,0 +1,123 @@
+<% content_for :page_title, "Новый сценарий" %>
+
+<div class="max-w-2xl mx-auto animate-fade-in">
+  <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <%= form_with model: @script, class: "space-y-6" do |f| %>
+      <% if @script.errors.any? %>
+        <div class="rounded-xl p-4" style="background: rgba(255, 55, 95, 0.1); border: 1px solid rgba(255, 55, 95, 0.2);">
+          <ul class="text-sm space-y-1" style="color: var(--color-coral);">
+            <% @script.errors.full_messages.each do |message| %>
+              <li class="flex items-center">
+                <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <%= message %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- Script Type -->
+      <div>
+        <%= f.label :script_type, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+          Тип сценария
+        <% end %>
+        <div class="grid grid-cols-2 gap-3">
+          <% Script::SCRIPT_TYPES.each do |name, value| %>
+            <label class="relative flex cursor-pointer rounded-xl p-4 transition-all duration-200"
+                   style="background: var(--color-obsidian); border: 2px solid var(--color-graphite);">
+              <%= f.radio_button :script_type, value, class: "sr-only peer" %>
+              <span class="flex items-center peer-checked:text-white">
+                <span class="font-medium" style="color: var(--color-snow);"><%= name %></span>
+              </span>
+              <style>
+                input[type="radio"]:checked + span { color: var(--color-neon-purple) !important; }
+                label:has(input[type="radio"]:checked) { border-color: var(--color-neon-purple) !important; }
+              </style>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Topic -->
+      <div>
+        <%= f.label :topic, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+          Тема видео
+        <% end %>
+        <%= f.text_area :topic, rows: 4, required: true, maxlength: 1000,
+            placeholder: "Опишите о чём будет видео. Чем подробнее, тем лучше результат.\n\nПример: Обзор iPhone 16 Pro Max - дизайн, камера, производительность, стоит ли покупать",
+            class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 resize-none",
+            style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-purple);" %>
+      </div>
+
+      <!-- Title -->
+      <div>
+        <%= f.label :title, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+          Заголовок <span style="color: var(--color-mist);">(опционально)</span>
+        <% end %>
+        <%= f.text_field :title, maxlength: 255,
+            placeholder: "Название сценария для организации",
+            class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2",
+            style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-purple);" %>
+      </div>
+
+      <!-- Duration -->
+      <div>
+        <%= f.label :duration_seconds, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+          Длительность видео
+        <% end %>
+        <%= f.select :duration_seconds,
+            Script::DURATIONS,
+            {},
+            class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 appearance-none cursor-pointer",
+            style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-purple);" %>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Language -->
+        <div>
+          <%= f.label :language, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+            Язык
+          <% end %>
+          <%= f.select :language,
+              [["Русский", "ru"], ["English", "en"]],
+              {},
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none appearance-none cursor-pointer",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        </div>
+
+        <!-- Model -->
+        <div>
+          <%= f.label :model, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+            AI модель
+          <% end %>
+          <%= f.select :model,
+              Script::MODELS,
+              {},
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none appearance-none cursor-pointer",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        </div>
+      </div>
+
+      <!-- Project -->
+      <% if @projects.any? %>
+        <div>
+          <%= f.label :project_id, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+            Проект <span style="color: var(--color-mist);">(опционально)</span>
+          <% end %>
+          <%= f.select :project_id,
+              options_from_collection_for_select(@projects, :id, :name),
+              { include_blank: "Без проекта" },
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none appearance-none cursor-pointer",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        </div>
+      <% end %>
+
+      <!-- Submit -->
+      <%= f.submit "Сгенерировать сценарий",
+          class: "w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer",
+          style: "background: linear-gradient(135deg, var(--color-neon-purple) 0%, var(--color-neon-pink) 100%); color: white; box-shadow: 0 10px 40px rgba(94, 92, 230, 0.3);" %>
+    <% end %>
+  </div>
+</div>

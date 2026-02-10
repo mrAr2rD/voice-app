@@ -1,0 +1,51 @@
+<%= turbo_frame_tag dom_id(scheduled_post) do %>
+  <%= link_to scheduled_post_path(scheduled_post),
+      class: "block rounded-xl p-4 transition-all duration-200 hover:translate-x-1",
+      style: "background: var(--color-obsidian);" do %>
+    <div class="flex items-center justify-between">
+      <div class="flex items-center flex-1 min-w-0">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3 flex-shrink-0"
+             style="background: <%= SocialAccount::PLATFORMS.find { |p| p[1] == scheduled_post.platform }&.then { |_| scheduled_post.platform == 'tiktok' ? '#00f2ea' : scheduled_post.platform == 'instagram' ? '#E4405F' : '#0077FF' } || 'var(--color-graphite)' %>22;">
+          <span class="font-bold text-sm" style="color: <%= scheduled_post.platform == 'tiktok' ? '#00f2ea' : scheduled_post.platform == 'instagram' ? '#E4405F' : '#0077FF' %>;">
+            <%= scheduled_post.platform_name[0..1].upcase %>
+          </span>
+        </div>
+        <div class="min-w-0">
+          <h4 class="font-medium truncate" style="color: var(--color-snow);">
+            <%= scheduled_post.video_title || "Видео" %>
+          </h4>
+          <p class="text-sm truncate" style="color: var(--color-mist);">
+            <%= scheduled_post.platform_name %>
+            <% if scheduled_post.scheduled_at %>
+              <span class="mx-1">&bull;</span>
+              <%= scheduled_post.scheduled_at.strftime("%d.%m %H:%M") %>
+            <% end %>
+          </p>
+        </div>
+      </div>
+
+      <% case scheduled_post.status %>
+      <% when "pending", "scheduled" %>
+        <span class="px-3 py-1 rounded-full text-xs font-medium"
+              style="background: rgba(255, 214, 10, 0.15); color: var(--color-warning);">
+          Запланировано
+        </span>
+      <% when "publishing" %>
+        <span class="px-3 py-1 rounded-full text-xs font-medium"
+              style="background: rgba(94, 92, 230, 0.15); color: var(--color-neon-purple);">
+          Публикуется
+        </span>
+      <% when "published" %>
+        <span class="px-3 py-1 rounded-full text-xs font-medium"
+              style="background: rgba(48, 209, 88, 0.15); color: var(--color-neon-green);">
+          Опубликовано
+        </span>
+      <% when "failed" %>
+        <span class="px-3 py-1 rounded-full text-xs font-medium"
+              style="background: rgba(255, 55, 95, 0.15); color: var(--color-coral);">
+          Ошибка
+        </span>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

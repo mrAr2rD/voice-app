@@ -1,0 +1,245 @@
+<% content_for :page_title, "Создать клип" %>
+
+<div class="max-w-2xl mx-auto animate-fade-in">
+  <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+
+    <!-- Tabs -->
+    <div class="flex mb-6 rounded-xl p-1" style="background: var(--color-obsidian);" data-controller="tabs">
+      <button type="button" data-tabs-target="tab" data-action="click->tabs#switch"
+              data-tab="auto" class="flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all"
+              style="background: var(--color-neon-purple); color: white;">
+        Авто-детекция
+      </button>
+      <button type="button" data-tabs-target="tab" data-action="click->tabs#switch"
+              data-tab="manual" class="flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all"
+              style="color: var(--color-mist);">
+        Вручную
+      </button>
+    </div>
+
+    <!-- Auto Detection Panel -->
+    <div data-tabs-target="panel" data-panel="auto">
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">
+            Выберите транскрибацию
+          </label>
+          <select id="transcription_select"
+                  class="w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 appearance-none cursor-pointer"
+                  style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);">
+            <option value="">Выберите видео с транскрибацией</option>
+            <% @transcriptions.each do |t| %>
+              <option value="<%= t.id %>"><%= t.display_title %> (<%= t.duration_formatted %>)</option>
+            <% end %>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">Мин. длина (сек)</label>
+            <input type="number" id="min_duration" value="15" min="5" max="60"
+                   class="w-full px-4 py-3 rounded-xl"
+                   style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">Макс. длина (сек)</label>
+            <input type="number" id="max_duration" value="60" min="15" max="180"
+                   class="w-full px-4 py-3 rounded-xl"
+                   style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">Кол-во клипов</label>
+            <input type="number" id="max_clips" value="5" min="1" max="10"
+                   class="w-full px-4 py-3 rounded-xl"
+                   style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">Формат</label>
+          <select id="aspect_ratio"
+                  class="w-full px-4 py-3 rounded-xl appearance-none cursor-pointer"
+                  style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);">
+            <% VideoClip::ASPECT_RATIOS.each do |name, value| %>
+              <option value="<%= value %>"><%= name %></option>
+            <% end %>
+          </select>
+        </div>
+
+        <button type="button" id="detect_btn"
+                class="w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer"
+                style="background: linear-gradient(135deg, var(--color-coral) 0%, var(--color-neon-pink) 100%); color: white;">
+          Найти интересные моменты
+        </button>
+
+        <!-- Detected Clips -->
+        <div id="detected_clips" class="hidden space-y-4">
+          <h3 class="font-medium" style="color: var(--color-cloud);">Найденные моменты</h3>
+          <div id="clips_list" class="space-y-3"></div>
+
+          <%= form_tag bulk_create_video_clips_path, method: :post, id: "bulk_form" do %>
+            <input type="hidden" name="transcription_id" id="bulk_transcription_id">
+            <input type="hidden" name="aspect_ratio" id="bulk_aspect_ratio">
+            <input type="hidden" name="clips" id="bulk_clips">
+            <button type="submit"
+                    class="w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer"
+                    style="background: var(--color-neon-green); color: white;">
+              Создать выбранные клипы
+            </button>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manual Panel -->
+    <div data-tabs-target="panel" data-panel="manual" class="hidden">
+      <%= form_with model: @video_clip, class: "space-y-6" do |f| %>
+        <% if @video_clip.errors.any? %>
+          <div class="rounded-xl p-4" style="background: rgba(255, 55, 95, 0.1); border: 1px solid rgba(255, 55, 95, 0.2);">
+            <ul class="text-sm space-y-1" style="color: var(--color-coral);">
+              <% @video_clip.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div>
+          <%= f.label :source_video, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+            Видео файл
+          <% end %>
+          <%= f.file_field :source_video, accept: "video/*",
+              class: "w-full px-4 py-3 rounded-xl",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        </div>
+
+        <div>
+          <%= f.label :title, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+            Название <span style="color: var(--color-mist);">(опционально)</span>
+          <% end %>
+          <%= f.text_field :title, maxlength: 255,
+              class: "w-full px-4 py-3 rounded-xl",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <%= f.label :start_time, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+              Начало (сек)
+            <% end %>
+            <%= f.number_field :start_time, min: 0, step: 0.1, required: true,
+                class: "w-full px-4 py-3 rounded-xl",
+                style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+          </div>
+          <div>
+            <%= f.label :end_time, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+              Конец (сек)
+            <% end %>
+            <%= f.number_field :end_time, min: 0, step: 0.1, required: true,
+                class: "w-full px-4 py-3 rounded-xl",
+                style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.label :aspect_ratio, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+            Формат
+          <% end %>
+          <%= f.select :aspect_ratio, VideoClip::ASPECT_RATIOS, {},
+              class: "w-full px-4 py-3 rounded-xl appearance-none cursor-pointer",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        </div>
+
+        <%= f.submit "Создать клип",
+            class: "w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer",
+            style: "background: linear-gradient(135deg, var(--color-coral) 0%, var(--color-neon-pink) 100%); color: white;" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const detectBtn = document.getElementById('detect_btn');
+  const detectedClips = document.getElementById('detected_clips');
+  const clipsList = document.getElementById('clips_list');
+
+  detectBtn.addEventListener('click', async function() {
+    const transcriptionId = document.getElementById('transcription_select').value;
+    if (!transcriptionId) {
+      alert('Выберите транскрибацию');
+      return;
+    }
+
+    detectBtn.disabled = true;
+    detectBtn.textContent = 'Анализ...';
+
+    try {
+      const response = await fetch('<%= auto_detect_video_clips_path %>', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+          transcription_id: transcriptionId,
+          min_duration: document.getElementById('min_duration').value,
+          max_duration: document.getElementById('max_duration').value,
+          max_clips: document.getElementById('max_clips').value
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        renderClips(data.clips);
+        detectedClips.classList.remove('hidden');
+      } else {
+        alert('Ошибка: ' + data.error);
+      }
+    } catch (e) {
+      alert('Ошибка при анализе');
+    } finally {
+      detectBtn.disabled = false;
+      detectBtn.textContent = 'Найти интересные моменты';
+    }
+  });
+
+  function renderClips(clips) {
+    clipsList.innerHTML = clips.map((clip, i) => `
+      <div class="p-4 rounded-xl" style="background: var(--color-obsidian);">
+        <div class="flex items-center justify-between mb-2">
+          <label class="flex items-center">
+            <input type="checkbox" class="clip-checkbox mr-3" data-index="${i}" checked>
+            <span style="color: var(--color-snow);">${clip.title}</span>
+          </label>
+          <span class="px-2 py-1 rounded text-xs" style="background: var(--color-coral); color: white;">
+            ${clip.virality_score?.toFixed(1) || 'N/A'}
+          </span>
+        </div>
+        <p class="text-sm" style="color: var(--color-mist);">
+          ${formatTime(clip.start_time)} - ${formatTime(clip.end_time)}
+        </p>
+        <p class="text-xs mt-1" style="color: var(--color-cloud);">${clip.reason}</p>
+      </div>
+    `).join('');
+
+    document.getElementById('bulk_transcription_id').value = document.getElementById('transcription_select').value;
+    document.getElementById('bulk_aspect_ratio').value = document.getElementById('aspect_ratio').value;
+
+    document.getElementById('bulk_form').addEventListener('submit', function(e) {
+      const selectedClips = [];
+      document.querySelectorAll('.clip-checkbox:checked').forEach(cb => {
+        selectedClips.push(clips[cb.dataset.index]);
+      });
+      document.getElementById('bulk_clips').value = JSON.stringify(selectedClips);
+    });
+  }
+
+  function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+});
+</script>

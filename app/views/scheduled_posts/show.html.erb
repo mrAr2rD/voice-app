@@ -1,0 +1,67 @@
+<% content_for :page_title, "Публикация" %>
+
+<div class="max-w-2xl mx-auto">
+  <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-xl font-semibold" style="color: var(--color-snow);">
+        <%= @scheduled_post.video_title %>
+      </h1>
+      <span class="px-3 py-1 rounded-full text-sm"
+            style="background: <%= @scheduled_post.published? ? 'rgba(48, 209, 88, 0.15)' : 'rgba(255, 214, 10, 0.15)' %>;
+                   color: <%= @scheduled_post.published? ? 'var(--color-neon-green)' : 'var(--color-warning)' %>;">
+        <%= @scheduled_post.status.titleize %>
+      </span>
+    </div>
+
+    <div class="space-y-4 mb-6">
+      <div class="flex items-center">
+        <span class="w-24 text-sm" style="color: var(--color-mist);">Платформа:</span>
+        <span style="color: var(--color-snow);"><%= @scheduled_post.platform_name %></span>
+      </div>
+
+      <% if @scheduled_post.scheduled_at %>
+        <div class="flex items-center">
+          <span class="w-24 text-sm" style="color: var(--color-mist);">Время:</span>
+          <span style="color: var(--color-snow);"><%= @scheduled_post.scheduled_at.strftime("%d.%m.%Y %H:%M") %></span>
+        </div>
+      <% end %>
+
+      <% if @scheduled_post.caption.present? %>
+        <div>
+          <span class="text-sm block mb-1" style="color: var(--color-mist);">Подпись:</span>
+          <p style="color: var(--color-cloud);"><%= @scheduled_post.caption %></p>
+        </div>
+      <% end %>
+
+      <% if @scheduled_post.hashtags.present? %>
+        <div>
+          <span class="text-sm block mb-1" style="color: var(--color-mist);">Хэштеги:</span>
+          <p style="color: var(--color-neon-purple);"><%= @scheduled_post.hashtags %></p>
+        </div>
+      <% end %>
+
+      <% if @scheduled_post.post_url.present? %>
+        <div>
+          <%= link_to @scheduled_post.post_url, @scheduled_post.post_url, target: "_blank",
+              class: "inline-flex items-center",
+              style: "color: var(--color-neon-purple);" do %>
+            Открыть публикацию &rarr;
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex items-center justify-between pt-6" style="border-top: 1px solid var(--color-graphite);">
+      <%= link_to scheduled_posts_path, style: "color: var(--color-mist);" do %>
+        &larr; Назад
+      <% end %>
+
+      <%= button_to scheduled_post_path(@scheduled_post), method: :delete,
+          data: { turbo_confirm: "Удалить публикацию?" },
+          class: "px-4 py-2 rounded-lg text-sm",
+          style: "color: var(--color-coral); background: rgba(255, 55, 95, 0.1);" do %>
+        Удалить
+      <% end %>
+    </div>
+  </div>
+</div>

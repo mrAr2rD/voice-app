@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_10_115909) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_10_185809) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -39,6 +39,39 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_115909) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "batch_jobs", force: :cascade do |t|
+    t.integer "completed_items", default: 0
+    t.datetime "created_at", null: false
+    t.text "error_message"
+    t.integer "failed_items", default: 0
+    t.string "job_type", null: false
+    t.string "name"
+    t.text "settings"
+    t.integer "status", default: 0, null: false
+    t.integer "total_items", default: 0
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["created_at"], name: "index_batch_jobs_on_created_at"
+    t.index ["job_type"], name: "index_batch_jobs_on_job_type"
+    t.index ["status"], name: "index_batch_jobs_on_status"
+    t.index ["user_id"], name: "index_batch_jobs_on_user_id"
+  end
+
+  create_table "cloned_voices", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "elevenlabs_voice_id"
+    t.text "error_message"
+    t.string "labels"
+    t.string "name", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["elevenlabs_voice_id"], name: "index_cloned_voices_on_elevenlabs_voice_id"
+    t.index ["status"], name: "index_cloned_voices_on_status"
+    t.index ["user_id"], name: "index_cloned_voices_on_user_id"
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string "color"
     t.datetime "created_at", null: false
@@ -50,6 +83,51 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_115909) do
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
+  create_table "scheduled_posts", force: :cascade do |t|
+    t.text "caption"
+    t.datetime "created_at", null: false
+    t.text "error_message"
+    t.text "hashtags"
+    t.string "platform", null: false
+    t.string "post_id"
+    t.string "post_url"
+    t.datetime "published_at"
+    t.datetime "scheduled_at"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.integer "video_builder_id"
+    t.integer "video_clip_id"
+    t.index ["platform"], name: "index_scheduled_posts_on_platform"
+    t.index ["scheduled_at"], name: "index_scheduled_posts_on_scheduled_at"
+    t.index ["status"], name: "index_scheduled_posts_on_status"
+    t.index ["user_id"], name: "index_scheduled_posts_on_user_id"
+    t.index ["video_builder_id"], name: "index_scheduled_posts_on_video_builder_id"
+    t.index ["video_clip_id"], name: "index_scheduled_posts_on_video_clip_id"
+  end
+
+  create_table "scripts", force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.integer "duration_seconds"
+    t.text "error_message"
+    t.string "language", default: "ru"
+    t.string "model", default: "google/gemini-2.0-flash-001"
+    t.integer "project_id"
+    t.string "script_type", default: "tutorial", null: false
+    t.integer "status", default: 0, null: false
+    t.string "title"
+    t.integer "tokens_used", default: 0
+    t.text "topic", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["created_at"], name: "index_scripts_on_created_at"
+    t.index ["project_id"], name: "index_scripts_on_project_id"
+    t.index ["script_type"], name: "index_scripts_on_script_type"
+    t.index ["status"], name: "index_scripts_on_status"
+    t.index ["user_id"], name: "index_scripts_on_user_id"
+  end
+
   create_table "settings", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "description"
@@ -57,6 +135,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_115909) do
     t.datetime "updated_at", null: false
     t.text "value"
     t.index ["key"], name: "index_settings_on_key", unique: true
+  end
+
+  create_table "social_accounts", force: :cascade do |t|
+    t.text "access_token_encrypted"
+    t.string "account_avatar"
+    t.string "account_id"
+    t.string "account_name"
+    t.datetime "created_at", null: false
+    t.datetime "expires_at"
+    t.string "platform", null: false
+    t.text "refresh_token_encrypted"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["platform"], name: "index_social_accounts_on_platform"
+    t.index ["user_id", "platform"], name: "index_social_accounts_on_user_id_and_platform", unique: true
+    t.index ["user_id"], name: "index_social_accounts_on_user_id"
   end
 
   create_table "transcription_segments", force: :cascade do |t|
@@ -74,6 +169,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_115909) do
 
   create_table "transcriptions", force: :cascade do |t|
     t.float "audio_duration_seconds", default: 0.0
+    t.integer "batch_job_id"
     t.integer "cost_cents", default: 0
     t.datetime "created_at", null: false
     t.float "duration"
@@ -90,6 +186,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_115909) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.string "youtube_url"
+    t.index ["batch_job_id"], name: "index_transcriptions_on_batch_job_id"
     t.index ["created_at"], name: "index_transcriptions_on_created_at"
     t.index ["project_id"], name: "index_transcriptions_on_project_id"
     t.index ["status"], name: "index_transcriptions_on_status"
@@ -97,6 +194,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_115909) do
   end
 
   create_table "translations", force: :cascade do |t|
+    t.integer "batch_job_id"
     t.integer "cost_cents", default: 0
     t.datetime "created_at", null: false
     t.text "error_message"
@@ -110,6 +208,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_115909) do
     t.text "translated_text"
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
+    t.index ["batch_job_id"], name: "index_translations_on_batch_job_id"
     t.index ["created_at"], name: "index_translations_on_created_at"
     t.index ["project_id"], name: "index_translations_on_project_id"
     t.index ["status"], name: "index_translations_on_status"
@@ -166,7 +265,35 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_115909) do
     t.index ["youtube_status"], name: "index_video_builders_on_youtube_status"
   end
 
+  create_table "video_clips", force: :cascade do |t|
+    t.string "aspect_ratio", default: "9:16"
+    t.datetime "created_at", null: false
+    t.float "duration"
+    t.float "end_time", null: false
+    t.text "error_message"
+    t.text "highlight_reason"
+    t.integer "project_id"
+    t.integer "source_video_builder_id"
+    t.float "start_time", null: false
+    t.integer "status", default: 0, null: false
+    t.boolean "subtitles_enabled", default: true
+    t.string "subtitles_style", default: "animated"
+    t.string "title"
+    t.integer "transcription_id"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.float "virality_score"
+    t.index ["created_at"], name: "index_video_clips_on_created_at"
+    t.index ["project_id"], name: "index_video_clips_on_project_id"
+    t.index ["source_video_builder_id"], name: "index_video_clips_on_source_video_builder_id"
+    t.index ["status"], name: "index_video_clips_on_status"
+    t.index ["transcription_id"], name: "index_video_clips_on_transcription_id"
+    t.index ["user_id"], name: "index_video_clips_on_user_id"
+    t.index ["virality_score"], name: "index_video_clips_on_virality_score"
+  end
+
   create_table "voice_generations", force: :cascade do |t|
+    t.integer "batch_job_id"
     t.integer "characters_count", default: 0
     t.integer "cost_cents", default: 0
     t.datetime "created_at", null: false
@@ -179,6 +306,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_115909) do
     t.integer "user_id", null: false
     t.string "voice_id", null: false
     t.string "voice_name"
+    t.index ["batch_job_id"], name: "index_voice_generations_on_batch_job_id"
     t.index ["created_at"], name: "index_voice_generations_on_created_at"
     t.index ["project_id"], name: "index_voice_generations_on_project_id"
     t.index ["status"], name: "index_voice_generations_on_status"
@@ -199,16 +327,31 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_115909) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "batch_jobs", "users"
+  add_foreign_key "cloned_voices", "users"
   add_foreign_key "projects", "users"
+  add_foreign_key "scheduled_posts", "users"
+  add_foreign_key "scheduled_posts", "video_builders"
+  add_foreign_key "scheduled_posts", "video_clips"
+  add_foreign_key "scripts", "projects"
+  add_foreign_key "scripts", "users"
+  add_foreign_key "social_accounts", "users"
   add_foreign_key "transcription_segments", "transcriptions"
+  add_foreign_key "transcriptions", "batch_jobs"
   add_foreign_key "transcriptions", "projects"
   add_foreign_key "transcriptions", "users"
+  add_foreign_key "translations", "batch_jobs"
   add_foreign_key "translations", "projects"
   add_foreign_key "translations", "users"
   add_foreign_key "video_builder_audio_sources", "video_builders"
   add_foreign_key "video_builder_audio_sources", "voice_generations"
   add_foreign_key "video_builders", "projects"
   add_foreign_key "video_builders", "users"
+  add_foreign_key "video_clips", "projects"
+  add_foreign_key "video_clips", "transcriptions"
+  add_foreign_key "video_clips", "users"
+  add_foreign_key "video_clips", "video_builders", column: "source_video_builder_id"
+  add_foreign_key "voice_generations", "batch_jobs"
   add_foreign_key "voice_generations", "projects"
   add_foreign_key "voice_generations", "users"
   add_foreign_key "youtube_credentials", "users"

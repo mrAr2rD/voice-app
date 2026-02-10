@@ -1,0 +1,69 @@
+<% content_for :page_title, "Социальные аккаунты" %>
+
+<div class="max-w-2xl mx-auto">
+  <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <h2 class="text-xl font-semibold mb-6" style="color: var(--color-snow);">Подключённые аккаунты</h2>
+
+    <div class="space-y-4 mb-8">
+      <% @social_accounts.each do |account| %>
+        <div class="flex items-center justify-between p-4 rounded-xl"
+             style="background: var(--color-obsidian);">
+          <div class="flex items-center">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4"
+                 style="background: <%= account.platform_color %>22;">
+              <span class="font-bold" style="color: <%= account.platform_color %>;">
+                <%= account.platform_name[0..1].upcase %>
+              </span>
+            </div>
+            <div>
+              <h3 class="font-medium" style="color: var(--color-snow);">
+                <%= account.account_name || account.platform_name %>
+              </h3>
+              <p class="text-sm" style="color: var(--color-mist);">
+                <%= account.platform_name %>
+                <% if account.token_expired? %>
+                  <span style="color: var(--color-coral);"> (токен истёк)</span>
+                <% end %>
+              </p>
+            </div>
+          </div>
+
+          <%= button_to social_account_path(account), method: :delete,
+              data: { turbo_confirm: "Отключить #{account.platform_name}?" },
+              class: "text-sm",
+              style: "color: var(--color-coral);" do %>
+            Отключить
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if @social_accounts.empty? %>
+        <p class="text-center py-8" style="color: var(--color-mist);">
+          Нет подключённых аккаунтов
+        </p>
+      <% end %>
+    </div>
+
+    <h3 class="font-medium mb-4" style="color: var(--color-cloud);">Доступные платформы</h3>
+
+    <div class="grid grid-cols-2 gap-4">
+      <% SocialAccount::PLATFORMS.each do |name, platform| %>
+        <% connected = @social_accounts.any? { |a| a.platform == platform } %>
+        <%= link_to social_auth_path(platform: platform),
+            class: "flex items-center p-4 rounded-xl transition-all duration-200 #{connected ? 'opacity-50 pointer-events-none' : 'hover:scale-[1.02]'}",
+            style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite);" do %>
+          <span class="font-medium" style="color: var(--color-snow);"><%= name %></span>
+          <% if connected %>
+            <span class="ml-auto text-xs" style="color: var(--color-neon-green);">Подключён</span>
+          <% else %>
+            <span class="ml-auto text-xs" style="color: var(--color-mist);">Подключить</span>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <p class="mt-6 text-sm text-center" style="color: var(--color-mist);">
+      Интеграции находятся в разработке. Скоро будет доступна публикация на все платформы.
+    </p>
+  </div>
+</div>

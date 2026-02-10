@@ -54,7 +54,78 @@ module Tts
       { success: true, data: DEFAULT_VOICES }
     end
 
+    def clone_voice(name:, description:, files:, labels: {})
+      conn = Faraday.new(url: API_URL) do |f|
+        f.request :multipart
+        f.request :url_encoded
+        f.adapter Faraday.default_adapter
+        f.options.timeout = 300
+        f.options.open_timeout = 60
+      end
+
+      payload = {
+        name: name,
+        description: description
+      }
+
+      labels.each do |key, value|
+        payload["labels[#{key}]"] = value
+      end
+
+      files.each_with_index do |file_data, index|
+        payload["files"] = Faraday::Multipart::FilePart.new(
+          file_data[:io],
+          file_data[:content_type] || "audio/mpeg",
+          file_data[:filename] || "sample_#{index}.mp3"
+        )
+      end
+
+      response = conn.post("/v1/voices/add") do |req|
+        req.headers["xi-api-key"] = @api_key
+        req.body = payload
+      end
+
+      handle_json_response(response)
+    rescue Faraday::Error => e
+      { success: false, error: "Network error: #{e.message}" }
+    end
+
+    def delete_voice(voice_id:)
+      response = connection.delete("/v1/voices/#{voice_id}") do |req|
+        req.headers["xi-api-key"] = @api_key
+      end
+
+      if response.success?
+        { success: true }
+      else
+        handle_json_response(response)
+      end
+    rescue Faraday::Error => e
+      { success: false, error: "Network error: #{e.message}" }
+    end
+
+    def get_voice(voice_id:)
+      response = connection.get("/v1/voices/#{voice_id}") do |req|
+        req.headers["xi-api-key"] = @api_key
+      end
+
+      handle_json_response(response)
+    rescue Faraday::Error => e
+      { success: false, error: "Network error: #{e.message}" }
+    end
+
     private
+
+    def handle_json_response(response)
+      if response.success?
+        data = JSON.parse(response.body)
+        { success: true, data: data }
+      else
+        error_body = JSON.parse(response.body) rescue response.body
+        error_message = error_body.is_a?(Hash) ? (error_body["detail"] || error_body["message"]) : error_body
+        { success: false, error: "API error (#{response.status}): #{error_message}" }
+      end
+    end
 
     def connection
       @connection ||= Faraday.new(url: API_URL) do |f|

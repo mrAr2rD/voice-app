@@ -1,0 +1,161 @@
+<% content_for :page_title, "Пакетная #{@batch_job.job_type_display.downcase}" %>
+
+<div class="max-w-2xl mx-auto animate-fade-in">
+  <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <%= form_with model: @batch_job, data: { controller: "batch-upload" }, class: "space-y-6", html: { multipart: true } do |f| %>
+      <% if @batch_job.errors.any? %>
+        <div class="rounded-xl p-4" style="background: rgba(255, 55, 95, 0.1); border: 1px solid rgba(255, 55, 95, 0.2);">
+          <ul class="text-sm space-y-1" style="color: var(--color-coral);">
+            <% @batch_job.errors.full_messages.each do |message| %>
+              <li class="flex items-center">
+                <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <%= message %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= f.hidden_field :job_type %>
+
+      <!-- Name -->
+      <div>
+        <%= f.label :name, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+          Название <span style="color: var(--color-mist);">(опционально)</span>
+        <% end %>
+        <%= f.text_field :name, maxlength: 255,
+            placeholder: "Например: Обработка подкастов...",
+            class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2",
+            style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-purple);" %>
+      </div>
+
+      <% if @batch_job.job_type == "transcription" %>
+        <!-- File Upload for Transcription -->
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">
+            Аудио/видео файлы
+          </label>
+          <p class="text-sm mb-3" style="color: var(--color-mist);">
+            Загрузите до 20 файлов для пакетной транскрибации
+          </p>
+
+          <div class="relative rounded-xl p-6 text-center cursor-pointer transition-all duration-200"
+               style="background: var(--color-obsidian); border: 2px dashed var(--color-graphite);"
+               data-batch-upload-target="dropzone"
+               data-action="dragover->batch-upload#dragover dragenter->batch-upload#dragenter dragleave->batch-upload#dragleave drop->batch-upload#drop click->batch-upload#click">
+            <svg class="w-12 h-12 mx-auto mb-4" style="color: var(--color-mist);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+            </svg>
+            <p style="color: var(--color-cloud);">Перетащите файлы или нажмите для выбора</p>
+            <p class="text-sm mt-1" style="color: var(--color-mist);">MP3, WAV, MP4, MOV до 500 MB каждый</p>
+            <input type="file" name="files[]" multiple accept="audio/*,video/*"
+                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                   data-batch-upload-target="input"
+                   data-action="change->batch-upload#handleFiles">
+          </div>
+
+          <div data-batch-upload-target="fileList" class="mt-4 space-y-2"></div>
+          <p class="mt-2 text-xs" style="color: var(--color-mist);">
+            <span data-batch-upload-target="fileCount">0</span> файлов выбрано
+          </p>
+        </div>
+
+      <% elsif @batch_job.job_type == "voice_generation" %>
+        <!-- Text Areas for Voice Generation -->
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">
+            Тексты для озвучки
+          </label>
+          <p class="text-sm mb-3" style="color: var(--color-mist);">
+            Введите каждый текст на новой строке (разделитель: ---) или загрузите файл .txt
+          </p>
+
+          <textarea name="batch_texts" rows="10"
+                    placeholder="Первый текст для озвучки...&#10;---&#10;Второй текст для озвучки...&#10;---&#10;Третий текст..."
+                    class="w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 resize-none"
+                    style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-purple);"
+                    data-batch-upload-target="textArea"></textarea>
+
+          <div class="mt-4 space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">Провайдер</label>
+              <select name="settings[provider]"
+                      class="w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 appearance-none cursor-pointer"
+                      style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);">
+                <option value="elevenlabs">ElevenLabs</option>
+                <option value="openai">OpenAI</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      <% elsif @batch_job.job_type == "translation" %>
+        <!-- Text Areas for Translation -->
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">
+            Тексты для перевода
+          </label>
+          <p class="text-sm mb-3" style="color: var(--color-mist);">
+            Введите каждый текст на новой строке (разделитель: ---) или загрузите файл .txt
+          </p>
+
+          <textarea name="batch_texts" rows="10"
+                    placeholder="Первый текст для перевода...&#10;---&#10;Второй текст для перевода...&#10;---&#10;Третий текст..."
+                    class="w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 resize-none"
+                    style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-purple);"
+                    data-batch-upload-target="textArea"></textarea>
+
+          <div class="mt-4 grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">Язык оригинала</label>
+              <select name="settings[source_language]"
+                      class="w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 appearance-none cursor-pointer"
+                      style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);">
+                <option value="auto">Авто-определение</option>
+                <% Translation::LANGUAGES.each do |name, code| %>
+                  <option value="<%= code %>"><%= name %></option>
+                <% end %>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">Язык перевода</label>
+              <select name="settings[target_language]"
+                      class="w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 appearance-none cursor-pointer"
+                      style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);">
+                <% Translation::LANGUAGES.each do |name, code| %>
+                  <option value="<%= code %>" <%= "selected" if code == "en" %>><%= name %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Project -->
+      <% if @projects.any? %>
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: var(--color-cloud);">
+            Проект <span style="color: var(--color-mist);">(опционально)</span>
+          </label>
+          <select name="settings[project_id]"
+                  class="w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none appearance-none cursor-pointer"
+                  style="background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);">
+            <option value="">Без проекта</option>
+            <% @projects.each do |project| %>
+              <option value="<%= project.id %>"><%= project.name %></option>
+            <% end %>
+          </select>
+        </div>
+      <% end %>
+
+      <!-- Submit -->
+      <%= f.submit "Запустить пакетную обработку",
+          class: "w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer",
+          style: "background: linear-gradient(135deg, var(--color-neon-purple) 0%, var(--color-neon-pink) 100%); color: white; box-shadow: 0 10px 40px rgba(94, 92, 230, 0.3);" %>
+    <% end %>
+  </div>
+</div>

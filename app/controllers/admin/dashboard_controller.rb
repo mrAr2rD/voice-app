@@ -7,6 +7,10 @@ module Admin
       @translations_count = Translation.count
       @video_builders_count = VideoBuilder.count
       @projects_count = Project.count
+      @cloned_voices_count = ClonedVoice.count
+      @scripts_count = Script.count
+      @video_clips_count = VideoClip.count
+      @batch_jobs_count = BatchJob.count
       @recent_transcriptions = Transcription.recent.limit(5)
       @recent_voice_generations = VoiceGeneration.recent.limit(5)
       @recent_video_builders = VideoBuilder.recent.limit(5)

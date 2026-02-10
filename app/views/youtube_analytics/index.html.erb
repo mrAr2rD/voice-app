@@ -1,0 +1,176 @@
+<% content_for :page_title, "YouTube Аналитика" %>
+
+<% content_for :page_actions do %>
+  <div class="flex items-center space-x-3">
+    <%= link_to youtube_analytics_path(period: 7),
+        class: "px-3 py-1 rounded-lg text-sm transition-colors",
+        style: @period == 7 ? "background: var(--color-neon-purple); color: white;" : "color: var(--color-mist);" do %>
+      7 дней
+    <% end %>
+    <%= link_to youtube_analytics_path(period: 28),
+        class: "px-3 py-1 rounded-lg text-sm transition-colors",
+        style: @period == 28 ? "background: var(--color-neon-purple); color: white;" : "color: var(--color-mist);" do %>
+      28 дней
+    <% end %>
+    <%= link_to youtube_analytics_path(period: 90),
+        class: "px-3 py-1 rounded-lg text-sm transition-colors",
+        style: @period == 90 ? "background: var(--color-neon-purple); color: white;" : "color: var(--color-mist);" do %>
+      90 дней
+    <% end %>
+  </div>
+<% end %>
+
+<% if @error %>
+  <div class="rounded-xl p-4 mb-6" style="background: rgba(255, 55, 95, 0.1); border: 1px solid rgba(255, 55, 95, 0.2);">
+    <p style="color: var(--color-coral);"><%= @error %></p>
+  </div>
+<% elsif @analytics %>
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="rounded-xl p-5" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div class="flex items-center mb-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+             style="background: rgba(94, 92, 230, 0.15);">
+          <svg class="w-5 h-5" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+          </svg>
+        </div>
+        <span class="text-sm" style="color: var(--color-mist);">Просмотры</span>
+      </div>
+      <p class="text-2xl font-bold" style="color: var(--color-snow);">
+        <%= number_with_delimiter(@analytics[:totals][:views]&.to_i || 0) %>
+      </p>
+    </div>
+
+    <div class="rounded-xl p-5" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div class="flex items-center mb-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+             style="background: rgba(48, 209, 88, 0.15);">
+          <svg class="w-5 h-5" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <span class="text-sm" style="color: var(--color-mist);">Время просмотра</span>
+      </div>
+      <p class="text-2xl font-bold" style="color: var(--color-snow);">
+        <%= (@analytics[:totals][:estimated_minutes_watched]&.to_i || 0) / 60 %> ч
+      </p>
+    </div>
+
+    <div class="rounded-xl p-5" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div class="flex items-center mb-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+             style="background: rgba(255, 55, 95, 0.15);">
+          <svg class="w-5 h-5" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+          </svg>
+        </div>
+        <span class="text-sm" style="color: var(--color-mist);">Лайки</span>
+      </div>
+      <p class="text-2xl font-bold" style="color: var(--color-snow);">
+        <%= number_with_delimiter(@analytics[:totals][:likes]&.to_i || 0) %>
+      </p>
+    </div>
+
+    <div class="rounded-xl p-5" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div class="flex items-center mb-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+             style="background: rgba(255, 159, 10, 0.15);">
+          <svg class="w-5 h-5" style="color: var(--color-warning);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+          </svg>
+        </div>
+        <span class="text-sm" style="color: var(--color-mist);">Новые подписчики</span>
+      </div>
+      <p class="text-2xl font-bold" style="color: var(--color-snow);">
+        +<%= number_with_delimiter(@analytics[:totals][:subscribers_gained]&.to_i || 0) %>
+      </p>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="rounded-2xl p-6 mb-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <h3 class="font-medium mb-4" style="color: var(--color-cloud);">Просмотры по дням</h3>
+    <div class="h-64" id="views-chart">
+      <canvas id="viewsChart"></canvas>
+    </div>
+  </div>
+<% end %>
+
+<!-- Published Videos -->
+<% if @published_videos&.any? %>
+  <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <h3 class="font-medium mb-4" style="color: var(--color-cloud);">Опубликованные видео</h3>
+    <div class="space-y-3">
+      <% @published_videos.each do |video| %>
+        <%= link_to youtube_analytics_video_path(video.youtube_video_id),
+            class: "flex items-center p-3 rounded-xl transition-all duration-200 hover:translate-x-1",
+            style: "background: var(--color-obsidian);" do %>
+          <% if video.thumbnail&.attached? %>
+            <%= image_tag video.thumbnail, class: "w-20 h-12 object-cover rounded-lg mr-4" %>
+          <% else %>
+            <div class="w-20 h-12 rounded-lg mr-4 flex items-center justify-center" style="background: var(--color-graphite);">
+              <svg class="w-6 h-6" style="color: var(--color-mist);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+            </div>
+          <% end %>
+          <div class="flex-1 min-w-0">
+            <h4 class="font-medium truncate" style="color: var(--color-snow);">
+              <%= video.youtube_title || video.title %>
+            </h4>
+            <p class="text-sm" style="color: var(--color-mist);">
+              Опубликовано <%= time_ago_in_words(video.published_at) %> назад
+            </p>
+          </div>
+          <svg class="w-5 h-5 flex-shrink-0" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<% if @analytics && @analytics[:daily_data]&.any? %>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const ctx = document.getElementById('viewsChart').getContext('2d');
+  const data = <%= raw @analytics[:daily_data].to_json %>;
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.map(d => d.day),
+      datasets: [{
+        label: 'Просмотры',
+        data: data.map(d => d.views || 0),
+        borderColor: '#5e5ce6',
+        backgroundColor: 'rgba(94, 92, 230, 0.1)',
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          ticks: { color: '#9ca3af' }
+        },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          ticks: { color: '#9ca3af' }
+        }
+      }
+    }
+  });
+});
+</script>
+<% end %>

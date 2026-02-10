@@ -1,0 +1,29 @@
+<%= turbo_frame_tag dom_id(cloned_voice) do %>
+  <%= link_to cloned_voice_path(cloned_voice),
+      class: "block rounded-xl p-5 transition-all duration-200 hover:translate-x-1",
+      style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4"
+             style="background: rgba(94, 92, 230, 0.15);">
+          <svg class="w-6 h-6" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-medium" style="color: var(--color-snow);"><%= cloned_voice.name %></h3>
+          <p class="text-sm" style="color: var(--color-mist);">
+            <%= time_ago_in_words(cloned_voice.created_at) %> назад
+            <% if cloned_voice.labels_array.any? %>
+              <span class="mx-1">&bull;</span>
+              <%= cloned_voice.labels_array.first(2).join(", ") %>
+            <% end %>
+          </p>
+        </div>
+      </div>
+
+      <%= render "cloned_voices/status_badge", cloned_voice: cloned_voice %>
+    </div>
+  <% end %>
+<% end %>

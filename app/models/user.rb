@@ -6,6 +6,12 @@ class User < ApplicationRecord
   has_many :voice_generations, dependent: :destroy
   has_many :translations, dependent: :destroy
   has_many :video_builders, dependent: :destroy
+  has_many :cloned_voices, dependent: :destroy
+  has_many :batch_jobs, dependent: :destroy
+  has_many :scripts, dependent: :destroy
+  has_many :video_clips, dependent: :destroy
+  has_many :social_accounts, dependent: :destroy
+  has_many :scheduled_posts, dependent: :destroy
   has_one :youtube_credential, dependent: :destroy
 
   validates :email, presence: true,
