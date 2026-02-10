@@ -1,0 +1,284 @@
+<% if logged_in? %>
+  <!-- Dashboard for logged in users -->
+  <div class="animate-fade-in">
+    <!-- Welcome Section -->
+    <div class="mb-10">
+      <h1 class="text-3xl font-bold mb-2" style="color: var(--color-snow);">
+        Привет, <span class="text-gradient"><%= current_user.name %></span>
+      </h1>
+      <p style="color: var(--color-mist);">Что хотите сделать сегодня?</p>
+    </div>
+
+    <!-- Action Cards -->
+    <div class="grid md:grid-cols-2 gap-6 mb-12">
+      <!-- Transcription Card -->
+      <div class="group relative overflow-hidden rounded-2xl p-8 hover-lift"
+           style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <!-- Glow effect on hover -->
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+             style="background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 70%);"></div>
+
+        <div class="relative z-10">
+          <div class="flex items-start justify-between mb-6">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center"
+                 style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 212, 255, 0.05) 100%);
+                        border: 1px solid rgba(0, 212, 255, 0.2);">
+              <svg class="w-7 h-7" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+              </svg>
+            </div>
+            <%= link_to new_transcription_path,
+                class: "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110",
+                style: "background: var(--color-graphite);" do %>
+              <svg class="w-5 h-5" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+            <% end %>
+          </div>
+
+          <h2 class="text-2xl font-bold mb-2" style="color: var(--color-snow);">Транскрибация</h2>
+          <p class="mb-6" style="color: var(--color-mist);">
+            Превратите аудио или видео в текст с таймкодами
+          </p>
+
+          <%= link_to new_transcription_path,
+              class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+              style: "background: var(--color-neon-blue); color: var(--color-void);" do %>
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Новая транскрибация
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Voice Generation Card -->
+      <div class="group relative overflow-hidden rounded-2xl p-8 hover-lift"
+           style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <!-- Glow effect on hover -->
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+             style="background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 70%);"></div>
+
+        <div class="relative z-10">
+          <div class="flex items-start justify-between mb-6">
+            <div class="w-14 h-14 rounded-2xl flex items-center justify-center"
+                 style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0.05) 100%);
+                        border: 1px solid rgba(168, 85, 247, 0.2);">
+              <svg class="w-7 h-7" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+              </svg>
+            </div>
+            <%= link_to new_voice_generation_path,
+                class: "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110",
+                style: "background: var(--color-graphite);" do %>
+              <svg class="w-5 h-5" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+            <% end %>
+          </div>
+
+          <h2 class="text-2xl font-bold mb-2" style="color: var(--color-snow);">Озвучка</h2>
+          <p class="mb-6" style="color: var(--color-mist);">
+            Преобразуйте текст в естественную речь
+          </p>
+
+          <%= link_to new_voice_generation_path,
+              class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+              style: "background: var(--color-neon-purple); color: var(--color-white);" do %>
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Новая озвучка
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <% if @recent_transcriptions.any? || @recent_voice_generations.any? %>
+      <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <h3 class="text-lg font-semibold mb-4" style="color: var(--color-snow);">Недавняя активность</h3>
+
+        <div class="space-y-3">
+          <% @recent_transcriptions.each do |t| %>
+            <%= link_to t, class: "flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-white/5 group", data: { turbo_frame: "_top" } do %>
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
+                     style="background: rgba(0, 212, 255, 0.1);">
+                  <svg class="w-5 h-5" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium group-hover:text-white transition-colors" style="color: var(--color-snow);"><%= t.display_title %></p>
+                  <p class="text-sm" style="color: var(--color-mist);"><%= time_ago_in_words(t.created_at) %> назад</p>
+                </div>
+              </div>
+              <%= render "transcriptions/status_badge", transcription: t %>
+            <% end %>
+          <% end %>
+
+          <% @recent_voice_generations.each do |vg| %>
+            <%= link_to vg, class: "flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-white/5 group", data: { turbo_frame: "_top" } do %>
+              <div class="flex items-center">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4"
+                     style="background: rgba(168, 85, 247, 0.1);">
+                  <svg class="w-5 h-5" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium group-hover:text-white transition-colors" style="color: var(--color-snow);"><%= vg.text_preview %></p>
+                  <p class="text-sm" style="color: var(--color-mist);"><%= vg.provider_display_name %> &middot; <%= time_ago_in_words(vg.created_at) %> назад</p>
+                </div>
+              </div>
+              <%= render "voice_generations/status_badge", voice_generation: vg %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+<% else %>
+  <!-- Landing page for guests -->
+  <div class="py-12 md:py-20">
+    <!-- Hero Section -->
+    <div class="text-center mb-20 animate-fade-in">
+      <div class="inline-flex items-center px-4 py-2 rounded-full text-sm mb-8"
+           style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2); color: var(--color-neon-blue);">
+        <span class="w-2 h-2 rounded-full mr-2 animate-pulse" style="background: var(--color-neon-blue);"></span>
+        Powered by AI
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+        <span style="color: var(--color-snow);">Голос в текст.</span><br>
+        <span class="text-gradient">Текст в голос.</span>
+      </h1>
+
+      <p class="text-xl md:text-2xl max-w-2xl mx-auto mb-10" style="color: var(--color-mist);">
+        Мощный ИИ-сервис для транскрибации и синтеза речи.
+        Быстро, точно, на русском языке.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <%= link_to signup_path,
+            class: "px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg",
+            style: "background: var(--gradient-aurora); color: var(--color-void); box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);" do %>
+          Начать бесплатно
+          <svg class="w-5 h-5 inline ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+        <% end %>
+
+        <%= link_to login_path,
+            class: "px-8 py-4 rounded-xl text-lg font-medium transition-all duration-200",
+            style: "color: var(--color-cloud); border: 1px solid var(--color-slate);" do %>
+          Уже есть аккаунт? Войти
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+      <!-- Feature 1: Transcription -->
+      <div class="group relative overflow-hidden rounded-3xl p-10 animate-slide-up stagger-1"
+           style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <div class="absolute top-0 right-0 w-64 h-64 opacity-30"
+             style="background: radial-gradient(circle, rgba(0, 212, 255, 0.2) 0%, transparent 70%);"></div>
+
+        <div class="relative z-10">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
+               style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 212, 255, 0.05) 100%);
+                      border: 1px solid rgba(0, 212, 255, 0.3);">
+            <svg class="w-8 h-8" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+            </svg>
+          </div>
+
+          <h2 class="text-2xl font-bold mb-4" style="color: var(--color-snow);">Транскрибация</h2>
+
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-5 h-5 mr-3" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Аудио и видео файлы
+            </li>
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-5 h-5 mr-3" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              YouTube ссылки
+            </li>
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-5 h-5 mr-3" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Таймкоды и диаризация
+            </li>
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-5 h-5 mr-3" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Экспорт в TXT, SRT, JSON
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Feature 2: Voice Generation -->
+      <div class="group relative overflow-hidden rounded-3xl p-10 animate-slide-up stagger-2"
+           style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <div class="absolute top-0 right-0 w-64 h-64 opacity-30"
+             style="background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);"></div>
+
+        <div class="relative z-10">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
+               style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(168, 85, 247, 0.05) 100%);
+                      border: 1px solid rgba(168, 85, 247, 0.3);">
+            <svg class="w-8 h-8" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+            </svg>
+          </div>
+
+          <h2 class="text-2xl font-bold mb-4" style="color: var(--color-snow);">Озвучка</h2>
+
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-5 h-5 mr-3" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              OpenAI TTS
+            </li>
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-5 h-5 mr-3" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              ElevenLabs голоса
+            </li>
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-5 h-5 mr-3" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Множество голосов
+            </li>
+            <li class="flex items-center" style="color: var(--color-cloud);">
+              <svg class="w-5 h-5 mr-3" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Скачивание в MP3
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Waveform decoration -->
+    <div class="flex items-center justify-center gap-1 mt-16 opacity-30">
+      <% 20.times do |i| %>
+        <div class="waveform-bar" style="animation-delay: <%= i * 0.05 %>s; height: <%= rand(10..30) %>px;"></div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

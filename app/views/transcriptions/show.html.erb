@@ -1,0 +1,226 @@
+<%= turbo_stream_from "user_#{current_user.id}_transcriptions" %>
+
+<div class="max-w-4xl mx-auto animate-fade-in">
+  <!-- Header -->
+  <div class="flex items-start justify-between mb-8">
+    <div>
+      <div class="flex items-center mb-3">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4"
+             style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
+          <svg class="w-6 h-6" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold" style="color: var(--color-snow);"><%= @transcription.display_title %></h1>
+          <div class="flex items-center mt-1 space-x-4 text-sm" style="color: var(--color-mist);">
+            <span class="flex items-center">
+              <% case @transcription.source_type %>
+              <% when "audio_upload" %>
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                </svg>
+                Аудио
+              <% when "video_upload" %>
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Видео
+              <% when "youtube_url" %>
+                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                YouTube
+              <% end %>
+            </span>
+            <% if @transcription.duration %>
+              <span><%= @transcription.duration_formatted %></span>
+            <% end %>
+            <% if @transcription.language %>
+              <span class="uppercase"><%= @transcription.language %></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%= render "transcriptions/status_badge", transcription: @transcription %>
+  </div>
+
+  <!-- Content -->
+  <% polling_data = @transcription.in_progress? ? { controller: "polling", polling_interval_value: 3000, polling_url_value: transcription_path(@transcription) } : {} %>
+  <%= turbo_frame_tag dom_id(@transcription, :content), data: polling_data do %>
+    <% if @transcription.failed? %>
+      <div class="rounded-2xl p-8 mb-6"
+           style="background: rgba(255, 107, 107, 0.1); border: 1px solid rgba(255, 107, 107, 0.2);">
+        <div class="flex items-start">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 flex-shrink-0"
+               style="background: rgba(255, 107, 107, 0.2);">
+            <svg class="w-6 h-6" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold mb-2" style="color: var(--color-coral);">Ошибка обработки</h3>
+            <p class="mb-4" style="color: var(--color-cloud);"><%= @transcription.error_message %></p>
+            <%= button_to "Повторить попытку", retry_transcription_path(@transcription), method: :post,
+                data: { turbo_frame: "_top" },
+                class: "inline-flex items-center px-5 py-2.5 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+                style: "background: var(--color-coral); color: var(--color-void);" %>
+          </div>
+        </div>
+      </div>
+
+    <% elsif @transcription.completed? %>
+      <div class="rounded-2xl p-6 mb-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-lg font-semibold" style="color: var(--color-snow);">Результат</h2>
+          <div class="flex items-center space-x-2">
+            <%= link_to download_transcription_path(@transcription, format: :txt),
+                class: "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105",
+                style: "background: var(--color-graphite); color: var(--color-cloud); border: 1px solid var(--color-slate);" do %>
+              TXT
+            <% end %>
+            <%= link_to download_transcription_path(@transcription, format: :srt),
+                class: "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105",
+                style: "background: var(--color-graphite); color: var(--color-cloud); border: 1px solid var(--color-slate);" do %>
+              SRT
+            <% end %>
+            <%= link_to download_transcription_path(@transcription, format: :json),
+                class: "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105",
+                style: "background: var(--color-graphite); color: var(--color-cloud); border: 1px solid var(--color-slate);" do %>
+              JSON
+            <% end %>
+          </div>
+        </div>
+
+        <% if @segments.any? %>
+          <div class="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+            <% @segments.each do |segment| %>
+              <div class="group p-4 rounded-xl transition-all duration-200 hover:bg-white/5"
+                   style="border-left: 3px solid var(--color-neon-blue);">
+                <div class="flex items-center text-sm mb-2" style="color: var(--color-mist);">
+                  <span class="font-mono" style="color: var(--color-neon-blue);">
+                    <%= segment.start_time_formatted %> — <%= segment.end_time_formatted %>
+                  </span>
+                  <% if segment.speaker.present? %>
+                    <span class="ml-3 px-2 py-0.5 rounded-full text-xs font-medium"
+                          style="background: rgba(168, 85, 247, 0.15); color: var(--color-neon-purple); border: 1px solid rgba(168, 85, 247, 0.3);">
+                      <%= segment.speaker %>
+                    </span>
+                  <% end %>
+                </div>
+                <p style="color: var(--color-snow);"><%= segment.text %></p>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="prose max-w-none">
+            <p class="whitespace-pre-wrap" style="color: var(--color-cloud);"><%= @transcription.full_text %></p>
+          </div>
+        <% end %>
+      </div>
+
+    <% else %>
+      <!-- Progress State -->
+      <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <div class="text-center mb-8">
+          <div class="relative inline-flex">
+            <div class="w-20 h-20 rounded-2xl flex items-center justify-center animate-pulse-glow"
+                 style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3);">
+              <svg class="w-10 h-10 animate-spin" style="color: var(--color-neon-blue);" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+            </div>
+          </div>
+
+          <h3 class="text-xl font-semibold mt-6 mb-2" style="color: var(--color-snow);">
+            <% case @transcription.status %>
+            <% when "pending" %>
+              Ожидание в очереди
+            <% when "processing" %>
+              Подготовка файла
+            <% when "extracting_audio" %>
+              Извлечение аудио
+            <% when "transcribing" %>
+              Транскрибация
+            <% end %>
+          </h3>
+          <p style="color: var(--color-mist);">Это может занять несколько минут</p>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="mb-6">
+          <div class="flex justify-between text-sm mb-2" style="color: var(--color-mist);">
+            <span>Прогресс</span>
+            <span data-polling-target="progressText"><%= @transcription.progress || 0 %>%</span>
+          </div>
+          <div class="progress-aurora">
+            <div class="progress-aurora-fill" data-polling-target="progressBar" style="width: <%= @transcription.progress || 0 %>%"></div>
+          </div>
+        </div>
+
+        <!-- Steps -->
+        <div class="flex items-center justify-center space-x-4">
+          <% steps = [
+            { key: :pending, label: "Очередь", active: @transcription.pending? },
+            { key: :extracting, label: "Извлечение", active: @transcription.extracting_audio? },
+            { key: :transcribing, label: "Транскрибация", active: @transcription.transcribing? }
+          ]
+          completed_steps = []
+          completed_steps << :pending if !@transcription.pending?
+          completed_steps << :extracting if @transcription.transcribing?
+          %>
+
+          <% steps.each_with_index do |step, i| %>
+            <div class="flex items-center">
+              <div class="flex items-center">
+                <div class="w-3 h-3 rounded-full transition-all duration-300
+                     <%= if step[:active]
+                           'animate-pulse'
+                         end %>"
+                     style="background: <%= if completed_steps.include?(step[:key])
+                                              'var(--color-neon-green)'
+                                            elsif step[:active]
+                                              'var(--color-neon-blue)'
+                                            else
+                                              'var(--color-slate)'
+                                            end %>;"></div>
+                <span class="ml-2 text-sm" style="color: <%= step[:active] ? 'var(--color-snow)' : 'var(--color-mist)' %>;">
+                  <%= step[:label] %>
+                </span>
+              </div>
+              <% if i < steps.length - 1 %>
+                <div class="w-12 h-px mx-4" style="background: var(--color-slate);"></div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <!-- Actions -->
+  <div class="flex items-center justify-between mt-8 pt-6" style="border-top: 1px solid var(--color-graphite);">
+    <%= link_to transcriptions_path,
+        class: "flex items-center text-sm font-medium transition-colors duration-200",
+        style: "color: var(--color-mist);" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      Назад к списку
+    <% end %>
+
+    <%= button_to transcription_path(@transcription),
+        method: :delete,
+        data: { turbo_confirm: "Удалить транскрибацию?" },
+        class: "flex items-center text-sm font-medium transition-colors duration-200 hover:opacity-80",
+        style: "color: var(--color-coral);" do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+      </svg>
+      Удалить
+    <% end %>
+  </div>
+</div>

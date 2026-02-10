@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru" class="noise">
+  <head>
+    <title><%= content_for(:title) || "VoiceApp — Транскрибация и Озвучка" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="VoiceApp">
+    <meta name="theme-color" content="#0a0a0f">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <style>
+      /* Override Tailwind defaults for dark theme */
+      .bg-gray-50 { background: var(--color-void) !important; }
+      .bg-white { background: var(--color-abyss) !important; }
+      .text-gray-900 { color: var(--color-snow) !important; }
+      .text-gray-700 { color: var(--color-cloud) !important; }
+      .text-gray-600 { color: var(--color-cloud) !important; }
+      .text-gray-500 { color: var(--color-mist) !important; }
+      .border-gray-200 { border-color: var(--color-graphite) !important; }
+      .border-gray-300 { border-color: var(--color-slate) !important; }
+    </style>
+  </head>
+
+  <body class="min-h-screen" style="background: var(--color-void);">
+    <!-- Ambient glow background -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+      <div class="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full opacity-20"
+           style="background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+                  filter: blur(80px);"></div>
+      <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full opacity-15"
+           style="background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+                  filter: blur(80px);"></div>
+    </div>
+
+    <%= render "layouts/navbar" %>
+
+    <main class="relative z-10 container mx-auto px-4 py-8 max-w-6xl">
+      <% if flash[:notice] %>
+        <div class="mb-6 animate-slide-down">
+          <div class="glass rounded-xl p-4 border-l-4" style="border-left-color: var(--color-neon-green);">
+            <div class="flex items-center">
+              <svg class="w-5 h-5 mr-3" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              <span style="color: var(--color-snow);"><%= flash[:notice] %></span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if flash[:alert] %>
+        <div class="mb-6 animate-slide-down">
+          <div class="glass rounded-xl p-4 border-l-4" style="border-left-color: var(--color-coral);">
+            <div class="flex items-center">
+              <svg class="w-5 h-5 mr-3" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span style="color: var(--color-snow);"><%= flash[:alert] %></span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 border-t mt-16" style="border-color: var(--color-graphite); background: var(--color-abyss);">
+      <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+          <div class="flex items-center mb-4 md:mb-0">
+            <span class="text-2xl font-bold text-gradient">VoiceApp</span>
+            <span class="ml-3 text-sm" style="color: var(--color-mist);">Транскрибация & Озвучка</span>
+          </div>
+          <div class="text-sm" style="color: var(--color-mist);">
+            &copy; <%= Time.current.year %> VoiceApp. Создано с любовью.
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

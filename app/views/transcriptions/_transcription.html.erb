@@ -1,0 +1,50 @@
+<%= turbo_frame_tag dom_id(transcription) do %>
+  <div class="group rounded-2xl p-5 transition-all duration-300 hover:bg-white/5"
+       style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <div class="flex items-start justify-between">
+      <div class="flex-1 min-w-0">
+        <%= link_to transcription, class: "block", data: { turbo_frame: "_top" } do %>
+          <h3 class="text-lg font-semibold truncate transition-colors group-hover:text-white"
+              style="color: var(--color-snow);">
+            <%= transcription.display_title %>
+          </h3>
+        <% end %>
+
+        <div class="flex items-center mt-3 space-x-4 text-sm" style="color: var(--color-mist);">
+          <span class="flex items-center">
+            <% case transcription.source_type %>
+            <% when "audio_upload" %>
+              <svg class="w-4 h-4 mr-1.5" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+              </svg>
+              Аудио
+            <% when "video_upload" %>
+              <svg class="w-4 h-4 mr-1.5" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              Видео
+            <% when "youtube_url" %>
+              <svg class="w-4 h-4 mr-1.5" style="color: var(--color-coral);" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+              YouTube
+            <% end %>
+          </span>
+          <% if transcription.duration %>
+            <span class="flex items-center">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <%= transcription.duration_formatted %>
+            </span>
+          <% end %>
+          <span><%= l(transcription.created_at, format: :short) %></span>
+        </div>
+      </div>
+
+      <div class="ml-4 flex items-center space-x-2">
+        <%= render "transcriptions/status_badge", transcription: transcription %>
+      </div>
+    </div>
+  </div>
+<% end %>

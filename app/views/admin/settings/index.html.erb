@@ -1,0 +1,203 @@
+<div class="animate-fade-in max-w-4xl">
+  <%= form_with url: admin_settings_path, method: :patch, local: true, class: "space-y-8" do %>
+    <!-- Feature Toggles -->
+    <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <h2 class="text-lg font-semibold mb-6 pb-4" style="color: var(--color-snow); border-bottom: 1px solid var(--color-graphite);">
+        Функционал
+      </h2>
+
+      <div class="space-y-6">
+        <div class="flex items-center justify-between p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div>
+            <label for="transcription_enabled" class="font-medium" style="color: var(--color-snow);">Транскрибация</label>
+            <p class="text-sm mt-1" style="color: var(--color-mist);">Включить/выключить сервис транскрибации</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag "settings[transcription_enabled]", "false" %>
+            <%= check_box_tag "settings[transcription_enabled]", "true", Setting.get(:transcription_enabled),
+                id: "transcription_enabled", class: "sr-only peer" %>
+            <div class="w-14 h-7 rounded-full peer transition-all duration-300
+                        peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                        after:rounded-full after:h-6 after:w-6 after:transition-all"
+                 style="background: var(--color-slate);"
+                 onchange="this.style.background = this.previousElementSibling.previousElementSibling.checked ? 'var(--color-neon-green)' : 'var(--color-slate)'"></div>
+          </label>
+        </div>
+
+        <div class="flex items-center justify-between p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div>
+            <label for="voice_generation_enabled" class="font-medium" style="color: var(--color-snow);">Голосовая озвучка</label>
+            <p class="text-sm mt-1" style="color: var(--color-mist);">Включить/выключить сервис озвучки</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag "settings[voice_generation_enabled]", "false" %>
+            <%= check_box_tag "settings[voice_generation_enabled]", "true", Setting.get(:voice_generation_enabled),
+                id: "voice_generation_enabled", class: "sr-only peer" %>
+            <div class="w-14 h-7 rounded-full peer transition-all duration-300
+                        peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                        after:rounded-full after:h-6 after:w-6 after:transition-all"
+                 style="background: var(--color-slate);"></div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- API Keys -->
+    <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <h2 class="text-lg font-semibold mb-2 pb-4" style="color: var(--color-snow); border-bottom: 1px solid var(--color-graphite);">
+        API ключи
+      </h2>
+      <p class="text-sm mb-6" style="color: var(--color-mist);">Оставьте пустым для использования ключей из credentials</p>
+
+      <div class="space-y-6">
+        <!-- Nexara -->
+        <div>
+          <label for="nexara_api_key" class="block font-medium mb-2" style="color: var(--color-cloud);">
+            <span class="flex items-center">
+              <svg class="w-4 h-4 mr-2" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+              </svg>
+              Nexara API Key
+            </span>
+          </label>
+          <p class="text-sm mb-2" style="color: var(--color-mist);">Для транскрибации аудио</p>
+          <%= text_field_tag "settings[nexara_api_key]", Setting.get(:nexara_api_key),
+              id: "nexara_api_key",
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-blue);",
+              placeholder: "nx-..." %>
+          <% if Rails.application.credentials.dig(:nexara, :api_key).present? %>
+            <p class="text-xs mt-2 flex items-center" style="color: var(--color-neon-green);">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Ключ из credentials настроен
+            </p>
+          <% end %>
+        </div>
+
+        <!-- OpenAI -->
+        <div>
+          <label for="openai_api_key" class="block font-medium mb-2" style="color: var(--color-cloud);">
+            <span class="flex items-center">
+              <svg class="w-4 h-4 mr-2" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+              </svg>
+              OpenAI API Key
+            </span>
+          </label>
+          <p class="text-sm mb-2" style="color: var(--color-mist);">Для TTS озвучки (OpenAI)</p>
+          <%= text_field_tag "settings[openai_api_key]", Setting.get(:openai_api_key),
+              id: "openai_api_key",
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-blue);",
+              placeholder: "sk-..." %>
+          <% if Rails.application.credentials.dig(:openai, :api_key).present? %>
+            <p class="text-xs mt-2 flex items-center" style="color: var(--color-neon-green);">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Ключ из credentials настроен
+            </p>
+          <% end %>
+        </div>
+
+        <!-- ElevenLabs -->
+        <div>
+          <label for="elevenlabs_api_key" class="block font-medium mb-2" style="color: var(--color-cloud);">
+            <span class="flex items-center">
+              <svg class="w-4 h-4 mr-2" style="color: var(--color-neon-pink);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+              </svg>
+              ElevenLabs API Key
+            </span>
+          </label>
+          <p class="text-sm mb-2" style="color: var(--color-mist);">Для TTS озвучки (ElevenLabs)</p>
+          <%= text_field_tag "settings[elevenlabs_api_key]", Setting.get(:elevenlabs_api_key),
+              id: "elevenlabs_api_key",
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-blue);",
+              placeholder: "xi-..." %>
+          <% if Rails.application.credentials.dig(:elevenlabs, :api_key).present? %>
+            <p class="text-xs mt-2 flex items-center" style="color: var(--color-neon-green);">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Ключ из credentials настроен
+            </p>
+          <% end %>
+        </div>
+
+        <!-- OpenRouter -->
+        <div>
+          <label for="openrouter_api_key" class="block font-medium mb-2" style="color: var(--color-cloud);">
+            <span class="flex items-center">
+              <svg class="w-4 h-4 mr-2" style="color: var(--color-gold);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              OpenRouter API Key
+            </span>
+          </label>
+          <p class="text-sm mb-2" style="color: var(--color-mist);">Для альтернативных моделей</p>
+          <%= text_field_tag "settings[openrouter_api_key]", Setting.get(:openrouter_api_key),
+              id: "openrouter_api_key",
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-blue);",
+              placeholder: "sk-or-..." %>
+          <% if Rails.application.credentials.dig(:openrouter, :api_key).present? %>
+            <p class="text-xs mt-2 flex items-center" style="color: var(--color-neon-green);">
+              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Ключ из credentials настроен
+            </p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Default Providers -->
+    <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <h2 class="text-lg font-semibold mb-6 pb-4" style="color: var(--color-snow); border-bottom: 1px solid var(--color-graphite);">
+        Провайдеры по умолчанию
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="default_tts_provider" class="block font-medium mb-2" style="color: var(--color-cloud);">TTS провайдер</label>
+          <%= select_tag "settings[default_tts_provider]",
+              options_for_select([["OpenAI", "openai"], ["ElevenLabs", "elevenlabs"]], Setting.get(:default_tts_provider)),
+              id: "default_tts_provider",
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none appearance-none cursor-pointer",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        </div>
+
+        <div>
+          <label for="default_transcription_provider" class="block font-medium mb-2" style="color: var(--color-cloud);">Провайдер транскрибации</label>
+          <%= select_tag "settings[default_transcription_provider]",
+              options_for_select([["Nexara", "nexara"]], Setting.get(:default_transcription_provider)),
+              id: "default_transcription_provider",
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none appearance-none cursor-pointer",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="flex justify-end">
+      <%= submit_tag "Сохранить настройки",
+          class: "px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer",
+          style: "background: var(--gradient-aurora); color: var(--color-void); box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);" %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  /* Toggle switch styles */
+  input[type="checkbox"]:checked + div {
+    background: var(--color-neon-green) !important;
+  }
+  input[type="checkbox"] + div::after {
+    background: var(--color-snow);
+  }
+</style>

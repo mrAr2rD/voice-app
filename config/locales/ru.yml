@@ -1,0 +1,94 @@
+ru:
+  date:
+    formats:
+      default: "%d.%m.%Y"
+      short: "%d %b"
+      long: "%d %B %Y"
+    day_names:
+      - воскресенье
+      - понедельник
+      - вторник
+      - среда
+      - четверг
+      - пятница
+      - суббота
+    abbr_day_names:
+      - Вс
+      - Пн
+      - Вт
+      - Ср
+      - Чт
+      - Пт
+      - Сб
+    month_names:
+      - ~
+      - января
+      - февраля
+      - марта
+      - апреля
+      - мая
+      - июня
+      - июля
+      - августа
+      - сентября
+      - октября
+      - ноября
+      - декабря
+    abbr_month_names:
+      - ~
+      - янв.
+      - февр.
+      - марта
+      - апр.
+      - мая
+      - июня
+      - июля
+      - авг.
+      - сент.
+      - окт.
+      - нояб.
+      - дек.
+
+  time:
+    formats:
+      default: "%d.%m.%Y %H:%M"
+      short: "%d %b %H:%M"
+      long: "%d %B %Y, %H:%M"
+
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "Ошибка валидации: %{errors}"
+        blank: "не может быть пустым"
+        present: "должно быть пустым"
+        too_long: "слишком длинное (максимум %{count} символов)"
+        too_short: "слишком короткое (минимум %{count} символов)"
+        invalid: "имеет неверное значение"
+        taken: "уже занято"
+        confirmation: "не совпадает с подтверждением"
+    models:
+      user: Пользователь
+      transcription: Транскрибация
+      transcription_segment: Сегмент
+      voice_generation: Озвучка
+    attributes:
+      user:
+        email: Email
+        name: Имя
+        password: Пароль
+        password_confirmation: Подтверждение пароля
+      transcription:
+        title: Название
+        source_file: Файл
+        youtube_url: YouTube URL
+        language: Язык
+      voice_generation:
+        text: Текст
+        provider: Провайдер
+        voice_id: Голос
+
+  pagy:
+    nav:
+      prev: "&lsaquo; Назад"
+      next: "Далее &rsaquo;"
+      gap: "&hellip;"

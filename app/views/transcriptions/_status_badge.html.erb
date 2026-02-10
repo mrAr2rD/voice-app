@@ -1,0 +1,37 @@
+<%
+  status_styles = {
+    "pending" => { bg: "rgba(107, 107, 122, 0.15)", color: "var(--color-mist)", border: "rgba(107, 107, 122, 0.3)" },
+    "processing" => { bg: "rgba(0, 212, 255, 0.15)", color: "var(--color-neon-blue)", border: "rgba(0, 212, 255, 0.3)" },
+    "extracting_audio" => { bg: "rgba(0, 212, 255, 0.15)", color: "var(--color-neon-blue)", border: "rgba(0, 212, 255, 0.3)" },
+    "transcribing" => { bg: "rgba(251, 191, 36, 0.15)", color: "var(--color-gold)", border: "rgba(251, 191, 36, 0.3)" },
+    "completed" => { bg: "rgba(34, 211, 187, 0.15)", color: "var(--color-neon-green)", border: "rgba(34, 211, 187, 0.3)" },
+    "failed" => { bg: "rgba(255, 107, 107, 0.15)", color: "var(--color-coral)", border: "rgba(255, 107, 107, 0.3)" }
+  }
+  status_labels = {
+    "pending" => "Ожидает",
+    "processing" => "Обработка",
+    "extracting_audio" => "Извлечение",
+    "transcribing" => "Транскрибация",
+    "completed" => "Готово",
+    "failed" => "Ошибка"
+  }
+  style = status_styles[transcription.status] || status_styles["pending"]
+%>
+<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider"
+      style="background: <%= style[:bg] %>; color: <%= style[:color] %>; border: 1px solid <%= style[:border] %>;">
+  <% if transcription.in_progress? %>
+    <svg class="animate-spin -ml-0.5 mr-1.5 h-3 w-3" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+    </svg>
+  <% elsif transcription.completed? %>
+    <svg class="-ml-0.5 mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+    </svg>
+  <% elsif transcription.failed? %>
+    <svg class="-ml-0.5 mr-1 h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  <% end %>
+  <%= status_labels[transcription.status] %>
+</span>

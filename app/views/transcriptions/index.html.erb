@@ -1,0 +1,54 @@
+<div class="animate-fade-in">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-8">
+    <div class="flex items-center">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4"
+           style="background: rgba(10, 132, 255, 0.15); border: 1px solid rgba(10, 132, 255, 0.3);">
+        <svg class="w-6 h-6" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-2xl font-bold" style="color: var(--color-snow);">Транскрибации</h1>
+        <p class="text-sm" style="color: var(--color-mist);">История всех ваших транскрибаций</p>
+      </div>
+    </div>
+
+    <%= link_to new_transcription_path,
+        class: "inline-flex items-center px-5 py-2.5 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+        style: "background: var(--gradient-aurora); color: var(--color-void); box-shadow: 0 10px 40px rgba(10, 132, 255, 0.3);" do %>
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      Новая транскрибация
+    <% end %>
+  </div>
+
+  <%= turbo_stream_from "user_#{current_user.id}_transcriptions" %>
+
+  <div id="transcriptions" class="space-y-4">
+    <% if @transcriptions.empty? %>
+      <div class="text-center py-16 rounded-2xl" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-6"
+             style="background: rgba(10, 132, 255, 0.1); border: 1px solid rgba(10, 132, 255, 0.2);">
+          <svg class="w-10 h-10" style="color: var(--color-neon-blue); opacity: 0.5;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold mb-2" style="color: var(--color-snow);">Нет транскрибаций</h3>
+        <p class="mb-6" style="color: var(--color-mist);">Начните с создания новой транскрибации</p>
+        <%= link_to new_transcription_path,
+            class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+            style: "background: var(--color-neon-blue); color: white;" do %>
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          Создать транскрибацию
+        <% end %>
+      </div>
+    <% else %>
+      <%= render @transcriptions %>
+    <% end %>
+  </div>
+</div>
