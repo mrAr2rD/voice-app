@@ -1,4 +1,5 @@
 class TranscriptionsController < ApplicationController
+  layout "dashboard"
   before_action :require_login
   before_action :check_transcription_enabled, only: %i[new create]
   before_action :set_transcription, only: %i[show destroy retry download]

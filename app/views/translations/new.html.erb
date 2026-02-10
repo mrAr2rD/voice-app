@@ -1,0 +1,86 @@
+<% content_for :page_title, "Новый перевод" %>
+
+<div class="max-w-3xl">
+  <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <%= form_with model: @translation, class: "space-y-6" do |f| %>
+      <% if @translation.errors.any? %>
+        <div class="rounded-xl p-4" style="background: rgba(255, 107, 107, 0.1); border: 1px solid rgba(255, 107, 107, 0.2);">
+          <ul class="text-sm space-y-1" style="color: var(--color-coral);">
+            <% @translation.errors.full_messages.each do |message| %>
+              <li class="flex items-center">
+                <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <%= message %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <!-- Source Text -->
+      <div>
+        <%= f.label :source_text, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+          Текст для перевода
+        <% end %>
+        <%= f.text_area :source_text,
+            rows: 8,
+            placeholder: "Введите или вставьте текст для перевода...",
+            class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none resize-none",
+            style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        <p class="text-xs mt-1" style="color: var(--color-mist);">Максимум 50 000 символов</p>
+      </div>
+
+      <!-- Languages -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <%= f.label :source_language, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+            Исходный язык
+          <% end %>
+          <%= f.select :source_language,
+              [["Автоопределение", "auto"]] + Translation::LANGUAGES,
+              {},
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none appearance-none cursor-pointer",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        </div>
+
+        <div>
+          <%= f.label :target_language, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+            Язык перевода
+          <% end %>
+          <%= f.select :target_language,
+              Translation::LANGUAGES,
+              { selected: "en" },
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none appearance-none cursor-pointer",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+        </div>
+      </div>
+
+      <!-- Model -->
+      <div>
+        <%= f.label :model, class: "block text-sm font-medium mb-2", style: "color: var(--color-cloud);" do %>
+          Модель AI
+        <% end %>
+        <%= f.select :model,
+            Translation::MODELS,
+            {},
+            class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none appearance-none cursor-pointer",
+            style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow);" %>
+      </div>
+
+      <!-- Submit -->
+      <div class="flex items-center justify-between pt-4">
+        <%= link_to translations_path, class: "text-sm transition-colors", style: "color: var(--color-mist);" do %>
+          <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          Назад
+        <% end %>
+
+        <%= f.submit "Перевести",
+            class: "px-8 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 cursor-pointer",
+            style: "background: var(--color-neon-green); color: var(--color-void);" %>
+      </div>
+    <% end %>
+  </div>
+</div>

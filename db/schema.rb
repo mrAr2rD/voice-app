@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_10_085139) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_10_092732) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -83,6 +83,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_085139) do
     t.index ["user_id"], name: "index_transcriptions_on_user_id"
   end
 
+  create_table "translations", force: :cascade do |t|
+    t.integer "cost_cents", default: 0
+    t.datetime "created_at", null: false
+    t.text "error_message"
+    t.string "model", default: "google/gemini-2.0-flash-001"
+    t.string "source_language", default: "auto"
+    t.text "source_text", null: false
+    t.integer "status", default: 0, null: false
+    t.string "target_language", null: false
+    t.integer "tokens_used", default: 0
+    t.text "translated_text"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["created_at"], name: "index_translations_on_created_at"
+    t.index ["status"], name: "index_translations_on_status"
+    t.index ["user_id"], name: "index_translations_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
@@ -114,5 +132,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_085139) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "transcription_segments", "transcriptions"
   add_foreign_key "transcriptions", "users"
+  add_foreign_key "translations", "users"
   add_foreign_key "voice_generations", "users"
 end

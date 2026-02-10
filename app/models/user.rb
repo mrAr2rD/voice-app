@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   has_many :transcriptions, dependent: :destroy
   has_many :voice_generations, dependent: :destroy
+  has_many :translations, dependent: :destroy
 
   validates :email, presence: true,
                     uniqueness: { case_sensitive: false },

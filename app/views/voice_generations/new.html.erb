@@ -1,18 +1,6 @@
+<% content_for :page_title, "Новая озвучка" %>
+
 <div class="max-w-2xl mx-auto animate-fade-in">
-  <!-- Header -->
-  <div class="flex items-center mb-8">
-    <div class="w-14 h-14 rounded-2xl flex items-center justify-center mr-4"
-         style="background: linear-gradient(135deg, rgba(94, 92, 230, 0.2) 0%, rgba(94, 92, 230, 0.05) 100%);
-                border: 1px solid rgba(94, 92, 230, 0.2);">
-      <svg class="w-7 h-7" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-      </svg>
-    </div>
-    <div>
-      <h1 class="text-2xl font-bold" style="color: var(--color-snow);">Новая озвучка</h1>
-      <p style="color: var(--color-mist);">Преобразуйте текст в естественную речь</p>
-    </div>
-  </div>
 
   <!-- Form Card -->
   <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
@@ -129,13 +117,4 @@
     <% end %>
   </div>
 
-  <!-- Back link -->
-  <div class="mt-6 text-center">
-    <%= link_to voice_generations_path, class: "inline-flex items-center text-sm transition-colors", style: "color: var(--color-mist);" do %>
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-      </svg>
-      Назад к списку
-    <% end %>
-  </div>
 </div>

@@ -33,6 +33,13 @@ Rails.application.routes.draw do
     end
   end
 
+  # Translations
+  resources :translations, only: %i[index show new create destroy] do
+    member do
+      get :download
+    end
+  end
+
   # Admin
   namespace :admin do
     root to: "dashboard#index"

@@ -1,18 +1,6 @@
+<% content_for :page_title, "Новая транскрибация" %>
+
 <div class="max-w-2xl mx-auto animate-fade-in">
-  <!-- Header -->
-  <div class="flex items-center mb-8">
-    <div class="w-14 h-14 rounded-2xl flex items-center justify-center mr-4"
-         style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 212, 255, 0.05) 100%);
-                border: 1px solid rgba(0, 212, 255, 0.2);">
-      <svg class="w-7 h-7" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-      </svg>
-    </div>
-    <div>
-      <h1 class="text-2xl font-bold" style="color: var(--color-snow);">Новая транскрибация</h1>
-      <p style="color: var(--color-mist);">Загрузите аудио, видео или укажите YouTube ссылку</p>
-    </div>
-  </div>
 
   <!-- Form Card -->
   <div class="rounded-2xl p-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
@@ -137,15 +125,6 @@
     <% end %>
   </div>
 
-  <!-- Back link -->
-  <div class="mt-6 text-center">
-    <%= link_to transcriptions_path, class: "inline-flex items-center text-sm transition-colors", style: "color: var(--color-mist);" do %>
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-      </svg>
-      Назад к списку
-    <% end %>
-  </div>
 </div>
 
 <style>

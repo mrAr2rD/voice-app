@@ -1,50 +1,50 @@
+<% content_for :page_title, @transcription.display_title %>
+
+<% content_for :page_actions do %>
+  <div class="flex items-center space-x-3">
+    <%= render "transcriptions/status_badge", transcription: @transcription %>
+    <%= button_to transcription_path(@transcription),
+        method: :delete,
+        data: { turbo_confirm: "Удалить транскрибацию?" },
+        class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:bg-white/10",
+        style: "border: 1px solid var(--color-graphite); color: var(--color-coral);" do %>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+      </svg>
+    <% end %>
+  </div>
+<% end %>
+
 <%= turbo_stream_from "user_#{current_user.id}_transcriptions" %>
 
 <div class="max-w-4xl mx-auto animate-fade-in">
-  <!-- Header -->
-  <div class="flex items-start justify-between mb-8">
-    <div>
-      <div class="flex items-center mb-3">
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4"
-             style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
-          <svg class="w-6 h-6" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-2xl font-bold" style="color: var(--color-snow);"><%= @transcription.display_title %></h1>
-          <div class="flex items-center mt-1 space-x-4 text-sm" style="color: var(--color-mist);">
-            <span class="flex items-center">
-              <% case @transcription.source_type %>
-              <% when "audio_upload" %>
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
-                </svg>
-                Аудио
-              <% when "video_upload" %>
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                </svg>
-                Видео
-              <% when "youtube_url" %>
-                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-                YouTube
-              <% end %>
-            </span>
-            <% if @transcription.duration %>
-              <span><%= @transcription.duration_formatted %></span>
-            <% end %>
-            <% if @transcription.language %>
-              <span class="uppercase"><%= @transcription.language %></span>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <%= render "transcriptions/status_badge", transcription: @transcription %>
+  <!-- Source Info -->
+  <div class="flex items-center space-x-4 mb-6 text-sm" style="color: var(--color-mist);">
+    <span class="flex items-center">
+      <% case @transcription.source_type %>
+      <% when "audio_upload" %>
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+        </svg>
+        Аудио
+      <% when "video_upload" %>
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+        </svg>
+        Видео
+      <% when "youtube_url" %>
+        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+        YouTube
+      <% end %>
+    </span>
+    <% if @transcription.duration %>
+      <span><%= @transcription.duration_formatted %></span>
+    <% end %>
+    <% if @transcription.language %>
+      <span class="uppercase"><%= @transcription.language %></span>
+    <% end %>
   </div>
 
   <!-- Content -->
@@ -201,26 +201,4 @@
     <% end %>
   <% end %>
 
-  <!-- Actions -->
-  <div class="flex items-center justify-between mt-8 pt-6" style="border-top: 1px solid var(--color-graphite);">
-    <%= link_to transcriptions_path,
-        class: "flex items-center text-sm font-medium transition-colors duration-200",
-        style: "color: var(--color-mist);" do %>
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-      </svg>
-      Назад к списку
-    <% end %>
-
-    <%= button_to transcription_path(@transcription),
-        method: :delete,
-        data: { turbo_confirm: "Удалить транскрибацию?" },
-        class: "flex items-center text-sm font-medium transition-colors duration-200 hover:opacity-80",
-        style: "color: var(--color-coral);" do %>
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-      </svg>
-      Удалить
-    <% end %>
-  </div>
 </div>

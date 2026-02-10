@@ -1,0 +1,41 @@
+<% content_for :page_title, "Переводчик" %>
+
+<% content_for :page_actions do %>
+  <%= link_to new_translation_path,
+      class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:scale-105",
+      style: "background: var(--color-neon-green); color: var(--color-void);" do %>
+    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>
+    Новый перевод
+  <% end %>
+<% end %>
+
+<%= turbo_stream_from "user_#{current_user.id}_translations" %>
+
+<div id="translations" class="space-y-4">
+  <% if @translations.any? %>
+    <% @translations.each do |translation| %>
+      <%= render "translation", translation: translation %>
+    <% end %>
+  <% else %>
+    <div class="text-center py-16">
+      <div class="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center"
+           style="background: rgba(34, 211, 187, 0.1);">
+        <svg class="w-10 h-10" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold mb-2" style="color: var(--color-snow);">Нет переводов</h3>
+      <p class="mb-6" style="color: var(--color-mist);">Создайте первый перевод с помощью AI</p>
+      <%= link_to new_translation_path,
+          class: "inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105",
+          style: "background: var(--color-neon-green); color: var(--color-void);" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        Новый перевод
+      <% end %>
+    </div>
+  <% end %>
+</div>

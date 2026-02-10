@@ -4,6 +4,7 @@ module Admin
       @users_count = User.count
       @transcriptions_count = Transcription.count
       @voice_generations_count = VoiceGeneration.count
+      @translations_count = Translation.count
       @recent_transcriptions = Transcription.recent.limit(5)
       @recent_voice_generations = VoiceGeneration.recent.limit(5)
 
@@ -23,7 +24,12 @@ module Admin
         }
       }
 
-      @total_cost = @transcription_stats[:total_cost] + @voice_generation_stats[:total_cost]
+      @translation_stats = {
+        total_tokens: Translation.sum(:tokens_used) || 0,
+        total_cost: Translation.sum(:cost_cents) || 0
+      }
+
+      @total_cost = @transcription_stats[:total_cost] + @voice_generation_stats[:total_cost] + @translation_stats[:total_cost]
     end
   end
 end

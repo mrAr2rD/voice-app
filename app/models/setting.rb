@@ -6,6 +6,7 @@ class Setting < ApplicationRecord
     # Функционал
     transcription_enabled: { default: "true", type: :boolean, description: "Включить транскрибацию" },
     voice_generation_enabled: { default: "true", type: :boolean, description: "Включить озвучку" },
+    translation_enabled: { default: "true", type: :boolean, description: "Включить переводчик" },
 
     # API ключи
     nexara_api_key: { default: "", type: :string, description: "API ключ Nexara (транскрибация)" },
@@ -20,7 +21,8 @@ class Setting < ApplicationRecord
     # Цены (в центах)
     transcription_cost_per_minute: { default: "0.6", type: :float, description: "Цена транскрибации за минуту (центы)" },
     openai_tts_cost_per_1k_chars: { default: "1.5", type: :float, description: "Цена OpenAI TTS за 1000 символов (центы)" },
-    elevenlabs_cost_per_1k_chars: { default: "30", type: :float, description: "Цена ElevenLabs за 1000 символов (центы)" }
+    elevenlabs_cost_per_1k_chars: { default: "30", type: :float, description: "Цена ElevenLabs за 1000 символов (центы)" },
+    translation_cost_per_1k_tokens: { default: "0.1", type: :float, description: "Цена перевода за 1000 токенов (центы)" }
   }.freeze
 
   class << self
@@ -56,6 +58,10 @@ class Setting < ApplicationRecord
 
     def voice_generation_enabled?
       get(:voice_generation_enabled)
+    end
+
+    def translation_enabled?
+      get(:translation_enabled)
     end
 
     def nexara_api_key

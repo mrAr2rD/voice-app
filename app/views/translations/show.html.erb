@@ -1,0 +1,135 @@
+<% content_for :page_title, "Перевод" %>
+
+<% content_for :page_actions do %>
+  <div class="flex items-center space-x-3">
+    <% if @translation.completed? && @translation.translated_text.present? %>
+      <button onclick="copyTranslation()"
+              class="inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:bg-white/10"
+              style="border: 1px solid var(--color-graphite); color: var(--color-cloud);">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+        </svg>
+        Копировать
+      </button>
+
+      <div class="relative" x-data="{ open: false }">
+        <button @click="open = !open"
+                class="inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200"
+                style="background: var(--color-neon-green); color: var(--color-void);">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          Скачать
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+
+        <div x-show="open" @click.away="open = false"
+             class="absolute right-0 mt-2 w-40 rounded-xl shadow-lg py-2 z-10"
+             style="background: var(--color-obsidian); border: 1px solid var(--color-graphite);">
+          <%= link_to download_translation_path(@translation, format: "txt"),
+              class: "block px-4 py-2 text-sm transition-colors hover:bg-white/5",
+              style: "color: var(--color-cloud);" do %>
+            Скачать TXT
+          <% end %>
+          <%= link_to download_translation_path(@translation, format: "md"),
+              class: "block px-4 py-2 text-sm transition-colors hover:bg-white/5",
+              style: "color: var(--color-cloud);" do %>
+            Скачать Markdown
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%= button_to translation_path(@translation), method: :delete,
+        data: { turbo_confirm: "Удалить перевод?" },
+        class: "inline-flex items-center px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:bg-white/10",
+        style: "border: 1px solid var(--color-graphite); color: var(--color-coral);" do %>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+      </svg>
+    <% end %>
+  </div>
+<% end %>
+
+<%= turbo_stream_from @translation %>
+
+<div class="space-y-6" data-controller="polling" data-polling-url-value="<%= translation_path(@translation, format: :json) %>" data-polling-interval-value="2000" data-polling-active-value="<%= @translation.in_progress? %>">
+  <!-- Status & Info -->
+  <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <%= render "status_badge", translation: @translation %>
+        <span class="text-sm" style="color: var(--color-mist);">
+          <%= @translation.source_language_name %> → <%= @translation.target_language_name %>
+        </span>
+        <span class="text-sm" style="color: var(--color-mist);">
+          <%= @translation.model_name %>
+        </span>
+      </div>
+      <span class="text-sm" style="color: var(--color-mist);">
+        <%= @translation.created_at.strftime("%d.%m.%Y %H:%M") %>
+      </span>
+    </div>
+
+    <% if @translation.failed? && @translation.error_message.present? %>
+      <div class="mt-4 p-4 rounded-xl" style="background: rgba(255, 107, 107, 0.1);">
+        <p class="text-sm" style="color: var(--color-coral);"><%= @translation.error_message %></p>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Source Text -->
+  <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <h3 class="font-semibold mb-4" style="color: var(--color-snow);">Оригинал</h3>
+    <div class="prose prose-invert max-w-none" style="color: var(--color-cloud);">
+      <p class="whitespace-pre-wrap"><%= @translation.source_text %></p>
+    </div>
+  </div>
+
+  <!-- Translated Text -->
+  <div class="rounded-2xl p-6" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+    <h3 class="font-semibold mb-4" style="color: var(--color-snow);">Перевод</h3>
+    <% if @translation.in_progress? %>
+      <div class="flex items-center justify-center py-8">
+        <svg class="w-8 h-8 animate-spin mr-3" style="color: var(--color-neon-green);" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        <span style="color: var(--color-mist);">Переводится...</span>
+      </div>
+    <% elsif @translation.translated_text.present? %>
+      <div id="translated-text" class="prose prose-invert max-w-none" style="color: var(--color-cloud);">
+        <p class="whitespace-pre-wrap"><%= @translation.translated_text %></p>
+      </div>
+    <% else %>
+      <p style="color: var(--color-mist);">Перевод недоступен</p>
+    <% end %>
+  </div>
+
+  <!-- Stats -->
+  <% if @translation.completed? %>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="rounded-xl p-4" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <p class="text-sm" style="color: var(--color-mist);">Токенов использовано</p>
+        <p class="text-xl font-bold" style="color: var(--color-snow);"><%= @translation.tokens_used %></p>
+      </div>
+      <div class="rounded-xl p-4" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+        <p class="text-sm" style="color: var(--color-mist);">Стоимость</p>
+        <p class="text-xl font-bold" style="color: var(--color-neon-green);">$<%= sprintf('%.4f', @translation.cost_cents / 100.0) %></p>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+function copyTranslation() {
+  const text = document.getElementById('translated-text')?.innerText;
+  if (text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Перевод скопирован!');
+    });
+  }
+}
+</script>

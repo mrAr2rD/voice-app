@@ -1,4 +1,5 @@
 class VoiceGenerationsController < ApplicationController
+  layout "dashboard"
   before_action :require_login
   before_action :check_voice_generation_enabled, only: %i[new create]
   before_action :set_voice_generation, only: %i[show destroy download]

@@ -39,6 +39,22 @@
                  style="background: var(--color-slate);"></div>
           </label>
         </div>
+
+        <div class="flex items-center justify-between p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div>
+            <label for="translation_enabled" class="font-medium" style="color: var(--color-snow);">Переводчик</label>
+            <p class="text-sm mt-1" style="color: var(--color-mist);">Включить/выключить сервис перевода</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag "settings[translation_enabled]", "false" %>
+            <%= check_box_tag "settings[translation_enabled]", "true", Setting.get(:translation_enabled),
+                id: "translation_enabled", class: "sr-only peer" %>
+            <div class="w-14 h-7 rounded-full peer transition-all duration-300
+                        peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                        after:rounded-full after:h-6 after:w-6 after:transition-all"
+                 style="background: var(--color-slate);"></div>
+          </label>
+        </div>
       </div>
     </div>
 
@@ -222,6 +238,18 @@
           <%= number_field_tag "settings[elevenlabs_cost_per_1k_chars]", Setting.get(:elevenlabs_cost_per_1k_chars),
               id: "elevenlabs_cost_per_1k_chars",
               step: 0.1,
+              min: 0,
+              class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2",
+              style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-blue);" %>
+        </div>
+
+        <div>
+          <label for="translation_cost_per_1k_tokens" class="block font-medium mb-2" style="color: var(--color-cloud);">
+            Перевод (¢/1K токенов)
+          </label>
+          <%= number_field_tag "settings[translation_cost_per_1k_tokens]", Setting.get(:translation_cost_per_1k_tokens),
+              id: "translation_cost_per_1k_tokens",
+              step: 0.01,
               min: 0,
               class: "w-full px-4 py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2",
               style: "background: var(--color-obsidian); border: 1px solid var(--color-graphite); color: var(--color-snow); --tw-ring-color: var(--color-neon-blue);" %>
