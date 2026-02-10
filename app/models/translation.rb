@@ -52,7 +52,7 @@ class Translation < ApplicationRecord
     language_name(target_language)
   end
 
-  def model_name
+  def ai_model_name
     MODELS.find { |m| m[1] == model }&.first || model
   end
 

@@ -67,7 +67,7 @@ class TranslationsController < ApplicationController
 
       **Исходный язык:** #{@translation.source_language_name}
       **Целевой язык:** #{@translation.target_language_name}
-      **Модель:** #{@translation.model_name}
+      **Модель:** #{@translation.ai_model_name}
       **Дата:** #{@translation.created_at.strftime("%d.%m.%Y %H:%M")}
 
       ---
