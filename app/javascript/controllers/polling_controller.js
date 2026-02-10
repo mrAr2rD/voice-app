@@ -3,13 +3,16 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static values = {
     interval: { type: Number, default: 3000 },
-    url: String
+    url: String,
+    active: { type: Boolean, default: true }
   }
 
   static targets = ["progressBar", "progressText"]
 
   connect() {
-    this.startPolling()
+    if (this.activeValue) {
+      this.startPolling()
+    }
   }
 
   disconnect() {
@@ -29,7 +32,8 @@ export default class extends Controller {
   }
 
   poll() {
-    fetch(this.urlValue + ".json", {
+    const url = this.urlValue.endsWith('.json') ? this.urlValue : this.urlValue + ".json"
+    fetch(url, {
       headers: {
         "Accept": "application/json"
       }
