@@ -9,6 +9,10 @@ class TranslationsController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.json { render json: { status: @translation.status, progress: @translation.in_progress? ? 50 : 100 } }
+    end
   end
 
   def new

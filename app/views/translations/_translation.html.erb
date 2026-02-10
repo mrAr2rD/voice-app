@@ -1,5 +1,6 @@
 <%= turbo_frame_tag dom_id(translation) do %>
   <%= link_to translation,
+      data: { turbo_frame: "_top" },
       class: "block rounded-2xl p-6 transition-all duration-200 hover:scale-[1.01]",
       style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
     <div class="flex items-start justify-between">
