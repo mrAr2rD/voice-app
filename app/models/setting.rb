@@ -6,10 +6,18 @@ class Setting < ApplicationRecord
 
   # Ключи настроек
   KEYS = {
-    # Функционал
+    # Основной функционал
     transcription_enabled: { default: "true", type: :boolean, description: "Включить транскрибацию" },
     voice_generation_enabled: { default: "true", type: :boolean, description: "Включить озвучку" },
     translation_enabled: { default: "true", type: :boolean, description: "Включить переводчик" },
+
+    # Новый функционал
+    scripts_enabled: { default: "true", type: :boolean, description: "Включить AI сценарии" },
+    video_clips_enabled: { default: "true", type: :boolean, description: "Включить клипы Shorts/Reels" },
+    cloned_voices_enabled: { default: "true", type: :boolean, description: "Включить клонирование голоса" },
+    batch_processing_enabled: { default: "true", type: :boolean, description: "Включить пакетную обработку" },
+    social_publishing_enabled: { default: "true", type: :boolean, description: "Включить публикацию в соц.сети" },
+    youtube_analytics_enabled: { default: "true", type: :boolean, description: "Включить YouTube аналитику" },
 
     # API ключи
     nexara_api_key: { default: "", type: :string, description: "API ключ Nexara (транскрибация)" },
@@ -119,6 +127,30 @@ class Setting < ApplicationRecord
 
     def video_builder_enabled?
       get(:video_builder_enabled)
+    end
+
+    def scripts_enabled?
+      get(:scripts_enabled)
+    end
+
+    def video_clips_enabled?
+      get(:video_clips_enabled)
+    end
+
+    def cloned_voices_enabled?
+      get(:cloned_voices_enabled)
+    end
+
+    def batch_processing_enabled?
+      get(:batch_processing_enabled)
+    end
+
+    def social_publishing_enabled?
+      get(:social_publishing_enabled)
+    end
+
+    def youtube_analytics_enabled?
+      get(:youtube_analytics_enabled)
     end
 
     # Цены

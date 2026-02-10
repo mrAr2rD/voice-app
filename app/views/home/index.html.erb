@@ -11,78 +11,170 @@
       <p class="text-sm" style="color: var(--color-mist);">Что хотите сделать сегодня?</p>
     </div>
 
-    <!-- Action Cards - 4 services in row -->
+    <!-- Action Cards - Main services -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-      <!-- Transcription Card -->
-      <%= link_to new_transcription_path,
-          class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
-          style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-             style="background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.12) 0%, transparent 70%);"></div>
-        <div class="relative z-10">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
-               style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
-            <svg class="w-5 h-5" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-            </svg>
+      <% if Setting.transcription_enabled? %>
+        <!-- Transcription Card -->
+        <%= link_to new_transcription_path,
+            class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+            style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+               style="background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.12) 0%, transparent 70%);"></div>
+          <div class="relative z-10">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+                 style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2);">
+              <svg class="w-5 h-5" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Транскрибация</h3>
+            <p class="text-xs" style="color: var(--color-mist);">Аудио в текст</p>
           </div>
-          <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Транскрибация</h3>
-          <p class="text-xs" style="color: var(--color-mist);">Аудио в текст</p>
-        </div>
+        <% end %>
       <% end %>
 
-      <!-- Voice Generation Card -->
-      <%= link_to new_voice_generation_path,
-          class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
-          style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-             style="background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
-        <div class="relative z-10">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
-               style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2);">
-            <svg class="w-5 h-5" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
-            </svg>
+      <% if Setting.voice_generation_enabled? %>
+        <!-- Voice Generation Card -->
+        <%= link_to new_voice_generation_path,
+            class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+            style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+               style="background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
+          <div class="relative z-10">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+                 style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2);">
+              <svg class="w-5 h-5" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Озвучка</h3>
+            <p class="text-xs" style="color: var(--color-mist);">Текст в речь</p>
           </div>
-          <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Озвучка</h3>
-          <p class="text-xs" style="color: var(--color-mist);">Текст в речь</p>
-        </div>
+        <% end %>
       <% end %>
 
-      <!-- Translation Card -->
-      <%= link_to new_translation_path,
-          class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
-          style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-             style="background: radial-gradient(circle at 50% 50%, rgba(34, 211, 187, 0.12) 0%, transparent 70%);"></div>
-        <div class="relative z-10">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
-               style="background: rgba(34, 211, 187, 0.1); border: 1px solid rgba(34, 211, 187, 0.2);">
-            <svg class="w-5 h-5" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
-            </svg>
+      <% if Setting.translation_enabled? %>
+        <!-- Translation Card -->
+        <%= link_to new_translation_path,
+            class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+            style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+               style="background: radial-gradient(circle at 50% 50%, rgba(34, 211, 187, 0.12) 0%, transparent 70%);"></div>
+          <div class="relative z-10">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+                 style="background: rgba(34, 211, 187, 0.1); border: 1px solid rgba(34, 211, 187, 0.2);">
+              <svg class="w-5 h-5" style="color: var(--color-neon-green);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Переводчик</h3>
+            <p class="text-xs" style="color: var(--color-mist);">AI перевод</p>
           </div>
-          <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Переводчик</h3>
-          <p class="text-xs" style="color: var(--color-mist);">AI перевод</p>
-        </div>
+        <% end %>
       <% end %>
 
-      <!-- Video Builder Card -->
-      <%= link_to new_video_builder_path,
-          class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
-          style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-             style="background: radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.12) 0%, transparent 70%);"></div>
-        <div class="relative z-10">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
-               style="background: rgba(255, 107, 107, 0.1); border: 1px solid rgba(255, 107, 107, 0.2);">
-            <svg class="w-5 h-5" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-            </svg>
+      <% if Setting.video_builder_enabled? %>
+        <!-- Video Builder Card -->
+        <%= link_to new_video_builder_path,
+            class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+            style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+               style="background: radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.12) 0%, transparent 70%);"></div>
+          <div class="relative z-10">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+                 style="background: rgba(255, 107, 107, 0.1); border: 1px solid rgba(255, 107, 107, 0.2);">
+              <svg class="w-5 h-5" style="color: var(--color-coral);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Видео</h3>
+            <p class="text-xs" style="color: var(--color-mist);">Из озвучки</p>
           </div>
-          <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Видео</h3>
-          <p class="text-xs" style="color: var(--color-mist);">Из озвучки</p>
-        </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <!-- Secondary services row -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+      <% if Setting.scripts_enabled? %>
+        <!-- Scripts Card -->
+        <%= link_to new_script_path,
+            class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+            style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+               style="background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.12) 0%, transparent 70%);"></div>
+          <div class="relative z-10">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+                 style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2);">
+              <svg class="w-5 h-5" style="color: #3b82f6;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Сценарии</h3>
+            <p class="text-xs" style="color: var(--color-mist);">AI генерация</p>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% if Setting.video_clips_enabled? %>
+        <!-- Video Clips Card -->
+        <%= link_to new_video_clip_path,
+            class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+            style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+               style="background: radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.12) 0%, transparent 70%);"></div>
+          <div class="relative z-10">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+                 style="background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.2);">
+              <svg class="w-5 h-5" style="color: #ec4899;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Клипы</h3>
+            <p class="text-xs" style="color: var(--color-mist);">Shorts/Reels</p>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% if Setting.cloned_voices_enabled? %>
+        <!-- Cloned Voices Card -->
+        <%= link_to new_cloned_voice_path,
+            class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+            style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+               style="background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
+          <div class="relative z-10">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+                 style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2);">
+              <svg class="w-5 h-5" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Мои голоса</h3>
+            <p class="text-xs" style="color: var(--color-mist);">Клонирование</p>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% if Setting.batch_processing_enabled? %>
+        <!-- Batch Processing Card -->
+        <%= link_to new_batch_job_path,
+            class: "group relative overflow-hidden rounded-2xl p-5 hover-lift transition-all duration-300",
+            style: "background: var(--color-abyss); border: 1px solid var(--color-graphite);" do %>
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+               style="background: radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.12) 0%, transparent 70%);"></div>
+          <div class="relative z-10">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-3"
+                 style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2);">
+              <svg class="w-5 h-5" style="color: #f59e0b;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-sm mb-0.5" style="color: var(--color-snow);">Пакетная</h3>
+            <p class="text-xs" style="color: var(--color-mist);">Массовая обработка</p>
+          </div>
+        <% end %>
       <% end %>
     </div>
 

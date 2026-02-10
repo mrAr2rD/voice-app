@@ -71,6 +71,102 @@
                  style="background: var(--color-slate);"></div>
           </label>
         </div>
+
+        <div class="flex items-center justify-between p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div>
+            <label for="scripts_enabled" class="font-medium" style="color: var(--color-snow);">AI Сценарии</label>
+            <p class="text-sm mt-1" style="color: var(--color-mist);">Включить/выключить генерацию сценариев</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag "settings[scripts_enabled]", "false" %>
+            <%= check_box_tag "settings[scripts_enabled]", "true", Setting.get(:scripts_enabled),
+                id: "scripts_enabled", class: "sr-only peer" %>
+            <div class="w-14 h-7 rounded-full peer transition-all duration-300
+                        peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                        after:rounded-full after:h-6 after:w-6 after:transition-all"
+                 style="background: var(--color-slate);"></div>
+          </label>
+        </div>
+
+        <div class="flex items-center justify-between p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div>
+            <label for="video_clips_enabled" class="font-medium" style="color: var(--color-snow);">Клипы Shorts/Reels</label>
+            <p class="text-sm mt-1" style="color: var(--color-mist);">Включить/выключить нарезку клипов</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag "settings[video_clips_enabled]", "false" %>
+            <%= check_box_tag "settings[video_clips_enabled]", "true", Setting.get(:video_clips_enabled),
+                id: "video_clips_enabled", class: "sr-only peer" %>
+            <div class="w-14 h-7 rounded-full peer transition-all duration-300
+                        peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                        after:rounded-full after:h-6 after:w-6 after:transition-all"
+                 style="background: var(--color-slate);"></div>
+          </label>
+        </div>
+
+        <div class="flex items-center justify-between p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div>
+            <label for="cloned_voices_enabled" class="font-medium" style="color: var(--color-snow);">Клонирование голоса</label>
+            <p class="text-sm mt-1" style="color: var(--color-mist);">Включить/выключить клонирование голоса</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag "settings[cloned_voices_enabled]", "false" %>
+            <%= check_box_tag "settings[cloned_voices_enabled]", "true", Setting.get(:cloned_voices_enabled),
+                id: "cloned_voices_enabled", class: "sr-only peer" %>
+            <div class="w-14 h-7 rounded-full peer transition-all duration-300
+                        peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                        after:rounded-full after:h-6 after:w-6 after:transition-all"
+                 style="background: var(--color-slate);"></div>
+          </label>
+        </div>
+
+        <div class="flex items-center justify-between p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div>
+            <label for="batch_processing_enabled" class="font-medium" style="color: var(--color-snow);">Пакетная обработка</label>
+            <p class="text-sm mt-1" style="color: var(--color-mist);">Включить/выключить массовую обработку</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag "settings[batch_processing_enabled]", "false" %>
+            <%= check_box_tag "settings[batch_processing_enabled]", "true", Setting.get(:batch_processing_enabled),
+                id: "batch_processing_enabled", class: "sr-only peer" %>
+            <div class="w-14 h-7 rounded-full peer transition-all duration-300
+                        peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                        after:rounded-full after:h-6 after:w-6 after:transition-all"
+                 style="background: var(--color-slate);"></div>
+          </label>
+        </div>
+
+        <div class="flex items-center justify-between p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div>
+            <label for="social_publishing_enabled" class="font-medium" style="color: var(--color-snow);">Публикация в соц.сети</label>
+            <p class="text-sm mt-1" style="color: var(--color-mist);">Включить/выключить мультиплатформенную публикацию</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag "settings[social_publishing_enabled]", "false" %>
+            <%= check_box_tag "settings[social_publishing_enabled]", "true", Setting.get(:social_publishing_enabled),
+                id: "social_publishing_enabled", class: "sr-only peer" %>
+            <div class="w-14 h-7 rounded-full peer transition-all duration-300
+                        peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                        after:rounded-full after:h-6 after:w-6 after:transition-all"
+                 style="background: var(--color-slate);"></div>
+          </label>
+        </div>
+
+        <div class="flex items-center justify-between p-4 rounded-xl" style="background: var(--color-obsidian);">
+          <div>
+            <label for="youtube_analytics_enabled" class="font-medium" style="color: var(--color-snow);">YouTube Аналитика</label>
+            <p class="text-sm mt-1" style="color: var(--color-mist);">Включить/выключить аналитику YouTube</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag "settings[youtube_analytics_enabled]", "false" %>
+            <%= check_box_tag "settings[youtube_analytics_enabled]", "true", Setting.get(:youtube_analytics_enabled),
+                id: "youtube_analytics_enabled", class: "sr-only peer" %>
+            <div class="w-14 h-7 rounded-full peer transition-all duration-300
+                        peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                        after:rounded-full after:h-6 after:w-6 after:transition-all"
+                 style="background: var(--color-slate);"></div>
+          </label>
+        </div>
       </div>
     </div>
 
