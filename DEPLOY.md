@@ -6,7 +6,10 @@
 
 ```env
 RAILS_MASTER_KEY=d0352a89a39567b55c08da7a981577ff
+SECRET_KEY_BASE=65862ebacb52652d15368b9a21236be9bd9e0b7bc7befb67850a57edabf9941006bdff3d4e34f03e23971a4eed7fe0c714433d522ace4c7fbbd73021f1ce3a23
 RAILS_ENV=production
+RAILS_LOG_TO_STDOUT=true
+RAILS_SERVE_STATIC_FILES=true
 ```
 
 ### Опциональные (для полного функционала)
@@ -47,6 +50,7 @@ GOOGLE_CLIENT_SECRET=ваш_client_secret
 3. **Добавьте переменные окружения**:
    ```
    RAILS_MASTER_KEY=d0352a89a39567b55c08da7a981577ff
+   SECRET_KEY_BASE=65862ebacb52652d15368b9a21236be9bd9e0b7bc7befb67850a57edabf9941006bdff3d4e34f03e23971a4eed7fe0c714433d522ace4c7fbbd73021f1ce3a23
    ```
 
 4. **Настройте домен** в Coolify для сервиса `web`
