@@ -6,6 +6,24 @@ module Admin
       @voice_generations_count = VoiceGeneration.count
       @recent_transcriptions = Transcription.recent.limit(5)
       @recent_voice_generations = VoiceGeneration.recent.limit(5)
+
+      # Статистика использования
+      @transcription_stats = {
+        total_duration: Transcription.sum(:audio_duration_seconds) || 0,
+        total_tokens: Transcription.sum(:tokens_used) || 0,
+        total_cost: Transcription.sum(:cost_cents) || 0
+      }
+
+      @voice_generation_stats = {
+        total_characters: VoiceGeneration.sum(:characters_count) || 0,
+        total_cost: VoiceGeneration.sum(:cost_cents) || 0,
+        by_provider: {
+          openai: VoiceGeneration.where(provider: :openai).sum(:cost_cents) || 0,
+          elevenlabs: VoiceGeneration.where(provider: :elevenlabs).sum(:cost_cents) || 0
+        }
+      }
+
+      @total_cost = @transcription_stats[:total_cost] + @voice_generation_stats[:total_cost]
     end
   end
 end

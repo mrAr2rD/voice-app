@@ -62,6 +62,88 @@
     </div>
   </div>
 
+  <!-- Usage Statistics -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Total Cost -->
+    <div class="rounded-2xl p-6 hover-lift"
+         style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.02) 100%);
+                border: 1px solid rgba(251, 191, 36, 0.3);">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium" style="color: var(--color-mist);">Общие затраты</p>
+          <p class="text-3xl font-bold mt-2" style="color: var(--color-gold);">$<%= sprintf('%.2f', @total_cost / 100.0) %></p>
+        </div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
+             style="background: rgba(251, 191, 36, 0.2);">
+          <svg class="w-6 h-6" style="color: var(--color-gold);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transcription Duration -->
+    <div class="rounded-2xl p-6 hover-lift"
+         style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium" style="color: var(--color-mist);">Аудио обработано</p>
+          <% hours = (@transcription_stats[:total_duration] / 3600).floor %>
+          <% minutes = ((@transcription_stats[:total_duration] % 3600) / 60).floor %>
+          <p class="text-3xl font-bold mt-2" style="color: var(--color-snow);"><%= hours %>ч <%= minutes %>м</p>
+          <p class="text-sm mt-1" style="color: var(--color-neon-blue);">$<%= sprintf('%.2f', @transcription_stats[:total_cost] / 100.0) %></p>
+        </div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
+             style="background: rgba(0, 212, 255, 0.1);">
+          <svg class="w-6 h-6" style="color: var(--color-neon-blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- TTS Characters -->
+    <div class="rounded-2xl p-6 hover-lift"
+         style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium" style="color: var(--color-mist);">Символов озвучено</p>
+          <% chars_k = @voice_generation_stats[:total_characters] / 1000.0 %>
+          <p class="text-3xl font-bold mt-2" style="color: var(--color-snow);"><%= sprintf('%.1f', chars_k) %>K</p>
+          <p class="text-sm mt-1" style="color: var(--color-neon-purple);">$<%= sprintf('%.2f', @voice_generation_stats[:total_cost] / 100.0) %></p>
+        </div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
+             style="background: rgba(168, 85, 247, 0.1);">
+          <svg class="w-6 h-6" style="color: var(--color-neon-purple);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Provider Split -->
+    <div class="rounded-2xl p-6 hover-lift"
+         style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
+      <div>
+        <p class="text-sm font-medium mb-3" style="color: var(--color-mist);">Затраты по провайдерам</p>
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-sm" style="color: var(--color-cloud);">OpenAI TTS</span>
+            <span class="font-medium" style="color: var(--color-neon-green);">$<%= sprintf('%.2f', @voice_generation_stats[:by_provider][:openai] / 100.0) %></span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-sm" style="color: var(--color-cloud);">ElevenLabs</span>
+            <span class="font-medium" style="color: var(--color-neon-purple);">$<%= sprintf('%.2f', @voice_generation_stats[:by_provider][:elevenlabs] / 100.0) %></span>
+          </div>
+          <div class="flex justify-between items-center pt-2" style="border-top: 1px solid var(--color-graphite);">
+            <span class="text-sm" style="color: var(--color-cloud);">Транскрибация</span>
+            <span class="font-medium" style="color: var(--color-neon-blue);">$<%= sprintf('%.2f', @transcription_stats[:total_cost] / 100.0) %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Service Status -->
   <div class="rounded-2xl p-6 mb-8" style="background: var(--color-abyss); border: 1px solid var(--color-graphite);">
     <h2 class="text-lg font-semibold mb-4" style="color: var(--color-snow);">Статус сервисов</h2>

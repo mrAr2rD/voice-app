@@ -19,7 +19,7 @@ class Transcription < ApplicationRecord
   validates :source_file, content_type: {
     in: %w[
       audio/mpeg audio/mp4 audio/aac audio/flac audio/ogg
-      audio/vnd.wave audio/x-wav audio/x-flac audio/vorbis audio/x-ogg
+      audio/vnd.wave audio/x-wav audio/x-flac audio/vorbis
       video/mp4 video/webm video/quicktime video/x-msvideo
       video/x-matroska video/ogg video/mpeg
       application/ogg

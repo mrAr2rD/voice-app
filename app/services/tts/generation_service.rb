@@ -15,6 +15,7 @@ module Tts
 
       if result[:success]
         attach_audio(result[:data])
+        save_usage_stats
         @voice_generation.update!(status: :completed)
         success(@voice_generation)
       else
@@ -54,6 +55,16 @@ module Tts
       @voice_generation.update!(
         status: :failed,
         error_message: message
+      )
+    end
+
+    def save_usage_stats
+      characters = @voice_generation.text.length
+      cost = Setting.calculate_tts_cost(characters, @voice_generation.provider)
+
+      @voice_generation.update!(
+        characters_count: characters,
+        cost_cents: cost
       )
     end
   end

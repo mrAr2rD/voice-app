@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_09_202651) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_10_085139) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -62,6 +62,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_202651) do
   end
 
   create_table "transcriptions", force: :cascade do |t|
+    t.float "audio_duration_seconds", default: 0.0
+    t.integer "cost_cents", default: 0
     t.datetime "created_at", null: false
     t.float "duration"
     t.text "error_message"
@@ -72,6 +74,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_202651) do
     t.integer "source_type", default: 0, null: false
     t.integer "status", default: 0, null: false
     t.string "title"
+    t.integer "tokens_used", default: 0
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.string "youtube_url"
@@ -91,6 +94,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_202651) do
   end
 
   create_table "voice_generations", force: :cascade do |t|
+    t.integer "characters_count", default: 0
+    t.integer "cost_cents", default: 0
     t.datetime "created_at", null: false
     t.text "error_message"
     t.integer "provider", default: 0, null: false

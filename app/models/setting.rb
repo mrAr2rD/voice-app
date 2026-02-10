@@ -15,7 +15,12 @@ class Setting < ApplicationRecord
 
     # Провайдеры по умолчанию
     default_tts_provider: { default: "openai", type: :string, description: "TTS провайдер по умолчанию" },
-    default_transcription_provider: { default: "nexara", type: :string, description: "Провайдер транскрибации" }
+    default_transcription_provider: { default: "nexara", type: :string, description: "Провайдер транскрибации" },
+
+    # Цены (в центах)
+    transcription_cost_per_minute: { default: "0.6", type: :float, description: "Цена транскрибации за минуту (центы)" },
+    openai_tts_cost_per_1k_chars: { default: "1.5", type: :float, description: "Цена OpenAI TTS за 1000 символов (центы)" },
+    elevenlabs_cost_per_1k_chars: { default: "30", type: :float, description: "Цена ElevenLabs за 1000 символов (центы)" }
   }.freeze
 
   class << self
@@ -29,6 +34,8 @@ class Setting < ApplicationRecord
         value.to_s == "true"
       when :integer
         value.to_i
+      when :float
+        value.to_f
       else
         value
       end
@@ -69,6 +76,30 @@ class Setting < ApplicationRecord
     def openrouter_api_key
       key = get(:openrouter_api_key)
       key.present? ? key : Rails.application.credentials.dig(:openrouter, :api_key)
+    end
+
+    # Цены
+    def transcription_cost_per_minute
+      get(:transcription_cost_per_minute)
+    end
+
+    def openai_tts_cost_per_1k_chars
+      get(:openai_tts_cost_per_1k_chars)
+    end
+
+    def elevenlabs_cost_per_1k_chars
+      get(:elevenlabs_cost_per_1k_chars)
+    end
+
+    def calculate_transcription_cost(duration_seconds)
+      minutes = duration_seconds.to_f / 60
+      (minutes * transcription_cost_per_minute).round
+    end
+
+    def calculate_tts_cost(characters_count, provider)
+      chars_in_thousands = characters_count.to_f / 1000
+      cost_per_1k = provider == "openai" ? openai_tts_cost_per_1k_chars : elevenlabs_cost_per_1k_chars
+      (chars_in_thousands * cost_per_1k).round
     end
   end
 end

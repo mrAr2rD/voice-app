@@ -20,6 +20,9 @@ module Transcriptions
       parse_result = ResultParser.call(@transcription, result[:data])
       return failure(parse_result.error) if parse_result.failure?
 
+      # Сохраняем статистику использования
+      save_usage_stats(result[:data])
+
       @transcription.update!(status: :completed, progress: 100)
       success(@transcription)
     rescue StandardError => e
@@ -120,6 +123,18 @@ module Transcriptions
       @temp_files.each do |path|
         FileUtils.rm_f(path) if path && File.exist?(path)
       end
+    end
+
+    def save_usage_stats(api_response)
+      duration = api_response["duration"] || @transcription.duration || 0
+      tokens = api_response.dig("usage", "total_tokens") || 0
+      cost = Setting.calculate_transcription_cost(duration)
+
+      @transcription.update!(
+        audio_duration_seconds: duration,
+        tokens_used: tokens,
+        cost_cents: cost
+      )
     end
   end
 end
