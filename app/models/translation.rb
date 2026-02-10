@@ -30,10 +30,16 @@ class Translation < ApplicationRecord
     ["Украинский", "uk"]
   ].freeze
 
+  # Бесплатные модели OpenRouter
   MODELS = [
-    ["Gemini 2.0 Flash (быстрый)", "google/gemini-2.0-flash-001"],
-    ["GPT-4o Mini (баланс)", "openai/gpt-4o-mini"],
-    ["Claude 3.5 Haiku (качество)", "anthropic/claude-3.5-haiku"]
+    ["DeepSeek V3.2 (рекомендуется)", "deepseek/deepseek-v3.2-20251201"],
+    ["DeepSeek Chat V3.1", "deepseek/deepseek-chat-v3.1"],
+    ["Gemini 2.5 Flash", "google/gemini-2.5-flash"],
+    ["Gemini 2.5 Flash Lite (быстрый)", "google/gemini-2.5-flash-lite"],
+    ["Grok 4.1 Fast", "x-ai/grok-4.1-fast"],
+    ["Grok Code Fast", "x-ai/grok-code-fast-1"],
+    ["Kimi K2.5", "moonshotai/kimi-k2.5-0127"],
+    ["GPT OSS 120B", "openai/gpt-oss-120b"]
   ].freeze
 
   def text_preview(length = 50)
