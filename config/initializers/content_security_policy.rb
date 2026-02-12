@@ -7,11 +7,11 @@
 Rails.application.configure do
   config.content_security_policy do |policy|
     policy.default_src :self
-    policy.font_src    :self, :data
+    policy.font_src    :self, :data, "https://fonts.gstatic.com"
     policy.img_src     :self, :data, :blob
     policy.object_src  :none
     policy.script_src  :self
-    policy.style_src   :self
+    policy.style_src   :self, :unsafe_inline, "https://fonts.googleapis.com"
     policy.frame_src   :self, "https://www.youtube.com"
     policy.connect_src :self
 
@@ -29,5 +29,5 @@ Rails.application.configure do
   config.content_security_policy_nonce_directives = %w[script-src style-src]
 
   # Report violations without enforcing the policy (enable for testing first).
-  # config.content_security_policy_report_only = true
+  config.content_security_policy_report_only = true
 end
